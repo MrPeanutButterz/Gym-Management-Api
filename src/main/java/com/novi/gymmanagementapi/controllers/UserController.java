@@ -13,7 +13,7 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping(name = "api/users")
+@RequestMapping(name = "api/users/")
 public class UserController {
 
     private final UserService userService;
@@ -22,25 +22,20 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "")
+    @GetMapping
     public ResponseEntity<List<UserDto>> getUsers() {
-
-        List<UserDto> userDtos = userService.getUsers();
-
-        return ResponseEntity.ok().body(userDtos);
+        List<UserDto> userDtoList = userService.getUsers();
+        return ResponseEntity.ok().body(userDtoList);
     }
 
     @GetMapping(value = "/{username}")
     public ResponseEntity<UserDto> getUser(@PathVariable("username") String username) {
 
         UserDto optionalUser = userService.getUser(username);
-
-
         return ResponseEntity.ok().body(optionalUser);
-
     }
 
-    @PostMapping(value = "")
+    @PostMapping
     public ResponseEntity<UserDto> createKlant(@RequestBody UserDto dto) {;
 
         // Let op: het password van een nieuwe gebruiker wordt in deze code nog niet encrypted opgeslagen.
@@ -59,7 +54,6 @@ public class UserController {
     public ResponseEntity<UserDto> updateKlant(@PathVariable("username") String username, @RequestBody UserDto dto) {
 
         userService.updateUser(username, dto);
-
         return ResponseEntity.noContent().build();
     }
 

@@ -44,32 +44,17 @@ public class SecurityConfig {
     }
 
     @Bean
-    protected SecurityFilterChain filter (HttpSecurity http) throws Exception {
+    protected SecurityFilterChain filter(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth ->
-                                auth
-                                        // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
-                                        // .requestMatchers("/**").permitAll()
-                                        .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.POST, "/cimodules").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.DELETE, "/cimodules/**").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.POST, "/remotecontrollers").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.DELETE, "/remotecontrollers/**").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.POST, "/televisions").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.DELETE, "/televisions/**").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.POST, "/wallbrackets").hasRole("ADMIN")
-                                        .requestMatchers(HttpMethod.DELETE, "/wallbrackets/**").hasRole("ADMIN")
-                                        // Je mag meerdere paths tegelijk definieren
-                                        .requestMatchers("/cimodules", "/remotecontrollers", "/televisions", "/wallbrackets").hasAnyRole("ADMIN", "USER")
-                                        .requestMatchers("/authenticated").authenticated()
-                                        .requestMatchers("/authenticate").permitAll()
-                                        .anyRequest().denyAll()
+                        auth
+                                .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+                                .requestMatchers("/authenticate").permitAll()
+                                .requestMatchers("/authenticated").authenticated()
+                                .anyRequest().denyAll()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

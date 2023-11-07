@@ -19,20 +19,13 @@ import java.security.Principal;
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
-
     private final MyCustomUserDetailsService myCustomUserDetailsService;
-
     private final JwtUtility jwtUtility;
 
     public AuthenticationController(AuthenticationManager authenticationManager, MyCustomUserDetailsService myCustomUserDetailsService, JwtUtility jwtUtility) {
         this.authenticationManager = authenticationManager;
         this.myCustomUserDetailsService = myCustomUserDetailsService;
         this.jwtUtility = jwtUtility;
-    }
-
-    @GetMapping(value = "/authenticated")
-    public ResponseEntity<Object> authenticated(Authentication authentication, Principal principal) {
-        return ResponseEntity.ok().body(principal);
     }
 
     @PostMapping(value = "/authenticate")
@@ -42,16 +35,19 @@ public class AuthenticationController {
         String password = authenticationRequestDto.getPassword();
 
         try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password)
-            );
-        }
-        catch (BadCredentialsException ex) {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+        } catch (BadCredentialsException ex) {
             throw new Exception("Incorrect username or password", ex);
         }
 
         final UserDetails userDetails = myCustomUserDetailsService.loadUserByUsername(username);
         final String jwt = jwtUtility.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponseDto(jwt));
+    }
+
+    @GetMapping(value = "/authenticated")
+    public ResponseEntity<Object> authenticated(Authentication authentication, Principal principal) {
+        return ResponseEntity.ok().body(principal);
     }
 }
