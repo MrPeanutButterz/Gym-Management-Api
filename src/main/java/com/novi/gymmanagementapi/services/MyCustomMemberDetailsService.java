@@ -1,6 +1,6 @@
 package com.novi.gymmanagementapi.services;
 
-import com.novi.gymmanagementapi.dtobject.UserDto;
+import com.novi.gymmanagementapi.dtobject.MemberDto;
 import com.novi.gymmanagementapi.models.Authority;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,25 +13,25 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-public class MyCustomUserDetailsService implements UserDetailsService {
+public class MyCustomMemberDetailsService implements UserDetailsService {
 
-    private final UserService userService;
+    private final MemberService memberService;
 
-    public MyCustomUserDetailsService(UserService userService) {
-        this.userService = userService;
+    public MyCustomMemberDetailsService(MemberService memberService) {
+        this.memberService = memberService;
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public UserDetails loadUserByUsername(String email) {
 
-        UserDto userDto = userService.getUser(username);
-        String password = userDto.getPassword();
+        MemberDto memberDto = memberService.getUser(email);
+        String password = memberDto.getPassword();
 
-        Set<Authority> authorities = userDto.getAuthorities();
+        Set<Authority> authorities = memberDto.getAuthorities();
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Authority authority : authorities) {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
         }
-        return new org.springframework.security.core.userdetails.User(username, password, grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(email, password, grantedAuthorities);
     }
 }

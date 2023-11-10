@@ -1,6 +1,6 @@
 package com.novi.gymmanagementapi.filters;
 
-import com.novi.gymmanagementapi.services.MyCustomUserDetailsService;
+import com.novi.gymmanagementapi.services.MyCustomMemberDetailsService;
 import com.novi.gymmanagementapi.utilties.JwtUtility;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,12 +18,12 @@ import java.io.IOException;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final MyCustomUserDetailsService myCustomUserDetailsService;
+    private final MyCustomMemberDetailsService myCustomMemberDetailsService;
 
     private final JwtUtility jwtUtility;
 
-    public JwtRequestFilter(MyCustomUserDetailsService myCustomUserDetailsService, JwtUtility jwtUtility) {
-        this.myCustomUserDetailsService = myCustomUserDetailsService;
+    public JwtRequestFilter(MyCustomMemberDetailsService myCustomMemberDetailsService, JwtUtility jwtUtility) {
+        this.myCustomMemberDetailsService = myCustomMemberDetailsService;
         this.jwtUtility = jwtUtility;
     }
 
@@ -42,7 +42,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.myCustomUserDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = this.myCustomMemberDetailsService.loadUserByUsername(username);
 
             if (jwtUtility.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(

@@ -1,10 +1,9 @@
 package com.novi.gymmanagementapi.applicationConfig;
 
 import com.novi.gymmanagementapi.filters.JwtRequestFilter;
-import com.novi.gymmanagementapi.services.MyCustomUserDetailsService;
+import com.novi.gymmanagementapi.services.MyCustomMemberDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -22,12 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    public final MyCustomUserDetailsService myCustomUserDetailsService;
+    public final MyCustomMemberDetailsService myCustomMemberDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
 
-    public SecurityConfig(MyCustomUserDetailsService myCustomUserDetailsService,
+    public SecurityConfig(MyCustomMemberDetailsService myCustomMemberDetailsService,
                           JwtRequestFilter jwtRequestFilter) {
-        this.myCustomUserDetailsService = myCustomUserDetailsService;
+        this.myCustomMemberDetailsService = myCustomMemberDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
@@ -40,7 +39,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
         var auth = new DaoAuthenticationProvider();
         auth.setPasswordEncoder(passwordEncoder);
-        auth.setUserDetailsService(myCustomUserDetailsService);
+        auth.setUserDetailsService(myCustomMemberDetailsService);
         return new ProviderManager(auth);
     }
 
@@ -50,10 +49,9 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/authenticated").authenticated()
-                        .requestMatchers("/authenticate").permitAll()
+                        .requestMatchers("/principal").authenticated()
+                        .requestMatchers("/login").permitAll()
                         .anyRequest().denyAll())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

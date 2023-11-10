@@ -4,21 +4,19 @@ import com.novi.gymmanagementapi.models.Authority;
 
 import java.util.Set;
 
-public class UserDto {
+public class MemberDto {
 
-    public String username;
+    public String email;
     public String password;
     public Boolean enabled;
-    public String apikey;
-    public String email;
     public Set<Authority> authorities;
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -37,22 +35,6 @@ public class UserDto {
         this.enabled = enabled;
     }
 
-    public String getApikey() {
-        return apikey;
-    }
-
-    public void setApiKey(String apikey) {
-        this.apikey = apikey;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public Set<Authority> getAuthorities() {
         return authorities;
     }
@@ -60,5 +42,4 @@ public class UserDto {
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
-
 }
