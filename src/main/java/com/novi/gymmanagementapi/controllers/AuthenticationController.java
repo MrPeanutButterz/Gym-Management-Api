@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,9 @@ public class AuthenticationController {
     private final MyCustomUserDetailsService myCustomUserDetailsService;
     private final JwtUtility jwtUtility;
 
-    public AuthenticationController(AuthenticationManager authenticationManager, MyCustomUserDetailsService myCustomUserDetailsService, JwtUtility jwtUtility) {
+    public AuthenticationController(AuthenticationManager authenticationManager,
+                                    MyCustomUserDetailsService myCustomUserDetailsService,
+                                    JwtUtility jwtUtility) {
         this.authenticationManager = authenticationManager;
         this.myCustomUserDetailsService = myCustomUserDetailsService;
         this.jwtUtility = jwtUtility;
@@ -47,7 +48,8 @@ public class AuthenticationController {
     }
 
     @GetMapping(value = "/authenticated")
-    public ResponseEntity<Object> authenticated(Authentication authentication, Principal principal) {
+    public ResponseEntity<Object> authenticated(Principal principal) {
+
         return ResponseEntity.ok().body(principal);
     }
 }

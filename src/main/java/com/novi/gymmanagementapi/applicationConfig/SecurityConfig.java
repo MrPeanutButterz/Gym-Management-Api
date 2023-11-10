@@ -25,7 +25,8 @@ public class SecurityConfig {
     public final MyCustomUserDetailsService myCustomUserDetailsService;
     private final JwtRequestFilter jwtRequestFilter;
 
-    public SecurityConfig(MyCustomUserDetailsService myCustomUserDetailsService, JwtRequestFilter jwtRequestFilter) {
+    public SecurityConfig(MyCustomUserDetailsService myCustomUserDetailsService,
+                          JwtRequestFilter jwtRequestFilter) {
         this.myCustomUserDetailsService = myCustomUserDetailsService;
         this.jwtRequestFilter = jwtRequestFilter;
     }
@@ -45,17 +46,15 @@ public class SecurityConfig {
 
     @Bean
     protected SecurityFilterChain filter(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth ->
-                        auth
-                                .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
-                                .requestMatchers("/authenticate").permitAll()
-                                .requestMatchers("/authenticated").authenticated()
-                                .anyRequest().denyAll()
-                )
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/authenticated").authenticated()
+                        .requestMatchers("/authenticate").permitAll()
+                        .anyRequest().denyAll())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

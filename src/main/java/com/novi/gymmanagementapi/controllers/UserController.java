@@ -13,7 +13,7 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping(name = "api/users/")
+@RequestMapping(value = "api/users")
 public class UserController {
 
     private final UserService userService;
@@ -36,29 +36,25 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createKlant(@RequestBody UserDto dto) {;
-
-        // Let op: het password van een nieuwe gebruiker wordt in deze code nog niet encrypted opgeslagen.
-        // Je kan dus (nog) niet inloggen met een nieuwe user.
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto dto) {
 
         String newUsername = userService.createUser(dto);
         userService.addAuthority(newUsername, "ROLE_USER");
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(newUsername).toUri();
-
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping(value = "/{username}")
-    public ResponseEntity<UserDto> updateKlant(@PathVariable("username") String username, @RequestBody UserDto dto) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable("username") String username, @RequestBody UserDto dto) {
 
         userService.updateUser(username, dto);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = "/{username}")
-    public ResponseEntity<Object> deleteKlant(@PathVariable("username") String username) {
+    public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
         return ResponseEntity.noContent().build();
     }
