@@ -17,4 +17,9 @@ public class ExceptionController {
     public ResponseEntity<Object> exception(AlreadyBoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_MODIFIED);
     }
+
+    @ExceptionHandler(EmailAlreadyTakenException.class)
+    public ResponseEntity<Object> exception(EmailAlreadyTakenException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+    }
 }

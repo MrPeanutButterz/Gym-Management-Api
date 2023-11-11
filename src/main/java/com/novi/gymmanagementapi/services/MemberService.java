@@ -1,12 +1,14 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dtobject.MemberDto;
+import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
 import com.novi.gymmanagementapi.models.Authority;
 import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.repositories.MemberRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,48 +25,55 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public List<MemberDto> getUsers() {
+    public List<MemberDto> getMembers() {
         List<MemberDto> collection = new ArrayList<>();
         List<Member> list = memberRepository.findAll();
         for (Member member : list) {
-            collection.add(fromUser(member));
+            collection.add(toDTO(member));
         }
         return collection;
     }
 
-    public MemberDto getUser(String email) {
+    public MemberDto getMember(String email) {
         Optional<Member> user = memberRepository.findUserByEmail(email);
         if (user.isPresent()) {
-            return fromUser(user.get());
+            return toDTO(user.get());
         } else {
             throw new EmailNotFoundException(email);
         }
     }
 
-    public boolean userExists(String username) {
-        return memberRepository.existsById(username);
+    public boolean userExists(String email) {
+        return memberRepository.existsById(email);
     }
 
-    public String createUser(MemberDto memberDto) {
-        Member newMember = memberRepository.save(toUser(memberDto));
-        return newMember.getEmail();
+    public String createMember(MemberDto dto) {
+        Optional<Member> optionalMember = memberRepository.findById(dto.email);
+        if (optionalMember.isEmpty()) {
+            // todo email check else decline request
+            Member newMember = memberRepository.save(toMODEL(dto));
+            return newMember.getEmail();
+
+        } else {
+            throw new EmailAlreadyTakenException(dto.email);
+        }
     }
 
-    public void deleteUser(String username) {
+    public void deleteMember(String username) {
         memberRepository.deleteById(username);
     }
 
-    public void updateUser(String username, MemberDto newUser) {
+    public void updateMember(String username, MemberDto newMember) {
         if (!memberRepository.existsById(username)) throw new RecordNotFoundException();
         Member member = memberRepository.findById(username).get();
-        member.setPassword(newUser.getPassword());
+        member.setPassword(newMember.getPassword());
         memberRepository.save(member);
     }
 
     public Set<Authority> getAuthorities(String username) {
         if (!memberRepository.existsById(username)) throw new UsernameNotFoundException(username);
         Member member = memberRepository.findById(username).get();
-        MemberDto memberDto = fromUser(member);
+        MemberDto memberDto = toDTO(member);
         return memberDto.getAuthorities();
     }
 
@@ -84,7 +93,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public MemberDto fromUser(Member model) {
+    public MemberDto toDTO(Member model) {
         var dto = new MemberDto();
         dto.setPassword(model.getPassword());
         dto.setEnabled(model.isEnabled());
@@ -93,9 +102,9 @@ public class MemberService {
         return dto;
     }
 
-    public Member toUser(MemberDto dto) {
+    public Member toMODEL(MemberDto dto) {
         var user = new Member();
-        user.setPassword(dto.getPassword());
+        user.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
         user.setEnabled(dto.getEnabled());
         user.setEmail(dto.getEmail());
         return user;

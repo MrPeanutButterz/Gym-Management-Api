@@ -24,7 +24,7 @@ public class MyCustomMemberDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) {
 
-        MemberDto memberDto = memberService.getUser(email);
+        MemberDto memberDto = memberService.getMember(email);
         String password = memberDto.getPassword();
 
         Set<Authority> authorities = memberDto.getAuthorities();

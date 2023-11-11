@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/members/**").hasRole("ADMIN")
                         .requestMatchers("/principal").authenticated()
                         .requestMatchers("/login").permitAll()
                         .anyRequest().denyAll())

@@ -13,7 +13,7 @@ import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "api/users")
+@RequestMapping(value = "api/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -23,49 +23,49 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MemberDto>> getUsers() {
-        List<MemberDto> memberDtoList = memberService.getUsers();
+    public ResponseEntity<List<MemberDto>> getMembers() {
+        List<MemberDto> memberDtoList = memberService.getMembers();
         return ResponseEntity.ok().body(memberDtoList);
     }
 
     @GetMapping(value = "/{username}")
-    public ResponseEntity<MemberDto> getUser(@PathVariable("username") String username) {
+    public ResponseEntity<MemberDto> getMember(@PathVariable("username") String username) {
 
-        MemberDto optionalUser = memberService.getUser(username);
-        return ResponseEntity.ok().body(optionalUser);
+        MemberDto optionalMember = memberService.getMember(username);
+        return ResponseEntity.ok().body(optionalMember);
     }
 
     @PostMapping
-    public ResponseEntity<MemberDto> createUser(@RequestBody MemberDto dto) {
+    public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto dto) {
 
-        String newUsername = memberService.createUser(dto);
-        memberService.addAuthority(newUsername, "ROLE_USER");
+        String email = memberService.createMember(dto);
+        memberService.addAuthority(email, "ROLE_MEMBER");
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-                .buildAndExpand(newUsername).toUri();
+                .buildAndExpand(email).toUri();
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping(value = "/{username}")
-    public ResponseEntity<MemberDto> updateUser(@PathVariable("username") String username, @RequestBody MemberDto dto) {
+    public ResponseEntity<MemberDto> updateMember(@PathVariable("username") String username, @RequestBody MemberDto dto) {
 
-        memberService.updateUser(username, dto);
+        memberService.updateMember(username, dto);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value = "/{username}")
-    public ResponseEntity<Object> deleteUser(@PathVariable("username") String username) {
-        memberService.deleteUser(username);
+    public ResponseEntity<Object> deleteMember(@PathVariable("username") String username) {
+        memberService.deleteMember(username);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(value = "/{username}/authorities")
-    public ResponseEntity<Object> getUserAuthorities(@PathVariable("username") String username) {
+    public ResponseEntity<Object> getMemberAuthorities(@PathVariable("username") String username) {
         return ResponseEntity.ok().body(memberService.getAuthorities(username));
     }
 
     @PostMapping(value = "/{username}/authorities")
-    public ResponseEntity<Object> addUserAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
+    public ResponseEntity<Object> addMemberAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
         try {
             String authorityName = (String) fields.get("authority");
             memberService.addAuthority(username, authorityName);
@@ -77,7 +77,7 @@ public class MemberController {
     }
 
     @DeleteMapping(value = "/{username}/authorities/{authority}")
-    public ResponseEntity<Object> deleteUserAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
+    public ResponseEntity<Object> deleteMemberAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
         memberService.removeAuthority(username, authority);
         return ResponseEntity.noContent().build();
     }

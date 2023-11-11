@@ -49,6 +49,7 @@ public class AuthenticationController {
 
     @GetMapping(value = "/principal")
     public ResponseEntity<Object> authenticated(Principal principal) {
+
         return ResponseEntity.ok().body(principal);
     }
 }
