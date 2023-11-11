@@ -49,10 +49,16 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
+
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/members/**").hasRole("ADMIN")
+                        .requestMatchers("/api/memberships/subscription").hasAnyRole("MEMBER", "TRAINER")
                         .requestMatchers("/principal").authenticated()
+
+                        .requestMatchers("/api/memberships").permitAll()
                         .requestMatchers("/login").permitAll()
                         .anyRequest().denyAll())
+
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

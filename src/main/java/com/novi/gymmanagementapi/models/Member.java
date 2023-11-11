@@ -18,6 +18,8 @@ public class Member {
     private Date dateOfBirth;
     private String firstname;
     private String lastname;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Membership membership;
     @Column(nullable = false)
     private boolean enabled = true;
     @OneToMany(
@@ -67,6 +69,14 @@ public class Member {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public Membership getMembership() {
+        return membership;
+    }
+
+    public void setMembership(Membership membership) {
+        this.membership = membership;
     }
 
     public boolean isEnabled() {

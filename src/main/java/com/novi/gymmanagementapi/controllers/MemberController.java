@@ -8,13 +8,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "api/members")
+@RequestMapping(value = "api")
 public class MemberController {
+
+    // todo use Principal in this class for validation
 
     private final MemberService memberService;
 
@@ -22,7 +25,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @PostMapping
+    @PostMapping("members")
     public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto dto) {
 
         String email = memberService.createMember(dto);
@@ -34,7 +37,7 @@ public class MemberController {
         return ResponseEntity.created(location).build();
     }
 
-    @GetMapping
+    @GetMapping("members")
     public ResponseEntity<MemberDto> getMember(@RequestParam String email) {
         return ResponseEntity.ok().body(memberService.getMember(email));
     }
