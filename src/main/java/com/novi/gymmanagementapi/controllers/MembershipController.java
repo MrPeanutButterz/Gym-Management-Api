@@ -53,8 +53,6 @@ public class MembershipController {
                 .build();
     }
 
-    // todo make Delete mapping work with expiration date
-
     @PutMapping("memberships/subscription")
     public ResponseEntity<Objects> subscribe(@RequestParam long membershipID,
                                              Principal principal) {
@@ -63,7 +61,7 @@ public class MembershipController {
                 .created(uriBuilder.build(membershipID))
                 .build();
     }
-
+    
     @DeleteMapping("memberships/subscription")
     public ResponseEntity<Objects> unsubscribe(Principal principal) {
         memberShipService.unsubscribe(principal.getName());
