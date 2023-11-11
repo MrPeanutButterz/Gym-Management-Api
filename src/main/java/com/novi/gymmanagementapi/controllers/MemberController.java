@@ -22,28 +22,35 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @GetMapping
-    public ResponseEntity<List<MemberDto>> getMembers() {
-        List<MemberDto> memberDtoList = memberService.getMembers();
-        return ResponseEntity.ok().body(memberDtoList);
-    }
-
-    @GetMapping(value = "/{username}")
-    public ResponseEntity<MemberDto> getMember(@PathVariable("username") String username) {
-
-        MemberDto optionalMember = memberService.getMember(username);
-        return ResponseEntity.ok().body(optionalMember);
-    }
-
     @PostMapping
     public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto dto) {
 
         String email = memberService.createMember(dto);
         memberService.addAuthority(email, "ROLE_MEMBER");
 
+        // todo rework uri
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(email).toUri();
         return ResponseEntity.created(location).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<MemberDto> getMember(@RequestParam String email) {
+        return ResponseEntity.ok().body(memberService.getMember(email));
+    }
+
+
+/* WORKING FUNCTIONS ABOVE
+    @GetMapping
+    public ResponseEntity<List<MemberDto>> getMembers() {
+        List<MemberDto> memberDtoList = memberService.getMembers();
+        return ResponseEntity.ok().body(memberDtoList);
+    }
+    @GetMapping(value = "/{username}")
+    public ResponseEntity<MemberDto> getMember(@PathVariable("username") String username) {
+
+        MemberDto optionalMember = memberService.getMember(username);
+        return ResponseEntity.ok().body(optionalMember);
     }
 
     @PutMapping(value = "/{username}")
@@ -80,5 +87,5 @@ public class MemberController {
     public ResponseEntity<Object> deleteMemberAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
         memberService.removeAuthority(username, authority);
         return ResponseEntity.noContent().build();
-    }
+    }*/
 }

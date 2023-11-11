@@ -25,6 +25,31 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
+    public String createMember(MemberDto dto) {
+        Optional<Member> optionalMember = memberRepository.findById(dto.email);
+        if (optionalMember.isEmpty()) {
+            Member model = memberRepository.save(toMODEL(dto));
+            return model.getEmail();
+
+        } else {
+            throw new EmailAlreadyTakenException(dto.email);
+        }
+    }
+
+    public MemberDto getMember(String email) {
+        Optional<Member> om = memberRepository.findById(email);
+        if (om.isPresent()) {
+            MemberDto dto = toDTO(om.get());
+            // todo set goal IDs
+            return dto;
+
+        } else {
+            throw new EmailNotFoundException(email);
+        }
+    }
+
+    /* WORKING FUNCTIONS ABOVE ^ */
+
     public List<MemberDto> getMembers() {
         List<MemberDto> collection = new ArrayList<>();
         List<Member> list = memberRepository.findAll();
@@ -33,30 +58,18 @@ public class MemberService {
         }
         return collection;
     }
-
+/*
     public MemberDto getMember(String email) {
-        Optional<Member> user = memberRepository.findUserByEmail(email);
+        Optional<Member> user = memberRepository.findById(email);
         if (user.isPresent()) {
             return toDTO(user.get());
         } else {
             throw new EmailNotFoundException(email);
         }
-    }
+    }*/
 
     public boolean userExists(String email) {
         return memberRepository.existsById(email);
-    }
-
-    public String createMember(MemberDto dto) {
-        Optional<Member> optionalMember = memberRepository.findById(dto.email);
-        if (optionalMember.isEmpty()) {
-            // todo email check else decline request
-            Member newMember = memberRepository.save(toMODEL(dto));
-            return newMember.getEmail();
-
-        } else {
-            throw new EmailAlreadyTakenException(dto.email);
-        }
     }
 
     public void deleteMember(String username) {
