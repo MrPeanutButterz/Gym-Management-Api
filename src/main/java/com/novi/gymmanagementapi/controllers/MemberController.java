@@ -15,7 +15,7 @@ import java.security.Principal;
 @RequestMapping(value = "api")
 public class MemberController {
 
-    UriBuilder uri = new UriBuilder();
+    UriBuilder uriBuilder = new UriBuilder();
     private final MemberService memberService;
 
     public MemberController(MemberService memberService) {

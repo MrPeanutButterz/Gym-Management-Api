@@ -2,6 +2,7 @@ package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.MemberDto;
 import com.novi.gymmanagementapi.models.Authority;
+import com.novi.gymmanagementapi.repositories.MemberRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,7 +1,7 @@
-INSERT INTO members (password, email, enabled, date_of_birth, firstname, lastname)
-VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', 'member@api.nl', TRUE, '2000-01-01', 'Aron', 'Arrow'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', 'trainer@api.nl', TRUE, '2000-01-01', 'Barry', 'Bear'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', 'admin@api.nl', TRUE, '2000-01-01', 'Charlie', 'Charming');
+INSERT INTO members (password, enabled, date_of_birth, email, firstname, lastname)
+VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'member@api.nl', 'Aron', 'Arrow'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'trainer@api.nl', 'Barry', 'Bear'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'admin@api.nl', 'Charlie', 'Charming');
 
 INSERT INTO authorities (email, authority)
 VALUES ('member@api.nl', 'ROLE_MEMBER'),

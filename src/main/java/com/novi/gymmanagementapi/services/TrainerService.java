@@ -50,8 +50,8 @@ public class TrainerService {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             Trainer trainer = optionalTrainer.get();
-            trainer.setFirstName(trainerDto.getFirstName());
-            trainer.setLastName(trainerDto.getLastName());
+            trainer.setFirstname(trainerDto.getFirstName());
+            trainer.setLastname(trainerDto.getLastName());
             trainer.setEmail(trainerDto.getEmail());
             trainer.setDateOfBirth(trainerDto.getDob());
             trainerRepository.save(trainer);
@@ -115,16 +115,16 @@ public class TrainerService {
 
     private TrainerDto transformToDTO(Trainer model) {
         TrainerDto dto = new TrainerDto();
-        dto.setFirstName(model.getFirstName());
-        dto.setLastName(model.getLastName());
+        dto.setFirstName(model.getFirstname());
+        dto.setLastName(model.getLastname());
         dto.setEmail(model.getEmail());
         return dto;
     }
 
     private Trainer transformToMODEL(TrainerDto dto) {
         Trainer model = new Trainer();
-        model.setFirstName(dto.getFirstName());
-        model.setLastName(dto.getLastName());
+        model.setFirstname(dto.getFirstName());
+        model.setFirstname(dto.getLastName());
         model.setEmail(dto.getEmail());
         return model;
     }

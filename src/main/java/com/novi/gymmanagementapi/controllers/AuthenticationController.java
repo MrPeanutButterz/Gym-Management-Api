@@ -30,19 +30,18 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDto authenticationRequestDto) throws Exception {
-
-        String email = authenticationRequestDto.getEmail();
-        String password = authenticationRequestDto.getPassword();
-
+    public ResponseEntity<?> createAuthenticationTokenForMembers(@RequestBody AuthenticationRequestDto authenticationRequestDto) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    authenticationRequestDto.getEmail(),
+                    authenticationRequestDto.getPassword())
+            );
 
         } catch (BadCredentialsException ex) {
             throw new Exception("Incorrect username or password", ex);
         }
 
-        final UserDetails userDetails = myCustomMemberDetailsService.loadUserByUsername(email);
+        final UserDetails userDetails = myCustomMemberDetailsService.loadUserByUsername(authenticationRequestDto.getEmail());
         final String jwt = jwtUtility.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponseDto(jwt));
     }
