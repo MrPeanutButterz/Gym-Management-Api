@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
@@ -13,6 +14,7 @@ import java.util.Set;
 public class Member {
 
     @Id
+    @Email
     @Column(nullable = false, unique = true)
     private String email;
     @NotNull

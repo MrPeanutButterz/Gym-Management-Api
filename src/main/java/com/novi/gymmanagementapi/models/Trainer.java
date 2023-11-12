@@ -11,27 +11,34 @@ import java.util.Date;
 @Table(name = "trainers")
 public class Trainer {
 
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Email
+    @Column(nullable = false, unique = true)
+    private String email;
+    @NotNull
+    private String password;
     @NotNull
     private String firstName;
     @NotNull
     private String lastName;
-    @Email
-    @NotNull
-    private String email;
     @Past
     @NotNull
-    private Date dob;
+    private Date dateOfBirth;
 
-    public long getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -50,19 +57,11 @@ public class Trainer {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
+    public Date getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }
