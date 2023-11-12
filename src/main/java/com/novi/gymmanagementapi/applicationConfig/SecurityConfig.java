@@ -55,8 +55,8 @@ public class SecurityConfig {
 
                         // memberships
                         .requestMatchers(HttpMethod.GET,"/api/memberships").permitAll()
-                        .requestMatchers("/api/memberships/subscription/**").hasAnyRole("MEMBER", "TRAINER")
                         .requestMatchers("/api/admin/memberships").hasAnyRole("ADMIN")
+                        .requestMatchers("/api/memberships/subscription/**").hasRole("MEMBER")
 
                         // members
                         .requestMatchers(HttpMethod.POST,"/api/members").permitAll()

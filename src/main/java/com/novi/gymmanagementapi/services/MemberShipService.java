@@ -25,15 +25,15 @@ public class MemberShipService {
     }
 
     public MembershipDto createMembership(MembershipDto membershipDto) {
-        Membership membership = memberShipRepository.save(toMODEL(membershipDto));
-        return toDTO(membership);
+        Membership membership = memberShipRepository.save(asMODEL(membershipDto));
+        return asDTO(membership);
     }
 
     public List<MembershipDto> getMemberships() {
         List<Membership> membershipList = new ArrayList<>(memberShipRepository.findAll());
         List<MembershipDto> membershipDtoList = new ArrayList<>();
         for (Membership membership : membershipList) {
-            MembershipDto membershipDto = toDTO(membership);
+            MembershipDto membershipDto = asDTO(membership);
             membershipDto.setId(membership.getId());
             membershipDtoList.add(membershipDto);
         }
@@ -44,11 +44,11 @@ public class MemberShipService {
         Optional<Membership> optionalMembership = memberShipRepository.findById(membershipID);
         if (optionalMembership.isPresent()) {
             Membership membership = optionalMembership.get();
-            membership.setPricePerMonth(membershipDto.getPricePerMonth());
             membership.setName(membershipDto.getName());
+            membership.setPricePerMonth(membershipDto.getPricePerMonth());
             membership.setContractLengthInWeek(membershipDto.getContractLengthInWeek());
             memberShipRepository.save(membership);
-            return toDTO(membership);
+            return asDTO(membership);
 
         } else {
             throw new RecordNotFoundException("Membership ID " + membershipID + " is out of bounds.");
@@ -93,7 +93,7 @@ public class MemberShipService {
         }
     }
 
-    public MembershipDto toDTO(Membership model) {
+    public MembershipDto asDTO(Membership model) {
         MembershipDto dto = new MembershipDto();
         dto.setId(model.getId());
         dto.setName(model.getName());
@@ -102,7 +102,7 @@ public class MemberShipService {
         return dto;
     }
 
-    public Membership toMODEL(MembershipDto dto) {
+    public Membership asMODEL(MembershipDto dto) {
         Membership memberShip = new Membership();
         memberShip.setName(dto.getName());
         memberShip.setContractLengthInWeek(dto.getContractLengthInWeek());

@@ -24,7 +24,6 @@ public class MemberController {
 
     @PostMapping(value = "members")
     public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto dto) {
-
         String email = memberService.createMember(dto);
         memberService.addAuthority(email, "ROLE_MEMBER");
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
@@ -33,9 +32,10 @@ public class MemberController {
     }
 
     @GetMapping("members")
-    public ResponseEntity<MemberDto> getMember(@RequestParam String email) {
-        return ResponseEntity.ok().body(memberService.getMember(email));
+    public ResponseEntity<MemberDto> getMember(Principal principal) {
+        return ResponseEntity.ok().body(memberService.getMember(principal.getName()));
     }
+
     @PutMapping("members")
     public ResponseEntity<MemberDto> updateMember(Principal principal,
                                                   @RequestBody MemberDto dto) {
@@ -47,9 +47,10 @@ public class MemberController {
         memberService.deleteMember(principal.getName());
         return ResponseEntity.noContent().build();
     }
+}
 
 
-/* WORKING FUNCTIONS ABOVE
+/*
     @GetMapping
     public ResponseEntity<List<MemberDto>> getMembers() {
         List<MemberDto> memberDtoList = memberService.getMembers();
@@ -97,4 +98,3 @@ public class MemberController {
         memberService.removeAuthority(username, authority);
         return ResponseEntity.noContent().buildWithEmail();
     }*/
-}
