@@ -51,6 +51,7 @@ public class MemberService {
             model.setAuthorities(optionalMember.get().getAuthorities());
             memberRepository.save(model);
             memberRepository.delete(optionalMember.get());
+            // todo move authorities for old account to new
             return asDTO(model);
 
         } else {
@@ -96,6 +97,7 @@ public class MemberService {
         dto.setFirstname(model.getFirstname());
         dto.setLastname(model.getLastname());
         dto.setDateOfBirth(model.getDateOfBirth());
+        dto.setMembership(model.getMembership());
         dto.setEnabled(model.isEnabled());
         dto.setAuthorities(model.getAuthorities());
         return dto;

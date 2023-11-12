@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.dto;
 
 import com.novi.gymmanagementapi.models.Authority;
+import com.novi.gymmanagementapi.models.Membership;
 
 import java.util.Date;
 import java.util.Set;
@@ -12,6 +13,7 @@ public class MemberDto {
     private String firstname;
     private String lastname;
     private Date dateOfBirth;
+    private Membership membership;
     public Boolean enabled;
     public Set<Authority> authorities;
 
@@ -53,6 +55,14 @@ public class MemberDto {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public Membership getMembership() {
+        return membership;
+    }
+
+    public void setMembership(Membership membership) {
+        this.membership = membership;
     }
 
     public Boolean getEnabled() {

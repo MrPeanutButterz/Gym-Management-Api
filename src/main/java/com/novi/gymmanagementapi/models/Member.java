@@ -1,6 +1,8 @@
 package com.novi.gymmanagementapi.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -13,10 +15,14 @@ public class Member {
     @Id
     @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false)
+    @NotNull
     private String password;
+    @NotNull
     private String firstname;
+    @NotNull
     private String lastname;
+    @Past
+    @NotNull
     private Date dateOfBirth;
     @ManyToOne(fetch = FetchType.EAGER)
     private Membership membership;
