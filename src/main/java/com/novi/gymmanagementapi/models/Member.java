@@ -15,9 +15,9 @@ public class Member {
     private String email;
     @Column(nullable = false)
     private String password;
-    private Date dateOfBirth;
     private String firstname;
     private String lastname;
+    private Date dateOfBirth;
     @ManyToOne(fetch = FetchType.EAGER)
     private Membership membership;
     @Column(nullable = false)
@@ -29,7 +29,6 @@ public class Member {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
-
 
     public String getEmail() {
         return email;

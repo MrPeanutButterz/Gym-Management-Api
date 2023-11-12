@@ -1,13 +1,17 @@
-package com.novi.gymmanagementapi.dtobject;
+package com.novi.gymmanagementapi.dto;
 
 import com.novi.gymmanagementapi.models.Authority;
 
+import java.util.Date;
 import java.util.Set;
 
 public class MemberDto {
 
     public String email;
     public String password;
+    private String firstname;
+    private String lastname;
+    private Date dateOfBirth;
     public Boolean enabled;
     public Set<Authority> authorities;
 
@@ -25,6 +29,30 @@ public class MemberDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Boolean getEnabled() {

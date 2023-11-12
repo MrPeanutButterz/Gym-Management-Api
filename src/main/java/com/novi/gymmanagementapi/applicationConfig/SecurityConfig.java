@@ -4,6 +4,7 @@ import com.novi.gymmanagementapi.filters.JwtRequestFilter;
 import com.novi.gymmanagementapi.services.MyCustomMemberDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,7 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -44,19 +47,26 @@ public class SecurityConfig {
     }
 
     @Bean
-    protected SecurityFilterChain filter(HttpSecurity http) throws Exception {
+    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests((auth) -> auth
 
+                        // memberships
+                        .requestMatchers(HttpMethod.GET,"/api/memberships").permitAll()
+                        .requestMatchers("/api/memberships/subscription/**").hasAnyRole("MEMBER", "TRAINER")
+                        .requestMatchers("/api/admin/memberships").hasAnyRole("ADMIN")
+
+                        // members
+                        .requestMatchers(HttpMethod.POST,"/api/members").permitAll()
+                        .requestMatchers("/api/members").hasAnyRole("ADMIN", "TRAINER", "MEMBER")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/members/**").hasRole("ADMIN")
-                        .requestMatchers("/api/memberships/subscription").hasAnyRole("MEMBER", "TRAINER")
-                        .requestMatchers("/principal").authenticated()
 
-                        .requestMatchers("/api/memberships").permitAll()
-                        .requestMatchers("/login").permitAll()
+                        // login
+                        .requestMatchers(HttpMethod.POST,"/api/login").permitAll()
+                        .requestMatchers("/api/principal").authenticated()
                         .anyRequest().denyAll())
 
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

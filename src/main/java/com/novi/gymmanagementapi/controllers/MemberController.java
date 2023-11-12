@@ -1,7 +1,7 @@
 package com.novi.gymmanagementapi.controllers;
 
-import com.novi.gymmanagementapi.dtobject.MemberDto;
-import com.novi.gymmanagementapi.exceptions.BadRequestException;
+import com.novi.gymmanagementapi.dto.MemberDto;
+import com.novi.gymmanagementapi.helpers.UriBuilder;
 import com.novi.gymmanagementapi.services.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,29 +9,24 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
 
 @CrossOrigin
 @RestController
 @RequestMapping(value = "api")
 public class MemberController {
 
-    // todo use Principal in this class for validation
-
+    UriBuilder uri = new UriBuilder();
     private final MemberService memberService;
 
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
 
-    @PostMapping("members")
+    @PostMapping(value = "members")
     public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto dto) {
 
         String email = memberService.createMember(dto);
         memberService.addAuthority(email, "ROLE_MEMBER");
-
-        // todo rework uri
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(email).toUri();
         return ResponseEntity.created(location).build();
@@ -40,6 +35,17 @@ public class MemberController {
     @GetMapping("members")
     public ResponseEntity<MemberDto> getMember(@RequestParam String email) {
         return ResponseEntity.ok().body(memberService.getMember(email));
+    }
+    @PutMapping("members")
+    public ResponseEntity<MemberDto> updateMember(Principal principal,
+                                                  @RequestBody MemberDto dto) {
+        return ResponseEntity.ok().body(memberService.updateMember(principal, dto));
+    }
+
+    @DeleteMapping("members")
+    public ResponseEntity<Object> deleteMember(Principal principal) {
+        memberService.deleteMember(principal.getName());
+        return ResponseEntity.noContent().build();
     }
 
 
@@ -60,13 +66,13 @@ public class MemberController {
     public ResponseEntity<MemberDto> updateMember(@PathVariable("username") String username, @RequestBody MemberDto dto) {
 
         memberService.updateMember(username, dto);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().buildWithEmail();
     }
 
     @DeleteMapping(value = "/{username}")
     public ResponseEntity<Object> deleteMember(@PathVariable("username") String username) {
         memberService.deleteMember(username);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().buildWithEmail();
     }
 
     @GetMapping(value = "/{username}/authorities")
@@ -79,7 +85,7 @@ public class MemberController {
         try {
             String authorityName = (String) fields.get("authority");
             memberService.addAuthority(username, authorityName);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().buildWithEmail();
         }
         catch (Exception ex) {
             throw new BadRequestException();
@@ -89,6 +95,6 @@ public class MemberController {
     @DeleteMapping(value = "/{username}/authorities/{authority}")
     public ResponseEntity<Object> deleteMemberAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
         memberService.removeAuthority(username, authority);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().buildWithEmail();
     }*/
 }

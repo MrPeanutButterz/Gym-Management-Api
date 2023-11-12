@@ -1,7 +1,7 @@
 package com.novi.gymmanagementapi.controllers;
 
-import com.novi.gymmanagementapi.dtobject.AuthenticationRequestDto;
-import com.novi.gymmanagementapi.dtobject.AuthenticationResponseDto;
+import com.novi.gymmanagementapi.dto.AuthenticationRequestDto;
+import com.novi.gymmanagementapi.dto.AuthenticationResponseDto;
 import com.novi.gymmanagementapi.services.MyCustomMemberDetailsService;
 import com.novi.gymmanagementapi.utilties.JwtUtility;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
-@CrossOrigin
 @RestController
+@RequestMapping("api")
 public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
@@ -29,7 +29,7 @@ public class AuthenticationController {
         this.jwtUtility = jwtUtility;
     }
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = "login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDto authenticationRequestDto) throws Exception {
 
         String email = authenticationRequestDto.getEmail();
@@ -47,9 +47,8 @@ public class AuthenticationController {
         return ResponseEntity.ok(new AuthenticationResponseDto(jwt));
     }
 
-    @GetMapping(value = "/principal")
+    @GetMapping(value = "principal")
     public ResponseEntity<Object> authenticated(Principal principal) {
-
         return ResponseEntity.ok().body(principal);
     }
 }

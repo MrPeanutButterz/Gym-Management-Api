@@ -1,15 +1,15 @@
 INSERT INTO members (password, email, enabled, date_of_birth, firstname, lastname)
-VALUES ('$2a$12$IzA1Ja1LH4PSMoro9PeITO1etDlknPjSX1nLusgt1vi9c1uaEXdEK', 'member@test.nl', TRUE, '2000-01-01', 'Piet', 'Pont'),
-       ('$2a$12$IzA1Ja1LH4PSMoro9PeITO1etDlknPjSX1nLusgt1vi9c1uaEXdEK', 'trainer@test.nl', TRUE, '2000-01-01', 'Barry', 'Bear'),
-       ('$2a$12$IzA1Ja1LH4PSMoro9PeITO1etDlknPjSX1nLusgt1vi9c1uaEXdEK', 'admin@test.nl', TRUE, '2000-01-01', 'Charlie', 'Eysbroek');
+VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', 'member@api.nl', TRUE, '2000-01-01', 'Aron', 'Arrow'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', 'trainer@api.nl', TRUE, '2000-01-01', 'Barry', 'Bear'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', 'admin@api.nl', TRUE, '2000-01-01', 'Charlie', 'Charming');
 
 INSERT INTO authorities (email, authority)
-VALUES ('member@test.nl', 'ROLE_MEMBER'),
-       ('trainer@test.nl', 'ROLE_MEMBER'),
-       ('trainer@test.nl', 'ROLE_TRAINER'),
-       ('admin@test.nl', 'ROLE_MEMBER'),
-       ('admin@test.nl', 'ROLE_TRAINER'),
-       ('admin@test.nl', 'ROLE_ADMIN');
+VALUES ('member@api.nl', 'ROLE_MEMBER'),
+       ('trainer@api.nl', 'ROLE_MEMBER'),
+       ('trainer@api.nl', 'ROLE_TRAINER'),
+       ('admin@api.nl', 'ROLE_MEMBER'),
+       ('admin@api.nl', 'ROLE_TRAINER'),
+       ('admin@api.nl', 'ROLE_ADMIN');
 
 insert into memberships (name, contract_length_in_week, price_Per_Month)
 values ('No membership', 0, 00.00),

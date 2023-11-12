@@ -1,6 +1,6 @@
 package com.novi.gymmanagementapi.controllers;
 
-import com.novi.gymmanagementapi.dtobject.MembershipDto;
+import com.novi.gymmanagementapi.dto.MembershipDto;
 import com.novi.gymmanagementapi.helpers.UriBuilder;
 import com.novi.gymmanagementapi.services.MemberShipService;
 import jakarta.validation.Valid;
@@ -26,7 +26,7 @@ public class MembershipController {
     public ResponseEntity<MembershipDto> createMembership(@Valid @RequestBody MembershipDto membershipDto) {
         MembershipDto dto = memberShipService.createMembership(membershipDto);
         return ResponseEntity
-                .created(uriBuilder.build(dto.getId()))
+                .created(uriBuilder.buildWithId(dto.getId()))
                 .body(dto);
     }
 
@@ -41,7 +41,7 @@ public class MembershipController {
                                                           @Valid @RequestBody MembershipDto membershipDto) {
         MembershipDto dto = memberShipService.updateMembership(membershipID, membershipDto);
         return ResponseEntity
-                .created(uriBuilder.build(dto.getId()))
+                .created(uriBuilder.buildWithId(dto.getId()))
                 .body(dto);
     }
 
@@ -58,7 +58,7 @@ public class MembershipController {
                                              Principal principal) {
         memberShipService.subscribe(membershipID, principal.getName());
         return ResponseEntity
-                .created(uriBuilder.build(membershipID))
+                .created(uriBuilder.buildWithId(membershipID))
                 .build();
     }
     

@@ -1,4 +1,4 @@
-package com.novi.gymmanagementapi.dtobject;
+package com.novi.gymmanagementapi.dto;
 
 public class AuthenticationResponseDto {
 

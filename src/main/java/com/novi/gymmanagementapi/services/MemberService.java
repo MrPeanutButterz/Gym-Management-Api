@@ -1,9 +1,8 @@
 package com.novi.gymmanagementapi.services;
 
-import com.novi.gymmanagementapi.dtobject.MemberDto;
+import com.novi.gymmanagementapi.dto.MemberDto;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
-import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
 import com.novi.gymmanagementapi.models.Authority;
 import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.repositories.MemberRepository;
@@ -11,8 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.security.Principal;
 import java.util.Optional;
 import java.util.Set;
 
@@ -28,7 +26,7 @@ public class MemberService {
     public String createMember(MemberDto dto) {
         Optional<Member> optionalMember = memberRepository.findById(dto.email);
         if (optionalMember.isEmpty()) {
-            Member model = memberRepository.save(toMODEL(dto));
+            Member model = memberRepository.save(asMODEL(dto));
             return model.getEmail();
 
         } else {
@@ -37,65 +35,38 @@ public class MemberService {
     }
 
     public MemberDto getMember(String email) {
-        Optional<Member> om = memberRepository.findById(email);
-        if (om.isPresent()) {
-            MemberDto dto = toDTO(om.get());
-            // todo set goal IDs
-            return dto;
+        Optional<Member> optionalMember = memberRepository.findById(email);
+        if (optionalMember.isPresent()) {
+            return asDTO(optionalMember.get());
 
         } else {
             throw new EmailNotFoundException(email);
         }
     }
+    public MemberDto updateMember(Principal principal, MemberDto dto) {
+        Optional<Member> optionalMember = memberRepository.findById(principal.getName());
+        if (optionalMember.isPresent()) {
+            Member model = asMODEL(dto);
+            model.setEnabled(optionalMember.get().isEnabled());
+            model.setAuthorities(optionalMember.get().getAuthorities());
+            memberRepository.save(model);
+            memberRepository.delete(optionalMember.get());
+            return asDTO(model);
 
-    /* WORKING FUNCTIONS ABOVE ^ */
-
-    public List<MemberDto> getMembers() {
-        List<MemberDto> collection = new ArrayList<>();
-        List<Member> list = memberRepository.findAll();
-        for (Member member : list) {
-            collection.add(toDTO(member));
-        }
-        return collection;
-    }
-/*
-    public MemberDto getMember(String email) {
-        Optional<Member> user = memberRepository.findById(email);
-        if (user.isPresent()) {
-            return toDTO(user.get());
         } else {
-            throw new EmailNotFoundException(email);
+            throw new EmailNotFoundException(dto.getEmail());
         }
-    }*/
-
-    public boolean userExists(String email) {
-        return memberRepository.existsById(email);
     }
 
-    public void deleteMember(String username) {
-        memberRepository.deleteById(username);
-    }
-
-    public void updateMember(String username, MemberDto newMember) {
-        if (!memberRepository.existsById(username)) throw new RecordNotFoundException();
-        Member member = memberRepository.findById(username).get();
-        member.setPassword(newMember.getPassword());
-        memberRepository.save(member);
+    public void deleteMember(String email) {
+        memberRepository.deleteById(email);
     }
 
     public Set<Authority> getAuthorities(String username) {
         if (!memberRepository.existsById(username)) throw new UsernameNotFoundException(username);
         Member member = memberRepository.findById(username).get();
-        MemberDto memberDto = toDTO(member);
+        MemberDto memberDto = asDTO(member);
         return memberDto.getAuthorities();
-    }
-
-    public void addAuthority(String username, String authority) {
-
-        if (!memberRepository.existsById(username)) throw new UsernameNotFoundException(username);
-        Member member = memberRepository.findById(username).get();
-        member.addAuthority(new Authority(username, authority));
-        memberRepository.save(member);
     }
 
     public void removeAuthority(String username, String authority) {
@@ -106,20 +77,38 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public MemberDto toDTO(Member model) {
+    public void addAuthority(String email, String authority) {
+        Optional<Member> optionalMember = memberRepository.findById(email);
+        if (optionalMember.isPresent()) {
+            Member model = optionalMember.get();
+            model.addAuthority(new Authority(email, authority));
+            memberRepository.save(model);
+
+        } else {
+            throw new EmailNotFoundException(email);
+        }
+    }
+
+    public MemberDto asDTO(Member model) {
         var dto = new MemberDto();
-        dto.setPassword(model.getPassword());
-        dto.setEnabled(model.isEnabled());
         dto.setEmail(model.getEmail());
+        dto.setPassword(model.getPassword());
+        dto.setFirstname(model.getFirstname());
+        dto.setLastname(model.getLastname());
+        dto.setDateOfBirth(model.getDateOfBirth());
+        dto.setEnabled(model.isEnabled());
         dto.setAuthorities(model.getAuthorities());
         return dto;
     }
 
-    public Member toMODEL(MemberDto dto) {
-        var user = new Member();
-        user.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
-        user.setEnabled(dto.getEnabled());
-        user.setEmail(dto.getEmail());
-        return user;
+    public Member asMODEL(MemberDto dto) {
+        Member model = new Member();
+        model.setEmail(dto.getEmail());
+        model.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
+        model.setFirstname(dto.getFirstname());
+        model.setLastname(dto.getLastname());
+        model.setDateOfBirth(dto.getDateOfBirth());
+        model.setEnabled(true);
+        return model;
     }
 }

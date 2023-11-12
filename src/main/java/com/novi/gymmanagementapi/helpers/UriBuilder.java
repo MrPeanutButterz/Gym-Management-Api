@@ -6,7 +6,14 @@ import java.net.URI;
 
 public class UriBuilder {
 
-    public URI build(long id) {
+    public URI buildWithEmail(String email) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/" + email)
+                .buildAndExpand(email)
+                .toUri();
+    }
+    public URI buildWithId(Long id) {
         return ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/" + id)

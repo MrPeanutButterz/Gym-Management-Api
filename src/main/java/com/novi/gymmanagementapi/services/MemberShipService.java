@@ -1,6 +1,6 @@
 package com.novi.gymmanagementapi.services;
 
-import com.novi.gymmanagementapi.dtobject.MembershipDto;
+import com.novi.gymmanagementapi.dto.MembershipDto;
 import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
 import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.models.Membership;
