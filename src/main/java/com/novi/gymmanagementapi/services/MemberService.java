@@ -2,6 +2,7 @@ package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.MemberDto;
 import com.novi.gymmanagementapi.dto.NewMember;
+import com.novi.gymmanagementapi.dto.NewTrainer;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.models.Authority;
@@ -42,7 +43,7 @@ public class MemberService {
         }
     }
 
-    public MemberDto getMember(String email) {
+    public MemberDto getMemberAccount(String email) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
             return asDTO(optionalMember.get());
@@ -52,16 +53,10 @@ public class MemberService {
         }
     }
 
-    public MemberDto updateMember(Principal principal, MemberDto dto) {
+    public MemberDto updateMember(Principal principal, NewMember dto) {
         Optional<Member> optionalMember = memberRepository.findById(principal.getName());
         if (optionalMember.isPresent()) {
-            Member model = asMODEL(dto);
-            model.setEnabled(optionalMember.get().isEnabled());
-            model.setAuthorities(optionalMember.get().getAuthorities());
-            memberRepository.save(model);
-            memberRepository.delete(optionalMember.get());
-            // todo move authorities for old account to new
-            return asDTO(model);
+            return null;
 
         } else {
             throw new EmailNotFoundException(dto.getEmail());

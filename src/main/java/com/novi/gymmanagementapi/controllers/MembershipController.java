@@ -22,18 +22,41 @@ public class MembershipController {
         this.memberShipService = memberShipService;
     }
 
+    /* OPEN ENDPOINTS */
+
+    @GetMapping("memberships")
+    public ResponseEntity<List<MembershipDto>> getMemberships() {
+        return ResponseEntity
+                .ok(memberShipService.getMemberships());
+    }
+
+    /* BELOW IS FOR AUTHENTICATED MEMBERS */
+
+    @PutMapping("memberships/subscription")
+    public ResponseEntity<Objects> subscribe(Principal principal,
+                                             @RequestParam long membershipID) {
+        memberShipService.subscribe(membershipID, principal.getName());
+        return ResponseEntity
+                .created(uriBuilder.buildWithId(membershipID))
+                .build();
+    }
+
+    @DeleteMapping("memberships/subscription")
+    public ResponseEntity<Objects> unsubscribe(Principal principal) {
+        memberShipService.unsubscribe(principal.getName());
+        return ResponseEntity
+                .noContent()
+                .build();
+    }
+
+    /* BELOW IS FOR ADMIN */
+
     @PostMapping("admin/memberships")
     public ResponseEntity<MembershipDto> createMembership(@Valid @RequestBody MembershipDto membershipDto) {
         MembershipDto dto = memberShipService.createMembership(membershipDto);
         return ResponseEntity
                 .created(uriBuilder.buildWithId(dto.getId()))
                 .body(dto);
-    }
-
-    @GetMapping("memberships")
-    public ResponseEntity<List<MembershipDto>> getMemberships() {
-        return ResponseEntity
-                .ok(memberShipService.getMemberships());
     }
 
     @PutMapping("admin/memberships")
@@ -48,25 +71,6 @@ public class MembershipController {
     @DeleteMapping("admin/memberships")
     public ResponseEntity<Objects> deleteMembership(@RequestParam long membershipID) {
         memberShipService.deleteMembership(membershipID);
-        return ResponseEntity
-                .noContent()
-                .build();
-    }
-
-    /* BELOW IS FOR SUBSCRIPTION WHERE A MEMBER COULD ACTIVATE MEMBERSHIP */
-
-    @PutMapping("memberships/subscription")
-    public ResponseEntity<Objects> subscribe(@RequestParam long membershipID,
-                                             Principal principal) {
-        memberShipService.subscribe(membershipID, principal.getName());
-        return ResponseEntity
-                .created(uriBuilder.buildWithId(membershipID))
-                .build();
-    }
-    
-    @DeleteMapping("memberships/subscription")
-    public ResponseEntity<Objects> unsubscribe(Principal principal) {
-        memberShipService.unsubscribe(principal.getName());
         return ResponseEntity
                 .noContent()
                 .build();

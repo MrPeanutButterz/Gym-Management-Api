@@ -11,7 +11,6 @@ public class Member extends User {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Membership membership;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private Trainer trainer;
 

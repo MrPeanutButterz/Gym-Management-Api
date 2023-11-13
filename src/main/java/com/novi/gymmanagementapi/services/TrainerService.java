@@ -13,6 +13,7 @@ import com.novi.gymmanagementapi.repositories.TrainerRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,6 +46,17 @@ public class TrainerService {
 
         } else {
             throw new EmailAlreadyTakenException(dto.getEmail());
+        }
+    }
+
+    public TrainerDto getTrainerAccount(String email) {
+        Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
+        if (optionalTrainer.isPresent()) {
+            TrainerDto dto = asDTO(optionalTrainer.get());
+            return dto;
+
+        } else {
+            throw new EmailNotFoundException(email);
         }
     }
 
@@ -93,17 +105,16 @@ public class TrainerService {
         }
     }
 
-    public TrainerDto assignTrainer(String email, long memberID) {
-        Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
-        Optional<Member> optionalMember = memberRepository.findById(email);
+    public void assignTrainer(String memberEmail, String trainerEmail) {
+        Optional<Member> optionalMember = memberRepository.findById(memberEmail);
+        Optional<Trainer> optionalTrainer = trainerRepository.findById(trainerEmail);
         if (optionalTrainer.isPresent() && optionalMember.isPresent()) {
             Member member = optionalMember.get();
-            //member.setTrainer(optionalTrainer.get());
+            member.setTrainer(optionalTrainer.get());
             memberRepository.save(member);
-            return asDTO(optionalTrainer.get());
 
         } else {
-            throw new EmailNotFoundException(email);
+            throw new EmailNotFoundException(memberEmail);
         }
     }
 

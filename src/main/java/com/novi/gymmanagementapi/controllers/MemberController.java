@@ -11,7 +11,7 @@ import java.security.Principal;
 
 @CrossOrigin
 @RestController
-@RequestMapping(value = "api")
+@RequestMapping("api")
 public class MemberController {
 
     UriBuilder uriBuilder = new UriBuilder();
@@ -21,76 +21,48 @@ public class MemberController {
         this.memberService = memberService;
     }
 
+    /* OPEN ENDPOINTS */
+
     @PostMapping(value = "members")
-    public ResponseEntity<MemberDto> createMember(@RequestBody NewMember dto) {
+    public ResponseEntity<MemberDto> createMemberAccount(@RequestBody NewMember dto) {
         MemberDto memberDto = memberService.createMember(dto);
         return ResponseEntity.created(uriBuilder.buildWithEmail(memberDto.getEmail())).build();
     }
 
+    /* BELOW IS FOR AUTHENTICATED MEMBER */
+
     @GetMapping("members")
-    public ResponseEntity<MemberDto> getMember(Principal principal) {
-        return ResponseEntity.ok().body(memberService.getMember(principal.getName()));
+    public ResponseEntity<MemberDto> getMemberAccountDetails(Principal principal) {
+        return ResponseEntity.ok().body(memberService.getMemberAccount(principal.getName()));
     }
 
     @PutMapping("members")
-    public ResponseEntity<MemberDto> updateMember(Principal principal,
-                                                  @RequestBody MemberDto dto) {
+    public ResponseEntity<MemberDto> updateMemberAccount(Principal principal,
+                                                         @RequestBody NewMember dto) {
+
+        // todo add updateMemberAccount
         return ResponseEntity.ok().body(memberService.updateMember(principal, dto));
     }
 
     @DeleteMapping("members")
-    public ResponseEntity<Object> deleteMember(Principal principal) {
+    public ResponseEntity<Object> deleteMemberAccount(Principal principal) {
         memberService.deleteMember(principal.getName());
+        return ResponseEntity.noContent().build();
+    }
+
+    /* BELOW IS FOR ADMIN */
+
+    @GetMapping("admin/members")
+    public ResponseEntity<MemberDto> getAccountDetails(@RequestParam String email) {
+        return ResponseEntity.ok().body(memberService.getMemberAccount(email));
+    }
+
+    // todo add updateMemberAccount
+
+    @DeleteMapping("admin/members")
+    public ResponseEntity<Object> deleteMemberAccount(@RequestParam String email) {
+        memberService.deleteMember(email);
         return ResponseEntity.noContent().build();
     }
 }
 
-
-/*
-    @GetMapping
-    public ResponseEntity<List<MemberDto>> getMembers() {
-        List<MemberDto> memberDtoList = memberService.getMembers();
-        return ResponseEntity.ok().body(memberDtoList);
-    }
-    @GetMapping(value = "/{username}")
-    public ResponseEntity<MemberDto> getMember(@PathVariable("username") String username) {
-
-        MemberDto optionalMember = memberService.getMember(username);
-        return ResponseEntity.ok().body(optionalMember);
-    }
-
-    @PutMapping(value = "/{username}")
-    public ResponseEntity<MemberDto> updateMember(@PathVariable("username") String username, @RequestBody MemberDto dto) {
-
-        memberService.updateMember(username, dto);
-        return ResponseEntity.noContent().buildWithEmail();
-    }
-
-    @DeleteMapping(value = "/{username}")
-    public ResponseEntity<Object> deleteMember(@PathVariable("username") String username) {
-        memberService.deleteMember(username);
-        return ResponseEntity.noContent().buildWithEmail();
-    }
-
-    @GetMapping(value = "/{username}/authorities")
-    public ResponseEntity<Object> getMemberAuthorities(@PathVariable("username") String username) {
-        return ResponseEntity.ok().body(memberService.getAuthorities(username));
-    }
-
-    @PostMapping(value = "/{username}/authorities")
-    public ResponseEntity<Object> addMemberAuthority(@PathVariable("username") String username, @RequestBody Map<String, Object> fields) {
-        try {
-            String authorityName = (String) fields.get("authority");
-            memberService.addAuthority(username, authorityName);
-            return ResponseEntity.noContent().buildWithEmail();
-        }
-        catch (Exception ex) {
-            throw new BadRequestException();
-        }
-    }
-
-    @DeleteMapping(value = "/{username}/authorities/{authority}")
-    public ResponseEntity<Object> deleteMemberAuthority(@PathVariable("username") String username, @PathVariable("authority") String authority) {
-        memberService.removeAuthority(username, authority);
-        return ResponseEntity.noContent().buildWithEmail();
-    }*/
