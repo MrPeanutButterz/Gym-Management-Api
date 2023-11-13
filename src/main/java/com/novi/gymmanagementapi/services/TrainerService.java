@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.services;
 
-import com.novi.gymmanagementapi.dto.NewUser;
+import com.novi.gymmanagementapi.dto.NewMember;
+import com.novi.gymmanagementapi.dto.NewTrainer;
 import com.novi.gymmanagementapi.dto.TrainerDto;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
@@ -27,7 +28,7 @@ public class TrainerService {
         this.memberRepository = memberRepository;
     }
 
-    public TrainerDto createTrainer(NewUser dto) {
+    public TrainerDto createTrainer(NewTrainer dto) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(dto.getEmail());
         if (optionalTrainer.isEmpty()) {
             Trainer model = new Trainer();
@@ -36,7 +37,7 @@ public class TrainerService {
             model.setFirstname(dto.getFirstname());
             model.setLastname(dto.getLastname());
             model.setDateOfBirth(dto.getDateOfBirth());
-            // todo add hourly rate
+            model.setHourlyRate(dto.getHourlyRate());
             model = trainerRepository.save(model);
             addAuthority(model.getEmail(), "ROLE_MEMBER");
             addAuthority(model.getEmail(), "ROLE_TRAINER");

@@ -1,16 +1,12 @@
 package com.novi.gymmanagementapi.controllers;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.novi.gymmanagementapi.dto.MemberDto;
-import com.novi.gymmanagementapi.dto.NewUser;
-import com.novi.gymmanagementapi.models.Member;
+import com.novi.gymmanagementapi.dto.NewMember;
 import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.MemberService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.security.Principal;
 
 @CrossOrigin
@@ -26,7 +22,7 @@ public class MemberController {
     }
 
     @PostMapping(value = "members")
-    public ResponseEntity<MemberDto> createMember(@RequestBody NewUser dto) {
+    public ResponseEntity<MemberDto> createMember(@RequestBody NewMember dto) {
         MemberDto memberDto = memberService.createMember(dto);
         return ResponseEntity.created(uriBuilder.buildWithEmail(memberDto.getEmail())).build();
     }
