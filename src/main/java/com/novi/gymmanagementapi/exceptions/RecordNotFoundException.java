@@ -6,7 +6,7 @@ public class RecordNotFoundException extends RuntimeException {
         super();
     }
 
-    public RecordNotFoundException(String message) {
-        super(message);
+    public RecordNotFoundException(long membershipID) {
+        super("Cannot find membership with id " + membershipID);
     }
 }

@@ -53,6 +53,8 @@ public class MembershipController {
                 .build();
     }
 
+    /* BELOW IS FOR SUBSCRIPTION WHERE A MEMBER COULD ACTIVATE MEMBERSHIP */
+
     @PutMapping("memberships/subscription")
     public ResponseEntity<Objects> subscribe(@RequestParam long membershipID,
                                              Principal principal) {

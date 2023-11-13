@@ -58,14 +58,19 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/memberships").hasAnyRole("ADMIN")
                         .requestMatchers("/api/memberships/subscription/**").hasRole("MEMBER")
 
+                        // trainers
+                        .requestMatchers(HttpMethod.GET, "/api/trainers").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/trainers").hasRole("ADMIN")
+
                         // members
-                        .requestMatchers(HttpMethod.POST,"/api/members", "/api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/members").permitAll()
                         .requestMatchers("/api/members").hasAnyRole("ADMIN", "TRAINER", "MEMBER")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/members/**").hasRole("ADMIN")
 
                         // login
                         .requestMatchers("/api/principal").authenticated()
+                        .requestMatchers("api/login").permitAll()
                         .anyRequest().denyAll())
 
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

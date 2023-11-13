@@ -1,38 +1,27 @@
 package com.novi.gymmanagementapi.dto;
 
+import com.novi.gymmanagementapi.models.Authority;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class TrainerDto {
 
-    private long id;
-    private String firstName;
-    private String lastName;
     private String email;
-    private Date dob;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    private String password;
+    private String firstname;
+    private String lastname;
+    private Date dateOfBirth;
+    private double hourlyRate;
+    private boolean enabled = true;
+    private Set<Authority> authorities = new HashSet<>();
 
     public String getEmail() {
         return email;
@@ -42,11 +31,59 @@ public class TrainerDto {
         this.email = email;
     }
 
-    public Date getDob() {
-        return dob;
+    public String getPassword() {
+        return password;
     }
 
-    public void setDob(Date dob) {
-        this.dob = dob;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public double getHourlyRate() {
+        return hourlyRate;
+    }
+
+    public void setHourlyRate(double hourlyRate) {
+        this.hourlyRate = hourlyRate;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 }

@@ -27,6 +27,7 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findById(dto.email);
         if (optionalMember.isEmpty()) {
             Member model = memberRepository.save(asMODEL(dto));
+            addAuthority(model.getEmail(), "ROLE_MEMBER");
             return model.getEmail();
 
         } else {
@@ -61,6 +62,7 @@ public class MemberService {
 
     public void deleteMember(String email) {
         memberRepository.deleteById(email);
+        removeAuthority(email, "ROLE_MEMBER");
     }
 
     public Set<Authority> getAuthorities(String username) {

@@ -19,6 +19,4 @@ public class Member extends User {
     public void setMembership(Membership membership) {
         this.membership = membership;
     }
-
-
 }

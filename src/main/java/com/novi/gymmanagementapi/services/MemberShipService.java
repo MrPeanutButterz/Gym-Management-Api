@@ -51,7 +51,7 @@ public class MemberShipService {
             return asDTO(membership);
 
         } else {
-            throw new RecordNotFoundException("Membership ID " + membershipID + " is out of bounds.");
+            throw new RecordNotFoundException(membershipID);
         }
     }
 
@@ -61,7 +61,7 @@ public class MemberShipService {
             memberShipRepository.deleteById(membershipID);
 
         } else {
-            throw new RecordNotFoundException("Membership ID " + membershipID + " is out of bounds.");
+            throw new RecordNotFoundException(membershipID);
         }
     }
 
@@ -75,7 +75,7 @@ public class MemberShipService {
             memberRepository.save(member);
 
         } else {
-            throw new RecordNotFoundException("Membership ID " + membershipID + " is out of bounds.");
+            throw new RecordNotFoundException(membershipID);
         }
     }
 

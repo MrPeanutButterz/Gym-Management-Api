@@ -25,7 +25,6 @@ public class MemberController {
     @PostMapping(value = "members")
     public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto dto) {
         String email = memberService.createMember(dto);
-        memberService.addAuthority(email, "ROLE_MEMBER");
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
                 .buildAndExpand(email).toUri();
         return ResponseEntity.created(location).build();

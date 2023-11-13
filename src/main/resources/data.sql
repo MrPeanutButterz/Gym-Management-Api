@@ -11,7 +11,9 @@ VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2
        ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Janneke@api.nl', 'Janneke', 'Jasweit');
 
 INSERT INTO trainers (password, enabled, date_of_birth, email, firstname, lastname, hourly_rate)
-VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Barry@api.nl', 'Barry', 'Bear', 50);
+VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Andy@api.nl', 'Andy', 'Ashnick', 50),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Barry@api.nl', 'Barry', 'Barten', 50),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Charlene@api.nl', 'Charlene', 'Cornelis', 50);
 
 INSERT INTO admins (password, enabled, date_of_birth, email, firstname, lastname)
 VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'admin@api.nl', 'Charlie', 'Charming');
@@ -27,8 +29,12 @@ VALUES ('Aron@api.nl', 'ROLE_MEMBER'),
        ('Hariette@api.nl', 'ROLE_MEMBER'),
        ('Ilona@api.nl', 'ROLE_MEMBER'),
        ('Janneke@api.nl', 'ROLE_MEMBER'),
+       ('Andy@api.nl', 'ROLE_MEMBER'),
+       ('Andy@api.nl', 'ROLE_TRAINER'),
        ('Barry@api.nl', 'ROLE_MEMBER'),
        ('Barry@api.nl', 'ROLE_TRAINER'),
+       ('Chad@api.nl', 'ROLE_MEMBER'),
+       ('Chad@api.nl', 'ROLE_TRAINER'),
        ('admin@api.nl', 'ROLE_MEMBER'),
        ('admin@api.nl', 'ROLE_TRAINER'),
        ('admin@api.nl', 'ROLE_ADMIN');

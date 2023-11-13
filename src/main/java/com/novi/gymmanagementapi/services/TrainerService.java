@@ -1,16 +1,22 @@
 package com.novi.gymmanagementapi.services;
 
+import com.novi.gymmanagementapi.dto.MemberDto;
 import com.novi.gymmanagementapi.dto.TrainerDto;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
+import com.novi.gymmanagementapi.models.Authority;
 import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.models.Trainer;
 import com.novi.gymmanagementapi.repositories.MemberRepository;
 import com.novi.gymmanagementapi.repositories.TrainerRepository;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
 @Service
 public class TrainerService {
 
@@ -23,15 +29,17 @@ public class TrainerService {
     }
 
     public TrainerDto createTrainer(TrainerDto trainerDto) {
-        Trainer trainer = trainerRepository.save(transformToMODEL(trainerDto));
-        return transformToDTO(trainer);
+        Trainer trainer = trainerRepository.save(asMODEL(trainerDto));
+        addAuthority(trainer.getEmail(), "ROLE_MEMBER");
+        addAuthority(trainer.getEmail(), "ROLE_TRAINER");
+        return asDTO(trainer);
     }
 
     public List<TrainerDto> getTrainers() {
         List<Trainer> trainerList = new ArrayList<>(trainerRepository.findAll());
         List<TrainerDto> trainerDtoList = new ArrayList<>();
         for (Trainer trainer : trainerList) {
-            trainerDtoList.add(transformToDTO(trainer));
+            trainerDtoList.add(asDTO(trainer));
         }
         return trainerDtoList;
     }
@@ -39,7 +47,7 @@ public class TrainerService {
     public TrainerDto getTrainer(String email) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
-            return transformToDTO(optionalTrainer.get());
+            return asDTO(optionalTrainer.get());
 
         } else {
             throw new EmailNotFoundException(email);
@@ -50,12 +58,12 @@ public class TrainerService {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             Trainer trainer = optionalTrainer.get();
-            trainer.setFirstname(trainerDto.getFirstName());
-            trainer.setLastname(trainerDto.getLastName());
+            trainer.setFirstname(trainerDto.getFirstname());
+            trainer.setLastname(trainerDto.getLastname());
             trainer.setEmail(trainerDto.getEmail());
-            trainer.setDateOfBirth(trainerDto.getDob());
+            trainer.setDateOfBirth(trainerDto.getDateOfBirth());
             trainerRepository.save(trainer);
-            return transformToDTO(trainer);
+            return asDTO(trainer);
 
         } else {
             throw new EmailNotFoundException(email);
@@ -79,7 +87,7 @@ public class TrainerService {
             Member member = optionalMember.get();
             //member.setTrainer(optionalTrainer.get());
             memberRepository.save(member);
-            return transformToDTO(optionalTrainer.get());
+            return asDTO(optionalTrainer.get());
 
         } else {
             throw new EmailNotFoundException(email);
@@ -97,8 +105,7 @@ public class TrainerService {
             throw new EmailNotFoundException(email);
         }
     }
-/*
-    public List<Long> getClientsFromTrainer(String email) {
+/*    public List<Long> getClientsFromTrainer(String email) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             List<Long> list = new ArrayList<>();
@@ -111,21 +118,57 @@ public class TrainerService {
         } else {
             throw new EmailNotFoundException(email);
         }
+    }
+
+    public Set<Authority> getAuthorities(String username) {
+        if (!trainerRepository.existsById(username)) throw new UsernameNotFoundException(username);
+        Member member = trainerRepository.findById(username).get();
+        MemberDto memberDto = asDTO(member);
+        return memberDto.getAuthorities();
+    }
+
+    public void removeAuthority(String username, String authority) {
+        if (!trainerRepository.existsById(username)) throw new UsernameNotFoundException(username);
+        Member member = trainerRepository.findById(username).get();
+        Authority authorityToRemove = member.getAuthorities().stream().filter((a) -> a.getAuthority().equalsIgnoreCase(authority)).findAny().get();
+        member.removeAuthority(authorityToRemove);
+        memberRepository.save(member);
     }*/
 
-    private TrainerDto transformToDTO(Trainer model) {
+    public void addAuthority(String email, String authority) {
+        Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
+        if (optionalTrainer.isPresent()) {
+            Trainer model = optionalTrainer.get();
+            model.addAuthority(new Authority(email, authority));
+            trainerRepository.save(model);
+
+        } else {
+            throw new EmailNotFoundException(email);
+        }
+    }
+
+    private TrainerDto asDTO(Trainer model) {
         TrainerDto dto = new TrainerDto();
-        dto.setFirstName(model.getFirstname());
-        dto.setLastName(model.getLastname());
         dto.setEmail(model.getEmail());
+        dto.setPassword(model.getPassword());
+        dto.setFirstname(model.getFirstname());
+        dto.setLastname(model.getLastname());
+        dto.setDateOfBirth(model.getDateOfBirth());
+        dto.setHourlyRate(model.getHourlyRate());
+        dto.setEnabled(model.isEnabled());
+        dto.setAuthorities(model.getAuthorities());
         return dto;
     }
 
-    private Trainer transformToMODEL(TrainerDto dto) {
+    private Trainer asMODEL(TrainerDto dto) {
         Trainer model = new Trainer();
-        model.setFirstname(dto.getFirstName());
-        model.setFirstname(dto.getLastName());
+        model.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
         model.setEmail(dto.getEmail());
+        model.setFirstname(dto.getFirstname());
+        model.setLastname(dto.getLastname());
+        model.setDateOfBirth(dto.getDateOfBirth());
+        model.setHourlyRate(dto.getHourlyRate());
+        model.setEnabled(true);
         return model;
     }
 }
