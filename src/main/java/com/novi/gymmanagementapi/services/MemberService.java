@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.MemberDto;
+import com.novi.gymmanagementapi.dto.NewUser;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.models.Authority;
@@ -23,12 +24,18 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public String createMember(MemberDto dto) {
+    public MemberDto createMember(NewUser dto) {
         Optional<Member> optionalMember = memberRepository.findById(dto.getEmail());
         if (optionalMember.isEmpty()) {
-            Member model = memberRepository.save(asMODEL(dto));
+            Member model = new Member();
+            model.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
+            model.setEmail(dto.getEmail());
+            model.setFirstname(dto.getFirstname());
+            model.setLastname(dto.getLastname());
+            model.setDateOfBirth(dto.getDateOfBirth());
+            model = memberRepository.save(model);
             addAuthority(model.getEmail(), "ROLE_MEMBER");
-            return model.getEmail();
+            return asDTO(model);
 
         } else {
             throw new EmailAlreadyTakenException(dto.getEmail());

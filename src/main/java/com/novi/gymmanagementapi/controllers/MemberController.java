@@ -2,6 +2,8 @@ package com.novi.gymmanagementapi.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.novi.gymmanagementapi.dto.MemberDto;
+import com.novi.gymmanagementapi.dto.NewUser;
+import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.MemberService;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +26,9 @@ public class MemberController {
     }
 
     @PostMapping(value = "members")
-    public ResponseEntity<MemberDto> createMember(@RequestBody MemberDto dto) {
-        String email = memberService.createMember(dto);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{username}")
-                .buildAndExpand(email).toUri();
-        return ResponseEntity.created(location).build();
+    public ResponseEntity<MemberDto> createMember(@RequestBody NewUser dto) {
+        MemberDto memberDto = memberService.createMember(dto);
+        return ResponseEntity.created(uriBuilder.buildWithEmail(memberDto.getEmail())).build();
     }
 
     @GetMapping("members")
