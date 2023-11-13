@@ -1,6 +1,6 @@
 package com.novi.gymmanagementapi.controllers;
 
-import com.novi.gymmanagementapi.dto.NewTrainerDtoDto;
+import com.novi.gymmanagementapi.dto.NewTrainerDto;
 import com.novi.gymmanagementapi.dto.TrainerDto;
 import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.TrainerService;
@@ -61,7 +61,7 @@ public class TrainerController {
     }
 
     @PostMapping("admin/trainers")
-    public ResponseEntity<TrainerDto> createTrainer(@Valid @RequestBody NewTrainerDtoDto newDto) {
+    public ResponseEntity<TrainerDto> createTrainerAccount(@Valid @RequestBody NewTrainerDto newDto) {
         TrainerDto trainerDto = trainerService.createTrainer(newDto);
         return ResponseEntity
                 .created(uriBuilder.buildWithEmail(trainerDto.getEmail()))

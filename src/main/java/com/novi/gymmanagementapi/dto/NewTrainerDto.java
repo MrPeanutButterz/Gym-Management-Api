@@ -1,6 +1,6 @@
 package com.novi.gymmanagementapi.dto;
 
-public class NewTrainerDtoDto extends NewMemberDto {
+public class NewTrainerDto extends NewMemberDto {
 
     private double hourlyRate;
 
