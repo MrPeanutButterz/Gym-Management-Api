@@ -56,10 +56,11 @@ public class SecurityConfig {
                         // memberships
                         .requestMatchers(HttpMethod.GET,"/api/memberships").permitAll()
                         .requestMatchers("/api/admin/memberships").hasAnyRole("ADMIN")
-                        .requestMatchers("/api/memberships/subscription/**").hasRole("MEMBER")
+                        .requestMatchers(HttpMethod.PUT, "/api/memberships/subscription/**").hasRole("MEMBER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/memberships/subscription/**").hasRole("MEMBER")
 
                         // trainers
-                        .requestMatchers(HttpMethod.GET, "/api/trainers").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/trainers").hasAnyRole("ADMIN", "TRAINER", "MEMBER")
                         .requestMatchers(HttpMethod.POST, "/api/trainers").hasRole("ADMIN")
 
                         // members

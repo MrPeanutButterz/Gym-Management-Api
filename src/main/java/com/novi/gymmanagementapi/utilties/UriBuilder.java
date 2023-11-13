@@ -1,4 +1,4 @@
-package com.novi.gymmanagementapi.helpers;
+package com.novi.gymmanagementapi.utilties;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

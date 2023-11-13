@@ -1,14 +1,15 @@
 package com.novi.gymmanagementapi.controllers;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.novi.gymmanagementapi.dto.TrainerDto;
-import com.novi.gymmanagementapi.helpers.UriBuilder;
+import com.novi.gymmanagementapi.utilties.ResponseViews;
+import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.TrainerService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("api")
@@ -28,12 +29,13 @@ public class TrainerController {
                 .created(uriBuilder.buildWithEmail(trainerDto.getEmail()))
                 .body(trainerDto);
     }
-/*
     @GetMapping("trainers")
+    @JsonView(ResponseViews.MyResponseView.class)
     public ResponseEntity<List<TrainerDto>> getTrainers() {
         return ResponseEntity
                 .ok(trainerService.getTrainers());
     }
+/*
 
     @GetMapping("trainers/details")
     public ResponseEntity<TrainerDto> getTrainer(@RequestParam long trainerID) {

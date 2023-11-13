@@ -44,6 +44,7 @@ public class MemberService {
             throw new EmailNotFoundException(email);
         }
     }
+
     public MemberDto updateMember(Principal principal, MemberDto dto) {
         Optional<Member> optionalMember = memberRepository.findById(principal.getName());
         if (optionalMember.isPresent()) {
@@ -61,8 +62,13 @@ public class MemberService {
     }
 
     public void deleteMember(String email) {
-        memberRepository.deleteById(email);
-        removeAuthority(email, "ROLE_MEMBER");
+        Optional<Member> optionalMember = memberRepository.findById(email);
+        if (optionalMember.isPresent()) {
+            Member model = optionalMember.get();
+            model.setEnabled(false);
+            memberRepository.save(model);
+            removeAuthority(email, "ROLE_MEMBER");
+        }
     }
 
     public Set<Authority> getAuthorities(String username) {
@@ -93,7 +99,7 @@ public class MemberService {
     }
 
     public MemberDto asDTO(Member model) {
-        var dto = new MemberDto();
+        MemberDto dto = new MemberDto();
         dto.setEmail(model.getEmail());
         dto.setPassword(model.getPassword());
         dto.setFirstname(model.getFirstname());

@@ -1,7 +1,7 @@
 package com.novi.gymmanagementapi.controllers;
 
 import com.novi.gymmanagementapi.dto.MembershipDto;
-import com.novi.gymmanagementapi.helpers.UriBuilder;
+import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.MemberShipService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

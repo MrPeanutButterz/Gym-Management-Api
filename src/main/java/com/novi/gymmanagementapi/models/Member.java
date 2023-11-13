@@ -1,9 +1,9 @@
 package com.novi.gymmanagementapi.models;
 
-import jakarta.persistence.*;
-
-import java.util.HashSet;
-import java.util.Set;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "members")
