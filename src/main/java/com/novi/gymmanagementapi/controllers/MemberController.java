@@ -2,7 +2,6 @@ package com.novi.gymmanagementapi.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.novi.gymmanagementapi.dto.MemberDto;
-import com.novi.gymmanagementapi.utilties.ResponseViews;
 import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.MemberService;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +32,6 @@ public class MemberController {
     }
 
     @GetMapping("members")
-    @JsonView(ResponseViews.MyResponseView.class)
     public ResponseEntity<MemberDto> getMember(Principal principal) {
         return ResponseEntity.ok().body(memberService.getMember(principal.getName()));
     }

@@ -19,7 +19,6 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     private final MyCustomMemberDetailsService myCustomMemberDetailsService;
-
     private final JwtUtility jwtUtility;
 
     public JwtRequestFilter(MyCustomMemberDetailsService myCustomMemberDetailsService, JwtUtility jwtUtility) {

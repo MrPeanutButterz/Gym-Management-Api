@@ -1,27 +1,19 @@
 package com.novi.gymmanagementapi.dto;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.novi.gymmanagementapi.models.Authority;
 import com.novi.gymmanagementapi.models.Membership;
-import com.novi.gymmanagementapi.utilties.ResponseViews;
 
 import java.util.Date;
 import java.util.Set;
 
 public class MemberDto {
 
-    @JsonView(ResponseViews.MyResponseView.class)
-    public String email;
-    public String password;
-    @JsonView(ResponseViews.MyResponseView.class)
+    private String email;
+    private String password;
     private String firstname;
-    @JsonView(ResponseViews.MyResponseView.class)
     private String lastname;
-    @JsonView(ResponseViews.MyResponseView.class)
     private Date dateOfBirth;
-    @JsonView(ResponseViews.MyResponseView.class)
     private Membership membership;
-    @JsonView(ResponseViews.MyResponseView.class)
     public Boolean enabled;
     public Set<Authority> authorities;
 

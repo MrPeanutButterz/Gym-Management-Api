@@ -1,40 +1,40 @@
 INSERT INTO members (password, enabled, date_of_birth, email, firstname, lastname)
-VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Aron@api.nl', 'Aron', 'Arrow'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Bart@api.nl', 'Bart', 'Bonus'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Charon@api.nl', 'Charon', 'Cals'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Donna@api.nl', 'Donna', 'Dolger'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Eric@api.nl', 'Eric', 'El Dona'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Frank@api.nl', 'Frank', 'Flower'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Geraldine@api.nl', 'Geraldine', 'Gegeven'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Hariette@api.nl', 'Hariette', 'Hartswarm'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Ilona@api.nl', 'Ilona', 'Iets'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Janneke@api.nl', 'Janneke', 'Jasweit');
+VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'aron@api.nl', 'Aron', 'Arrow'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'bart@api.nl', 'Bart', 'Bonus'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'charon@api.nl', 'Charon', 'Cals'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'donna@api.nl', 'Donna', 'Dolger'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'eric@api.nl', 'Eric', 'El Dona'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'frank@api.nl', 'Frank', 'Flower'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'geraldine@api.nl', 'Geraldine', 'Gegeven'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'hariette@api.nl', 'Hariette', 'Hartswarm'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'ilona@api.nl', 'Ilona', 'Iets'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'janneke@api.nl', 'Janneke', 'Jasweit');
 
 INSERT INTO trainers (password, enabled, date_of_birth, email, firstname, lastname, hourly_rate)
-VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Andy@api.nl', 'Andy', 'Ashnick', 55),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Barry@api.nl', 'Barry', 'Barten', 65.50),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'Charlene@api.nl', 'Charlene', 'Cornelis', 85);
+VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'andy@api.nl', 'Andy', 'Ashnick', 55),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'barry@api.nl', 'Barry', 'Barten', 65.50),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'charlene@api.nl', 'Charlene', 'Cornelis', 85);
 
 INSERT INTO admins (password, enabled, date_of_birth, email, firstname, lastname)
 VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '2000-01-01', 'admin@api.nl', 'Charlie', 'Charming');
 
 INSERT INTO authorities (email, authority)
-VALUES ('Aron@api.nl', 'ROLE_MEMBER'),
-       ('Bart@api.nl', 'ROLE_MEMBER'),
-       ('Charon@api.nl', 'ROLE_MEMBER'),
-       ('Donna@api.nl', 'ROLE_MEMBER'),
-       ('Eric@api.nl', 'ROLE_MEMBER'),
-       ('Frank@api.nl', 'ROLE_MEMBER'),
-       ('Geraldine@api.nl', 'ROLE_MEMBER'),
-       ('Hariette@api.nl', 'ROLE_MEMBER'),
-       ('Ilona@api.nl', 'ROLE_MEMBER'),
-       ('Janneke@api.nl', 'ROLE_MEMBER'),
-       ('Andy@api.nl', 'ROLE_MEMBER'),
-       ('Andy@api.nl', 'ROLE_TRAINER'),
-       ('Barry@api.nl', 'ROLE_MEMBER'),
-       ('Barry@api.nl', 'ROLE_TRAINER'),
-       ('Chad@api.nl', 'ROLE_MEMBER'),
-       ('Chad@api.nl', 'ROLE_TRAINER'),
+VALUES ('aron@api.nl', 'ROLE_MEMBER'),
+       ('bart@api.nl', 'ROLE_MEMBER'),
+       ('charon@api.nl', 'ROLE_MEMBER'),
+       ('donna@api.nl', 'ROLE_MEMBER'),
+       ('eric@api.nl', 'ROLE_MEMBER'),
+       ('frank@api.nl', 'ROLE_MEMBER'),
+       ('geraldine@api.nl', 'ROLE_MEMBER'),
+       ('hariette@api.nl', 'ROLE_MEMBER'),
+       ('ilona@api.nl', 'ROLE_MEMBER'),
+       ('janneke@api.nl', 'ROLE_MEMBER'),
+       ('andy@api.nl', 'ROLE_MEMBER'),
+       ('andy@api.nl', 'ROLE_TRAINER'),
+       ('barry@api.nl', 'ROLE_MEMBER'),
+       ('barry@api.nl', 'ROLE_TRAINER'),
+       ('chad@api.nl', 'ROLE_MEMBER'),
+       ('chad@api.nl', 'ROLE_TRAINER'),
        ('admin@api.nl', 'ROLE_MEMBER'),
        ('admin@api.nl', 'ROLE_TRAINER'),
        ('admin@api.nl', 'ROLE_ADMIN');

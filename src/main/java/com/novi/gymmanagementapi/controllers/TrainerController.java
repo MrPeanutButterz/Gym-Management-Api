@@ -2,7 +2,6 @@ package com.novi.gymmanagementapi.controllers;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.novi.gymmanagementapi.dto.TrainerDto;
-import com.novi.gymmanagementapi.utilties.ResponseViews;
 import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.TrainerService;
 import jakarta.validation.Valid;
@@ -30,7 +29,6 @@ public class TrainerController {
                 .body(trainerDto);
     }
     @GetMapping("trainers")
-    @JsonView(ResponseViews.MyResponseView.class)
     public ResponseEntity<List<TrainerDto>> getTrainers() {
         return ResponseEntity
                 .ok(trainerService.getTrainers());

@@ -1,6 +1,5 @@
 package com.novi.gymmanagementapi.services;
 
-import com.novi.gymmanagementapi.dto.MemberDto;
 import com.novi.gymmanagementapi.dto.TrainerDto;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.models.Authority;
@@ -8,14 +7,12 @@ import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.models.Trainer;
 import com.novi.gymmanagementapi.repositories.MemberRepository;
 import com.novi.gymmanagementapi.repositories.TrainerRepository;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class TrainerService {

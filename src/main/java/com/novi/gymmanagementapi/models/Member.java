@@ -12,6 +12,9 @@ public class Member extends User {
     @ManyToOne(fetch = FetchType.EAGER)
     private Membership membership;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Trainer trainer;
+
     public Membership getMembership() {
         return membership;
     }
@@ -19,4 +22,8 @@ public class Member extends User {
     public void setMembership(Membership membership) {
         this.membership = membership;
     }
+
+    public Trainer getTrainer() { return trainer; }
+
+    public void setTrainer(Trainer trainer) { this.trainer = trainer; }
 }

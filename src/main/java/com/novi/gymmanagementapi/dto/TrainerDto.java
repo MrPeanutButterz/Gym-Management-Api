@@ -1,8 +1,6 @@
 package com.novi.gymmanagementapi.dto;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.novi.gymmanagementapi.models.Authority;
-import com.novi.gymmanagementapi.utilties.ResponseViews;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -10,16 +8,11 @@ import java.util.Set;
 
 public class TrainerDto {
 
-    @JsonView(ResponseViews.MyResponseView.class)
     private String email;
     private String password;
-    @JsonView(ResponseViews.MyResponseView.class)
     private String firstname;
-    @JsonView(ResponseViews.MyResponseView.class)
     private String lastname;
-    @JsonView(ResponseViews.MyResponseView.class)
     private Date dateOfBirth;
-    @JsonView(ResponseViews.MyResponseView.class)
     private double hourlyRate;
     private boolean enabled = true;
     private Set<Authority> authorities = new HashSet<>();
@@ -72,7 +65,9 @@ public class TrainerDto {
         this.hourlyRate = hourlyRate;
     }
 
-    public boolean isEnabled() { return enabled; }
+    public boolean isEnabled() {
+        return enabled;
+    }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;

@@ -24,14 +24,14 @@ public class MemberService {
     }
 
     public String createMember(MemberDto dto) {
-        Optional<Member> optionalMember = memberRepository.findById(dto.email);
+        Optional<Member> optionalMember = memberRepository.findById(dto.getEmail());
         if (optionalMember.isEmpty()) {
             Member model = memberRepository.save(asMODEL(dto));
             addAuthority(model.getEmail(), "ROLE_MEMBER");
             return model.getEmail();
 
         } else {
-            throw new EmailAlreadyTakenException(dto.email);
+            throw new EmailAlreadyTakenException(dto.getEmail());
         }
     }
 
