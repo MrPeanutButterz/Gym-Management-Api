@@ -1,7 +1,6 @@
 package com.novi.gymmanagementapi.services;
 
-import com.novi.gymmanagementapi.dto.NewMember;
-import com.novi.gymmanagementapi.dto.NewTrainer;
+import com.novi.gymmanagementapi.dto.NewTrainerDtoDto;
 import com.novi.gymmanagementapi.dto.TrainerDto;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
@@ -13,7 +12,6 @@ import com.novi.gymmanagementapi.repositories.TrainerRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +27,7 @@ public class TrainerService {
         this.memberRepository = memberRepository;
     }
 
-    public TrainerDto createTrainer(NewTrainer dto) {
+    public TrainerDto createTrainer(NewTrainerDtoDto dto) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(dto.getEmail());
         if (optionalTrainer.isEmpty()) {
             Trainer model = new Trainer();

@@ -1,7 +1,7 @@
 package com.novi.gymmanagementapi.controllers;
 
 import com.novi.gymmanagementapi.dto.MemberDto;
-import com.novi.gymmanagementapi.dto.NewMember;
+import com.novi.gymmanagementapi.dto.NewMemberDto;
 import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.MemberService;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +23,8 @@ public class MemberController {
 
     /* OPEN ENDPOINTS */
 
-    @PostMapping(value = "members")
-    public ResponseEntity<MemberDto> createMemberAccount(@RequestBody NewMember dto) {
+    @PostMapping("members")
+    public ResponseEntity<MemberDto> createMemberAccount(@RequestBody NewMemberDto dto) {
         MemberDto memberDto = memberService.createMember(dto);
         return ResponseEntity.created(uriBuilder.buildWithEmail(memberDto.getEmail())).build();
     }
@@ -38,7 +38,7 @@ public class MemberController {
 
     @PutMapping("members")
     public ResponseEntity<MemberDto> updateMemberAccount(Principal principal,
-                                                         @RequestBody NewMember dto) {
+                                                         @RequestBody NewMemberDto dto) {
 
         // todo add updateMemberAccount
         return ResponseEntity.ok().body(memberService.updateMember(principal, dto));

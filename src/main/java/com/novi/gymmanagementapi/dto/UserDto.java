@@ -14,6 +14,7 @@ public class UserDto {
     private String firstname;
     private String lastname;
     private Date dateOfBirth;
+    @JsonIgnore
     private boolean enabled = true;
     @JsonIgnore
     private Set<Authority> authorities = new HashSet<>();

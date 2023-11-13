@@ -2,7 +2,7 @@ package com.novi.gymmanagementapi.dto;
 
 import java.util.Date;
 
-public class NewMember {
+public class NewMemberDto {
 
     private String email;
     private String password;

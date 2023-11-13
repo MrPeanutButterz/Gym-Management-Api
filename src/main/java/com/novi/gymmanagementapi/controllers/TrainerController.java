@@ -1,6 +1,6 @@
 package com.novi.gymmanagementapi.controllers;
 
-import com.novi.gymmanagementapi.dto.NewTrainer;
+import com.novi.gymmanagementapi.dto.NewTrainerDtoDto;
 import com.novi.gymmanagementapi.dto.TrainerDto;
 import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.TrainerService;
@@ -40,7 +40,7 @@ public class TrainerController {
                 .build();
     }
 
-    // todo add deletePersonalTrainer
+    // todo add dismissPersonalTrainer
 
     /* BELOW IS FOR AUTHENTICATED TRAINER */
 
@@ -61,7 +61,7 @@ public class TrainerController {
     }
 
     @PostMapping("admin/trainers")
-    public ResponseEntity<TrainerDto> createTrainer(@Valid @RequestBody NewTrainer newDto) {
+    public ResponseEntity<TrainerDto> createTrainer(@Valid @RequestBody NewTrainerDtoDto newDto) {
         TrainerDto trainerDto = trainerService.createTrainer(newDto);
         return ResponseEntity
                 .created(uriBuilder.buildWithEmail(trainerDto.getEmail()))
