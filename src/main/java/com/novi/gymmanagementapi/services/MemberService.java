@@ -1,7 +1,7 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.FullMemberDto;
-import com.novi.gymmanagementapi.dto.PartTrainerDto;
+import com.novi.gymmanagementapi.dto.PartialTrainerDto;
 import com.novi.gymmanagementapi.dto.UserDto;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
@@ -48,7 +48,7 @@ public class MemberService {
             Member member = optionalMember.get();
             FullMemberDto dto = asDTO(member);
             if (member.getTrainer() != null) {
-                PartTrainerDto tmDto = new PartTrainerDto();
+                PartialTrainerDto tmDto = new PartialTrainerDto();
                 tmDto.setEmail(member.getTrainer().getEmail());
                 tmDto.setFirstname(member.getTrainer().getFirstname());
                 tmDto.setLastname(member.getTrainer().getLastname());

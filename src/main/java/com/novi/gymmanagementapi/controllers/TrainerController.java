@@ -1,8 +1,8 @@
 package com.novi.gymmanagementapi.controllers;
 
 import com.novi.gymmanagementapi.dto.FullTrainerDto;
-import com.novi.gymmanagementapi.dto.PartMemberDto;
-import com.novi.gymmanagementapi.dto.PartTrainerDto;
+import com.novi.gymmanagementapi.dto.PartialMemberDto;
+import com.novi.gymmanagementapi.dto.PartialTrainerDto;
 import com.novi.gymmanagementapi.services.TrainerService;
 import com.novi.gymmanagementapi.utilties.UriBuilder;
 import jakarta.validation.Valid;
@@ -26,7 +26,7 @@ public class TrainerController {
     /* BELOW IS FOR AUTHENTICATED MEMBER */
 
     @GetMapping("personalTrainers")
-    public ResponseEntity<List<PartTrainerDto>> getAllTrainers() {
+    public ResponseEntity<List<PartialTrainerDto>> getAllTrainers() {
         return ResponseEntity
                 .ok()
                 .body(trainerService.getTrainers());
@@ -64,7 +64,7 @@ public class TrainerController {
     }
 
     @GetMapping("trainers/clients")
-    public ResponseEntity<List<PartMemberDto>> getTrainerClients(Principal principal) {
+    public ResponseEntity<List<PartialMemberDto>> getTrainerClients(Principal principal) {
         return ResponseEntity.ok().body(trainerService.getClients(principal.getName()));
     }
 

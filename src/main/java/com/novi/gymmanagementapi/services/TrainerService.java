@@ -1,8 +1,8 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.FullTrainerDto;
-import com.novi.gymmanagementapi.dto.PartMemberDto;
-import com.novi.gymmanagementapi.dto.PartTrainerDto;
+import com.novi.gymmanagementapi.dto.PartialMemberDto;
+import com.novi.gymmanagementapi.dto.PartialTrainerDto;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.models.Authority;
@@ -30,11 +30,11 @@ public class TrainerService {
         this.memberRepository = memberRepository;
     }
 
-    public List<PartTrainerDto> getTrainers() {
+    public List<PartialTrainerDto> getTrainers() {
         List<Trainer> trainerList = new ArrayList<>(trainerRepository.findAll());
-        List<PartTrainerDto> trainerDtoList = new ArrayList<>();
+        List<PartialTrainerDto> trainerDtoList = new ArrayList<>();
         for (Trainer trainer : trainerList) {
-            PartTrainerDto dto = new PartTrainerDto();
+            PartialTrainerDto dto = new PartialTrainerDto();
             dto.setEmail(trainer.getEmail());
             dto.setFirstname(trainer.getFirstname());
             dto.setLastname(trainer.getLastname());
@@ -125,21 +125,21 @@ public class TrainerService {
         }
     }
 
-    public List<PartMemberDto> getClients(String email) {
+    public List<PartialMemberDto> getClients(String email) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             List<Member> members = memberRepository.findAllByTrainerIs(optionalTrainer.get());
-            List<PartMemberDto> partMemberDtoList = new ArrayList<>();
+            List<PartialMemberDto> partialMemberDtoList = new ArrayList<>();
             for (Member m : members) {
-                PartMemberDto partMemberDto = new PartMemberDto();
-                partMemberDto.setEmail(m.getEmail());
-                partMemberDto.setFirstname(m.getFirstname());
-                partMemberDto.setLastname(m.getLastname());
-                partMemberDto.setDateOfBirth(m.getDateOfBirth());
-                partMemberDto.setMembership(m.getMembership());
-                partMemberDtoList.add(partMemberDto);
+                PartialMemberDto partialMemberDto = new PartialMemberDto();
+                partialMemberDto.setEmail(m.getEmail());
+                partialMemberDto.setFirstname(m.getFirstname());
+                partialMemberDto.setLastname(m.getLastname());
+                partialMemberDto.setDateOfBirth(m.getDateOfBirth());
+                partialMemberDto.setMembership(m.getMembership());
+                partialMemberDtoList.add(partialMemberDto);
             }
-            return partMemberDtoList;
+            return partialMemberDtoList;
 
         } else {
             throw new UsernameNotFoundException(email);

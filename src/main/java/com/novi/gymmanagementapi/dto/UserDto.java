@@ -1,7 +1,5 @@
 package com.novi.gymmanagementapi.dto;
 
-import com.novi.gymmanagementapi.models.User;
-
 import java.util.Date;
 
 public class UserDto {

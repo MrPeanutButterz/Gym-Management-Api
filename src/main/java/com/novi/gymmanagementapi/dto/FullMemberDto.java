@@ -1,30 +1,15 @@
 package com.novi.gymmanagementapi.dto;
 
-import com.novi.gymmanagementapi.models.Membership;
-
-public class FullMemberDto extends UserDto {
+public class FullMemberDto extends PartialMemberDto {
 
     private String password;
-    private Membership membership;
-    private PartTrainerDto trainer;
+    private boolean enabled;
 
     public String getPassword() { return password; }
 
     public void setPassword(String password) { this.password = password; }
 
-    public Membership getMembership() {
-        return membership;
-    }
+    public boolean isEnabled() { return enabled; }
 
-    public void setMembership(Membership membership) {
-        this.membership = membership;
-    }
-
-    public PartTrainerDto getTrainer() {
-        return trainer;
-    }
-
-    public void setTrainer(PartTrainerDto trainer) {
-        this.trainer = trainer;
-    }
+    public void setEnabled(boolean enabled) { this.enabled = enabled; }
 }
