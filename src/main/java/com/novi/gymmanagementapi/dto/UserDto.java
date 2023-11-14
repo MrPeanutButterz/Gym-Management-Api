@@ -1,23 +1,15 @@
 package com.novi.gymmanagementapi.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.novi.gymmanagementapi.models.Authority;
+import com.novi.gymmanagementapi.models.User;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
-public class UserDto {
+public class UserDto extends User {
+
     private String email;
-    @JsonIgnore
-    private String password;
     private String firstname;
     private String lastname;
     private Date dateOfBirth;
-    @JsonIgnore
-    private boolean enabled = true;
-    @JsonIgnore
-    private Set<Authority> authorities = new HashSet<>();
 
     public String getEmail() {
         return email;
@@ -25,14 +17,6 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstname() {
@@ -57,29 +41,5 @@ public class UserDto {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Set<Authority> getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(Set<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public void addAuthority(Authority authority) {
-        this.authorities.add(authority);
-    }
-
-    public void removeAuthority(Authority authority) {
-        this.authorities.remove(authority);
     }
 }

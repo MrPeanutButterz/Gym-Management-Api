@@ -1,5 +1,6 @@
 package com.novi.gymmanagementapi.services;
 
+import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.models.Admin;
 import com.novi.gymmanagementapi.models.Authority;
 import com.novi.gymmanagementapi.models.Member;
@@ -60,6 +61,12 @@ public class MyCustomMemberDetailsService implements UserDetailsService {
         for (Authority authority : authorities) {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
         }
-        return new org.springframework.security.core.userdetails.User(email, password, grantedAuthorities);
+
+        if (authorities.size() > 0) {
+            return new org.springframework.security.core.userdetails.User(email, password, grantedAuthorities);
+
+        } else {
+            throw new EmailNotFoundException();
+        }
     }
 }

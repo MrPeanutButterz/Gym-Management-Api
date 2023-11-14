@@ -24,7 +24,7 @@ public class MembershipController {
 
     /* OPEN ENDPOINTS */
 
-    @GetMapping("memberships")
+    @GetMapping("subscription")
     public ResponseEntity<List<MembershipDto>> getMemberships() {
         return ResponseEntity
                 .ok(memberShipService.getMemberships());

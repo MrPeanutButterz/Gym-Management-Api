@@ -1,9 +1,11 @@
 package com.novi.gymmanagementapi.controllers;
 
-import com.novi.gymmanagementapi.dto.NewTrainerDto;
-import com.novi.gymmanagementapi.dto.TrainerDto;
-import com.novi.gymmanagementapi.utilties.UriBuilder;
+import com.novi.gymmanagementapi.dto.FullMemberDto;
+import com.novi.gymmanagementapi.dto.FullTrainerDto;
+import com.novi.gymmanagementapi.dto.PartMemberDto;
+import com.novi.gymmanagementapi.dto.PartTrainerDto;
 import com.novi.gymmanagementapi.services.TrainerService;
+import com.novi.gymmanagementapi.utilties.UriBuilder;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,115 +27,74 @@ public class TrainerController {
     /* BELOW IS FOR AUTHENTICATED MEMBER */
 
     @GetMapping("personalTrainers")
-    public ResponseEntity<List<TrainerDto>> getAllTrainers() {
+    public ResponseEntity<List<PartTrainerDto>> getAllTrainers() {
         return ResponseEntity
                 .ok()
                 .body(trainerService.getTrainers());
     }
 
     @PutMapping("personalTrainers")
-    public ResponseEntity<TrainerDto> getPersonalTrainer(Principal principal,
-                                                         @RequestParam String email) {
+    public ResponseEntity<FullTrainerDto> getPersonalTrainer(Principal principal,
+                                                             @RequestParam String email) {
         trainerService.assignTrainer(principal.getName(), email);
         return ResponseEntity
                 .ok()
                 .build();
     }
 
-    // todo add dismissPersonalTrainer
+    @DeleteMapping("personalTrainers")
+    public ResponseEntity<Object> dismissPersonalTrainers(Principal principal) {
+        trainerService.dismissTrainer(principal.getName());
+        return ResponseEntity.noContent().build();
+    }
 
     /* BELOW IS FOR AUTHENTICATED TRAINER */
 
     @GetMapping("trainers")
-    public ResponseEntity<TrainerDto> getTrainerAccount(Principal principal) {
+    public ResponseEntity<FullTrainerDto> getTrainerAccount(Principal principal) {
         return ResponseEntity
                 .ok(trainerService.getTrainerAccount(principal.getName()));
     }
 
-    // todo add updateTrainerAccount
+    @PutMapping("trainers")
+    public ResponseEntity<FullTrainerDto> updateTrainerAccount(Principal principal,
+                                                               @Valid @RequestBody FullTrainerDto dto) {
+        return ResponseEntity
+                .ok()
+                .body(trainerService.updateTrainer(principal.getName(), dto));
+    }
+
+    @GetMapping("trainers/clients")
+    public ResponseEntity<List<PartMemberDto>> getTrainerClients(Principal principal) {
+        return ResponseEntity.ok().body(trainerService.getClients(principal.getName()));
+    }
 
     /* BELOW IS FOR AUTHENTICATED ADMIN */
 
     @GetMapping("admin/trainers")
-    public ResponseEntity<TrainerDto> getTrainerAccount(@RequestParam String email) {
+    public ResponseEntity<FullTrainerDto> getTrainerAccount(@RequestParam String email) {
         return ResponseEntity
                 .ok(trainerService.getTrainerAccount(email));
     }
 
     @PostMapping("admin/trainers")
-    public ResponseEntity<TrainerDto> createTrainerAccount(@Valid @RequestBody NewTrainerDto newDto) {
-        TrainerDto trainerDto = trainerService.createTrainer(newDto);
-        return ResponseEntity
-                .created(uriBuilder.buildWithEmail(trainerDto.getEmail()))
-                .body(trainerDto);
+    public ResponseEntity<FullTrainerDto> createTrainerAccount(@RequestBody FullTrainerDto dto) {
+        FullTrainerDto fullTrainerDto = trainerService.createTrainerAccount(dto);
+        return ResponseEntity.created(uriBuilder.buildWithEmail(fullTrainerDto.getEmail())).build();
     }
 
-    // todo add updateTrainerAccount
-    // todo add deleteTrainerAccount
+    @PutMapping("admin/trainers")
+    public ResponseEntity<FullTrainerDto> updateTrainerAccount(@RequestParam String email,
+                                                               @Valid @RequestBody FullTrainerDto dto) {
+        return ResponseEntity
+                .ok()
+                .body(trainerService.updateTrainer(email, dto));
+    }
+
+    @DeleteMapping("admin/trainers")
+    public ResponseEntity<Object> deleteTrainerAccount(@RequestParam String email) {
+        trainerService.deleteTrainerAccount(email);
+        return ResponseEntity.noContent().build();
+    }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-    @DeleteMapping("personalTrainer")
-    public ResponseEntity<Objects> deleteTrainer(@RequestParam long trainerID) {
-        trainerService.deleteTrainer(trainerID);
-        return ResponseEntity
-                .noContent()
-                .build();
-    }
-
-    @PutMapping("trainers/assistance")
-    public ResponseEntity<TrainerDto> assignTrainer(@RequestParam long trainerID,
-                                                    @RequestParam long memberID) {
-        TrainerDto trainerDto = trainerService.assignTrainer(trainerID, memberID);
-        return ResponseEntity
-                .created(uriBuilder.buildWithEmail(trainerDto.getEmail()))
-                .body(trainerDto);
-    }
-
-    @DeleteMapping("trainers/assistance")
-    public ResponseEntity<Objects> dismissTrainer(@RequestParam long memberID) {
-        //trainerService.dismissTrainer(memberID);
-        return ResponseEntity
-                .noContent()
-                .build();
-    }
-
-    @GetMapping("trainers/assistance")
-    public ResponseEntity<List<Long>> getClientsFromTrainer(@RequestParam long trainerID) {
-        return ResponseEntity
-                .ok(trainerService.getClientsFromTrainer(trainerID));
-    }*/

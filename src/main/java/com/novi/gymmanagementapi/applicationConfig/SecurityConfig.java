@@ -53,25 +53,26 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((auth) -> auth
 
-                        // memberships
-                        .requestMatchers(HttpMethod.GET,"/api/memberships").permitAll()
-                        .requestMatchers("/api/admin/memberships").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/memberships/subscription/**").hasRole("MEMBER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/memberships/subscription/**").hasRole("MEMBER")
+                        // MEMBERSHIPS CONTROLLER
+                        .requestMatchers(HttpMethod.GET,"/api/subscription").permitAll()
+                        .requestMatchers("/api/subscription").hasRole("MEMBER")
+                        .requestMatchers("/api/staff/subscription").hasRole("TRAINER")
+                        .requestMatchers("/api/admin/subscription").hasRole("ADMIN")
 
-                        // trainers
-                        .requestMatchers("api/personalTrainer").hasAnyRole("ADMIN", "TRAINER", "MEMBER")
-                        .requestMatchers("api/personalTrainer").hasAnyRole("ADMIN", "TRAINER", "MEMBER")
-                        .requestMatchers(HttpMethod.GET, "/api/trainers").hasAnyRole("ADMIN", "TRAINER")
-                        .requestMatchers(HttpMethod.POST, "/api/trainers").hasRole("ADMIN")
-
-                        // members
+                        // MEMBERS CONTROLLER
                         .requestMatchers(HttpMethod.POST,"/api/members").permitAll()
-                        .requestMatchers("/api/members").hasAnyRole("ADMIN", "TRAINER", "MEMBER")
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/members/**").hasRole("ADMIN")
+                        .requestMatchers("/api/members").hasRole("MEMBER")
+                        .requestMatchers("/api/admin/members").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/members/**").hasRole("ADMIN")
 
-                        // login
+                        // TRAINERS CONTROLLER
+                        .requestMatchers("/api/personalTrainers").hasRole("MEMBER")
+                        .requestMatchers("/api/trainers").hasRole("TRAINER")
+                        .requestMatchers("/api/trainers/clients").hasRole("TRAINER")
+                        .requestMatchers("/api/admin/trainers").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/trainers/**").hasRole("ADMIN")
+
+                        // AUTHENTICATION CONTROLLER
                         .requestMatchers("/api/principal").authenticated()
                         .requestMatchers("api/login").permitAll()
                         .anyRequest().denyAll())
