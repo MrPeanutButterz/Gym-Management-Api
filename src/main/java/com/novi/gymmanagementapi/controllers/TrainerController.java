@@ -85,5 +85,4 @@ public class TrainerController {
         trainerService.dismissTrainerAccount(email);
         return ResponseEntity.noContent().build();
     }
-
 }

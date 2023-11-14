@@ -54,12 +54,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
 
                         // MEMBERSHIPS CONTROLLER
-                        .requestMatchers(HttpMethod.GET,"/api/subscription").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/subscription").permitAll()
                         .requestMatchers("/api/subscription").hasRole("MEMBER")
                         .requestMatchers("/api/trainers/subscription").hasRole("TRAINER")
                         .requestMatchers("/api/admin/subscription").hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.POST,"/api/members").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/members").permitAll()
                         .requestMatchers("/api/members").hasRole("MEMBER")
                         .requestMatchers("/api/members/goals").hasRole("MEMBER")
                         .requestMatchers("/api/admin/members").hasRole("ADMIN")

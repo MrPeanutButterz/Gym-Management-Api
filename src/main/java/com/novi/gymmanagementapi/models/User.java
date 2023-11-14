@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +22,7 @@ public class User {
     private String lastname;
     @Past
     @NotNull
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     @NotNull
     private String password;
     @Column(nullable = false)
@@ -59,11 +59,11 @@ public class User {
         this.lastname = lastname;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
