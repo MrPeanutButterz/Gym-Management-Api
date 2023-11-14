@@ -65,7 +65,7 @@ public class MemberShipService {
         }
     }
 
-    public void subscribe(long membershipID, String email) {
+    public MembershipDto subscribe(long membershipID, String email) {
         Optional<Membership> optionalMembership = memberShipRepository.findById(membershipID);
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMembership.isPresent() && optionalMember.isPresent()) {
@@ -73,6 +73,7 @@ public class MemberShipService {
             Member member = optionalMember.get();
             member.setMembership(membership);
             memberRepository.save(member);
+            return asDTO(membership);
 
         } else {
             throw new RecordNotFoundException(membershipID);

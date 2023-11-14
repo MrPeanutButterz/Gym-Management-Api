@@ -22,20 +22,20 @@ public class MembershipController {
         this.memberShipService = memberShipService;
     }
 
-    /* OPEN ENDPOINTS */
+    /* OPEN ENDPOINTS
+     * Here a prospect can get subscription information */
 
     @GetMapping("subscription")
     public ResponseEntity<List<MembershipDto>> getMemberships() {
         return ResponseEntity.ok(memberShipService.getMemberships());
     }
 
-    /* BELOW IS FOR AUTHENTICATED MEMBERS */
+    /* BELOW IS FOR AUTHENTICATED MEMBERS
+     * Here a member can sign up or cancel a membership */
 
     @PutMapping("subscription")
-    public ResponseEntity<Objects> subscribeMembership(Principal principal,
-                                                       @RequestParam long membershipID) {
-        memberShipService.subscribe(membershipID, principal.getName());
-        return ResponseEntity.created(uriBuilder.buildWithId(membershipID)).build();
+    public ResponseEntity<MembershipDto> subscribeMembership(Principal principal, @RequestParam long membershipID) {
+        return ResponseEntity.ok().body(memberShipService.subscribe(membershipID, principal.getName()));
     }
 
     @DeleteMapping("subscription")
@@ -44,13 +44,12 @@ public class MembershipController {
         return ResponseEntity.noContent().build();
     }
 
-    /* BELOW IS FOR AUTHENTICATED TRAINERS */
+    /* BELOW IS FOR AUTHENTICATED TRAINERS
+     * Here trainers can assign of cancel a membership for a member */
 
     @PutMapping("trainers/subscription")
-    public ResponseEntity<Objects> subscribeMembership(String email,
-                                                       @RequestParam long membershipID) {
-        memberShipService.subscribe(membershipID, email);
-        return ResponseEntity.created(uriBuilder.buildWithId(membershipID)).build();
+    public ResponseEntity<MembershipDto> subscribeMembership(String email, @RequestParam long membershipID) {
+        return ResponseEntity.ok().body(memberShipService.subscribe(membershipID, email));
     }
 
     @DeleteMapping("trainers/subscription")
@@ -59,7 +58,8 @@ public class MembershipController {
         return ResponseEntity.noContent().build();
     }
 
-    /* BELOW IS FOR AUTHENTICATED ADMIN */
+    /* BELOW IS FOR AUTHENTICATED ADMIN
+     * Here admins can create new memberships or update old ones or delete them */
 
     @PostMapping("admin/subscription")
     public ResponseEntity<MembershipDto> createMembership(@Valid @RequestBody MembershipDto membershipDto) {
@@ -68,10 +68,8 @@ public class MembershipController {
     }
 
     @PutMapping("admin/subscription")
-    public ResponseEntity<MembershipDto> updateMembership(@RequestParam long membershipID,
-                                                          @Valid @RequestBody MembershipDto membershipDto) {
-        MembershipDto dto = memberShipService.updateMembership(membershipID, membershipDto);
-        return ResponseEntity.created(uriBuilder.buildWithId(dto.getId())).body(dto);
+    public ResponseEntity<MembershipDto> updateMembership(@RequestParam long membershipID, @Valid @RequestBody MembershipDto membershipDto) {
+        return ResponseEntity.ok().body(memberShipService.updateMembership(membershipID, membershipDto));
     }
 
     @DeleteMapping("admin/subscription")
