@@ -1,6 +1,5 @@
 package com.novi.gymmanagementapi.controllers;
 
-import com.novi.gymmanagementapi.dto.FullMemberDto;
 import com.novi.gymmanagementapi.dto.FullTrainerDto;
 import com.novi.gymmanagementapi.dto.PartMemberDto;
 import com.novi.gymmanagementapi.dto.PartTrainerDto;

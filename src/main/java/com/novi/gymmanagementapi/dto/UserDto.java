@@ -4,7 +4,7 @@ import com.novi.gymmanagementapi.models.User;
 
 import java.util.Date;
 
-public class UserDto extends User {
+public class UserDto {
 
     private String email;
     private String firstname;

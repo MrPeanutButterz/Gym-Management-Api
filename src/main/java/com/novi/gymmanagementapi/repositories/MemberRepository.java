@@ -2,7 +2,6 @@ package com.novi.gymmanagementapi.repositories;
 
 import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.models.Trainer;
-import jakarta.validation.constraints.Email;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

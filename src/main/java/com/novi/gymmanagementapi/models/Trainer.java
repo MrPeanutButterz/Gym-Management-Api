@@ -23,7 +23,6 @@ public class Trainer extends User {
     private Set<Authority> authorities = new HashSet<>();
     private double hourlyRate;
 
-
     public String getPassword() {
         return password;
     }

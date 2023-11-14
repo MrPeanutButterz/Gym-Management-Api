@@ -4,7 +4,6 @@ import com.novi.gymmanagementapi.dto.AuthenticationRequestDto;
 import com.novi.gymmanagementapi.dto.AuthenticationResponseDto;
 import com.novi.gymmanagementapi.services.MyCustomMemberDetailsService;
 import com.novi.gymmanagementapi.utilties.JwtUtility;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

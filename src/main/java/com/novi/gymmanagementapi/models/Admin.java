@@ -22,7 +22,6 @@ public class Admin extends User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
-
     public String getPassword() {
         return password;
     }

@@ -1,6 +1,5 @@
 package com.novi.gymmanagementapi.services;
 
-import com.novi.gymmanagementapi.dto.FullMemberDto;
 import com.novi.gymmanagementapi.dto.FullTrainerDto;
 import com.novi.gymmanagementapi.dto.PartMemberDto;
 import com.novi.gymmanagementapi.dto.PartTrainerDto;
@@ -202,79 +201,4 @@ public class TrainerService {
         model.setEnabled(true);
         return model;
     }
-
-/*
-
-
-
-
-
-    public TrainerDto getTrainer(String email) {
-        Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
-        if (optionalTrainer.isPresent()) {
-            return asDTO(optionalTrainer.get());
-
-        } else {
-            throw new EmailNotFoundException(email);
-        }
-    }
-
-    public TrainerDto updateTrainer(String email, TrainerDto trainerDto) {
-        Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
-        if (optionalTrainer.isPresent()) {
-            Trainer trainer = optionalTrainer.get();
-            trainer.setFirstname(trainerDto.getFirstname());
-            trainer.setLastname(trainerDto.getLastname());
-            trainer.setEmail(trainerDto.getEmail());
-            trainer.setDateOfBirth(trainerDto.getDateOfBirth());
-            trainerRepository.save(trainer);
-            return asDTO(trainer);
-
-        } else {
-            throw new EmailNotFoundException(email);
-        }
-    }
-
-    public void deleteTrainer(String email) {
-        Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
-        if (optionalTrainer.isPresent()) {
-            trainerRepository.deleteById(email);
-
-        } else {
-            throw new EmailNotFoundException(email);
-        }
-    }
-
-    public void dismissTrainer(String email) {
-        Optional<Member> optionalMember = memberRepository.findById(email);
-        if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-            //member.setTrainer(trainerRepository.getReferenceById((long) 1));
-            memberRepository.save(member);
-
-        } else {
-            throw new EmailNotFoundException(email);
-        }
-    }
-
-        public List<Long> getClientsFromTrainer(String email) {
-        Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
-        if (optionalTrainer.isPresent()) {
-            List<Long> list = new ArrayList<>();
-            List<Member> memberList = memberRepository.findAllByTrainerId(optionalTrainer.get().getId());
-            for (Member member : memberList) {
-                list.add(member.getId());
-            }
-            return list;
-
-        } else {
-            throw new EmailNotFoundException(email);
-        }
-    }
-
-
-
-*/
-
-
 }
