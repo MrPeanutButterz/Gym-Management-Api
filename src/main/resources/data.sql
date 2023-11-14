@@ -13,8 +13,8 @@ VALUES ('aron@api.nl', 'ROLE_MEMBER'),
        ('andy@api.nl', 'ROLE_TRAINER'),
        ('barry@api.nl', 'ROLE_MEMBER'),
        ('barry@api.nl', 'ROLE_TRAINER'),
-       ('chad@api.nl', 'ROLE_MEMBER'),
-       ('chad@api.nl', 'ROLE_TRAINER'),
+       ('charlene@api.nl', 'ROLE_MEMBER'),
+       ('charlene@api.nl', 'ROLE_TRAINER'),
        ('admin@api.nl', 'ROLE_MEMBER'),
        ('admin@api.nl', 'ROLE_TRAINER'),
        ('admin@api.nl', 'ROLE_ADMIN');
@@ -34,7 +34,7 @@ values ('SprintGainer', 24, 35.00),
        ('SupermanStrain', 104, 23.00);
 
 INSERT INTO admins (password, enabled, date_of_birth, email, firstname, lastname)
-VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'admin@api.nl', 'Charlie', 'Charming');
+VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'admin@api.nl', 'Admin', 'Api');
 
 INSERT INTO trainers (password, enabled, date_of_birth, email, firstname, lastname, hourly_rate)
 VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'andy@api.nl', 'Andy', 'Ashnick', 55),
@@ -46,7 +46,7 @@ VALUES ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1
        ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'bart@api.nl', 'Bart', 'Bonus', 4, 'andy@api.nl'),
        ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'charon@api.nl', 'Charon', 'Cals', 4, 'barry@api.nl'),
        ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'donna@api.nl', 'Donna', 'Dolger', 11, 'charlene@api.nl'),
-       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'eric@api.nl', 'Eric', 'El Dona', 6, 'charlene@api.nl'),
+       ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'eric@api.nl', 'Eric', 'Elenar', 6, 'charlene@api.nl'),
        ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'frank@api.nl', 'Frank', 'Flower', 8, 'barry@api.nl'),
        ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'geraldine@api.nl', 'Geraldine', 'Gegeven', 7, 'charlene@api.nl'),
        ('$2a$10$M6Pmk1Zbmdl1o2C4B9a.belrb3Ryg4AyxjZN1sgipsJOCdRkjXMda', true, '1990-01-01', 'hariette@api.nl', 'Hariette', 'Hartswarm', 11, 'charlene@api.nl'),

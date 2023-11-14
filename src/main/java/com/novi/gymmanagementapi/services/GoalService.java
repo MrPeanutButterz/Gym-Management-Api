@@ -15,6 +15,8 @@ import java.util.Optional;
 @Service
 public class GoalService {
 
+    // todo add index out of bounds to error message
+
     private final GoalRepository goalRepository;
     private final MemberRepository memberRepository;
 

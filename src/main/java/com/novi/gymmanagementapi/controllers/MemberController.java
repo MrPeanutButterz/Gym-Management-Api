@@ -22,47 +22,53 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    /* OPEN ENDPOINTS */
+    /* OPEN ENDPOINTS
+     * A prospect can create an account
+     * */
 
-    @PostMapping("members")
+    @PostMapping("account")
     public ResponseEntity<UserDto> createMemberAccount(@RequestBody FullMemberDto newUser) {
         UserDto newMember = memberService.createMember(newUser);
         return ResponseEntity.created(uriBuilder.buildWithEmail(newMember.getEmail())).build();
     }
 
-    /* BELOW IS FOR AUTHENTICATED MEMBER */
+    /* BELOW IS FOR AUTHENTICATED MEMBER
+     * Members can manage there accounts
+     * */
 
-    @GetMapping("members")
+    @GetMapping("members/account")
     public ResponseEntity<PartialMemberDto> getMemberAccountDetails(Principal principal) {
         return ResponseEntity.ok().body(memberService.getMemberAccount(principal.getName()));
     }
 
-    @PutMapping("members")
+    @PutMapping("members/account")
     public ResponseEntity<PartialMemberDto> updateMemberAccount(Principal principal,
                                                                 @RequestBody FullMemberDto dto) {
         return ResponseEntity.ok().body(memberService.updateMember(principal.getName(), dto));
     }
 
-    @DeleteMapping("members")
+    @DeleteMapping("members/account")
     public ResponseEntity<Object> deleteMemberAccount(Principal principal) {
         memberService.deleteMember(principal.getName());
         return ResponseEntity.noContent().build();
     }
 
-    /* BELOW IS FOR AUTHENTICATED ADMIN */
+    /* BELOW IS FOR AUTHENTICATED ADMIN
+     * Admins can get, update or delete accounts
+     * */
 
-    @GetMapping("admin/members")
+    @GetMapping("admin/manage-members")
     public ResponseEntity<PartialMemberDto> getMemberAccountDetails(@RequestParam String email) {
         return ResponseEntity.ok().body(memberService.getMemberAccount(email));
     }
 
-    @PutMapping("admin/members")
+    @PutMapping("admin/manage-members")
     public ResponseEntity<PartialMemberDto> updateMemberAccount(String email,
                                                                 @RequestBody FullMemberDto dto) {
         return ResponseEntity.ok().body(memberService.updateMember(email, dto));
     }
 
-    @DeleteMapping("admin/members")
+    @DeleteMapping("admin/manage-members")
     public ResponseEntity<Object> deleteMemberAccount(@RequestParam String email) {
         memberService.deleteMember(email);
         return ResponseEntity.noContent().build();

@@ -98,7 +98,7 @@ public class TrainerService {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             Trainer trainer = optionalTrainer.get();
-            trainer.setPassword(fullTrainerDto.getPassword());
+            trainer.setPassword(new BCryptPasswordEncoder().encode(fullTrainerDto.getPassword()));
             trainer.setFirstname(fullTrainerDto.getFirstname());
             trainer.setLastname(fullTrainerDto.getLastname());
             trainer.setDateOfBirth(fullTrainerDto.getDateOfBirth());
@@ -190,7 +190,7 @@ public class TrainerService {
     private Trainer asMODEL(FullTrainerDto dto) {
         Trainer model = new Trainer();
         model.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
-        model.setEmail(dto.getEmail());
+        model.setEmail(dto.getEmail().toLowerCase());
         model.setFirstname(dto.getFirstname());
         model.setLastname(dto.getLastname());
         model.setDateOfBirth(dto.getDateOfBirth());

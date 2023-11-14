@@ -53,29 +53,28 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((auth) -> auth
 
-                        // MEMBERSHIPS CONTROLLER
-                        .requestMatchers(HttpMethod.GET, "/api/subscription").permitAll()
-                        .requestMatchers("/api/subscription").hasRole("MEMBER")
-                        .requestMatchers("/api/trainers/subscription").hasRole("TRAINER")
-                        .requestMatchers("/api/admin/subscription").hasRole("ADMIN")
-
-                        .requestMatchers(HttpMethod.POST, "/api/members").permitAll()
-                        .requestMatchers("/api/members").hasRole("MEMBER")
-                        .requestMatchers("/api/members/goals").hasRole("MEMBER")
-                        .requestMatchers("/api/admin/members").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/members/**").hasRole("ADMIN")
-
-                        .requestMatchers("/api/personalTrainers").hasRole("MEMBER")
-                        .requestMatchers("/api/trainers").hasRole("TRAINER")
-                        .requestMatchers("/api/trainers/goals/**").hasAnyRole("TRAINER", "ADMIN")
-                        .requestMatchers("/api/trainers/clients").hasRole("TRAINER")
-                        .requestMatchers("/api/admin/trainers").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/trainers/**").hasRole("ADMIN")
-
-
-                        // AUTHENTICATION CONTROLLER
-                        .requestMatchers("/api/principal").authenticated()
+                        // OPEN ENDPOINTS
                         .requestMatchers("api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/account").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/memberships").permitAll()
+
+                        // MEMBER ENDPOINTS
+                        .requestMatchers("/api/members/account").hasRole("MEMBER")
+                        .requestMatchers("/api/members/subscription").hasRole("MEMBER")
+                        .requestMatchers("/api/members/personal-trainers").hasRole("MEMBER")
+                        .requestMatchers("/api/members/goals/**").hasRole("MEMBER")
+
+                        // TRAINER ENDPOINTS
+                        .requestMatchers("/api/trainers/account").hasRole("TRAINER")
+                        .requestMatchers("/api/trainers/subscription").hasRole("TRAINER")
+                        .requestMatchers("/api/trainers/clients").hasRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals/**").hasAnyRole("TRAINER")
+
+                        // ADMIN ENDPOINTS
+                        .requestMatchers("/api/admin/subscription").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/manage-members/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/manage-trainers/**").hasRole("ADMIN")
+
                         .anyRequest().denyAll())
 
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

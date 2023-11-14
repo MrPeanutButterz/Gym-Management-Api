@@ -9,9 +9,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api")
@@ -45,10 +46,5 @@ public class AuthenticationController {
         final UserDetails userDetails = myCustomMemberDetailsService.loadUserByUsername(authenticationRequestDto.getEmail());
         final String jwt = jwtUtility.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponseDto(jwt));
-    }
-
-    @GetMapping(value = "principal")
-    public ResponseEntity<Object> authenticated(Principal principal) {
-        return ResponseEntity.ok().body(principal);
     }
 }

@@ -21,7 +21,9 @@ public class GoalController {
         this.goalService = goalService;
     }
 
-    /* BELOW IS FOR AUTHENTICATED MEMBER */
+    /* BELOW IS FOR AUTHENTICATED MEMBER
+     * Members can create, update or delete goals
+     *  */
 
     @PostMapping("members/goals")
     public ResponseEntity<GoalDto> createGoal(Principal principal, @Valid @RequestBody GoalDto goalDto) {
@@ -35,9 +37,7 @@ public class GoalController {
     }
 
     @PutMapping("members/goals")
-    public ResponseEntity<GoalDto> updateGoal(Principal principal,
-                                              @RequestParam Long goalID,
-                                              @RequestBody GoalDto goalDto) {
+    public ResponseEntity<GoalDto> updateGoal(Principal principal, @RequestParam Long goalID, @RequestBody GoalDto goalDto) {
         return ResponseEntity.ok().body(goalService.updateGoal(principal.getName(), goalID, goalDto));
     }
 
@@ -47,7 +47,9 @@ public class GoalController {
         return ResponseEntity.noContent().build();
     }
 
-    /* BELOW IS FOR AUTHENTICATED TRAINER */
+    /* BELOW IS FOR AUTHENTICATED TRAINER
+     * Trainers can create, update or delete goals for members
+     * */
 
     @PostMapping("trainers/goals")
     public ResponseEntity<GoalDto> createGoal(@RequestParam String email, @Valid @RequestBody GoalDto goalDto) {
@@ -61,9 +63,7 @@ public class GoalController {
     }
 
     @PutMapping("trainers/goals")
-    public ResponseEntity<GoalDto> updateGoal(@RequestParam String email,
-                                              @RequestParam Long goalID,
-                                              @RequestBody GoalDto goalDto) {
+    public ResponseEntity<GoalDto> updateGoal(@RequestParam String email, @RequestParam Long goalID, @RequestBody GoalDto goalDto) {
         return ResponseEntity.ok().body(goalService.updateGoal(email, goalID, goalDto));
     }
 
