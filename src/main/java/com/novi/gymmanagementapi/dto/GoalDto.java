@@ -1,17 +1,11 @@
-package com.novi.gymmanagementapi.models;
-
-import jakarta.persistence.*;
+package com.novi.gymmanagementapi.dto;
 
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.Date;
 
-@Entity
-@Table(name = "goals")
-public class Goal {
+public class GoalDto {
 
-    @Id
-    @GeneratedValue
     private long id;
     private String description;
     private double currentBodyWeight;

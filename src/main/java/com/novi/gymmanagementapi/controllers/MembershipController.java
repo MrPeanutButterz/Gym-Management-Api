@@ -46,14 +46,14 @@ public class MembershipController {
 
     /* BELOW IS FOR AUTHENTICATED TRAINERS */
 
-    @PutMapping("staff/subscription")
+    @PutMapping("trainers/subscription")
     public ResponseEntity<Objects> subscribeMembership(String email,
                                                        @RequestParam long membershipID) {
         memberShipService.subscribe(membershipID, email);
         return ResponseEntity.created(uriBuilder.buildWithId(membershipID)).build();
     }
 
-    @DeleteMapping("staff/subscription")
+    @DeleteMapping("trainers/subscription")
     public ResponseEntity<Objects> unsubscribeMembership(String email) {
         memberShipService.unsubscribe(email);
         return ResponseEntity.noContent().build();
