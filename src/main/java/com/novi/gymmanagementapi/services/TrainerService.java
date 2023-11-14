@@ -70,7 +70,7 @@ public class TrainerService {
         }
     }
 
-    public FullTrainerDto getTrainerAccount(String email) {
+    public PartialTrainerDto getTrainerAccount(String email) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             return asDTO(optionalTrainer.get());
@@ -80,7 +80,7 @@ public class TrainerService {
         }
     }
 
-    public FullTrainerDto createTrainerAccount(FullTrainerDto dto) {
+    public PartialTrainerDto createTrainerAccount(FullTrainerDto dto) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(dto.getEmail());
         if (optionalTrainer.isEmpty()) {
             Trainer trainer = asMODEL(dto);
@@ -94,7 +94,7 @@ public class TrainerService {
         }
     }
 
-    public FullTrainerDto updateTrainer(String email, FullTrainerDto fullTrainerDto) {
+    public PartialTrainerDto updateTrainer(String email, FullTrainerDto fullTrainerDto) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             Trainer trainer = optionalTrainer.get();
@@ -111,7 +111,7 @@ public class TrainerService {
         }
     }
 
-    public void deleteTrainerAccount(String email) {
+    public void dismissTrainerAccount(String email) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             Trainer trainer = optionalTrainer.get();
@@ -177,15 +177,13 @@ public class TrainerService {
         }
     }
 
-    private FullTrainerDto asDTO(Trainer model) {
-        FullTrainerDto dto = new FullTrainerDto();
+    private PartialTrainerDto asDTO(Trainer model) {
+        PartialTrainerDto dto = new PartialTrainerDto();
         dto.setEmail(model.getEmail());
-        dto.setPassword("********************************");
         dto.setFirstname(model.getFirstname());
         dto.setLastname(model.getLastname());
         dto.setDateOfBirth(model.getDateOfBirth());
         dto.setHourlyRate(model.getHourlyRate());
-        dto.setEnabled(model.isEnabled());
         return dto;
     }
 

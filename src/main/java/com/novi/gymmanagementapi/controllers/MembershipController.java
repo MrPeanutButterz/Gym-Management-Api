@@ -26,8 +26,7 @@ public class MembershipController {
 
     @GetMapping("subscription")
     public ResponseEntity<List<MembershipDto>> getMemberships() {
-        return ResponseEntity
-                .ok(memberShipService.getMemberships());
+        return ResponseEntity.ok(memberShipService.getMemberships());
     }
 
     /* BELOW IS FOR AUTHENTICATED MEMBERS */
@@ -36,17 +35,13 @@ public class MembershipController {
     public ResponseEntity<Objects> subscribeMembership(Principal principal,
                                                        @RequestParam long membershipID) {
         memberShipService.subscribe(membershipID, principal.getName());
-        return ResponseEntity
-                .created(uriBuilder.buildWithId(membershipID))
-                .build();
+        return ResponseEntity.created(uriBuilder.buildWithId(membershipID)).build();
     }
 
     @DeleteMapping("subscription")
     public ResponseEntity<Objects> unsubscribeMembership(Principal principal) {
         memberShipService.unsubscribe(principal.getName());
-        return ResponseEntity
-                .noContent()
-                .build();
+        return ResponseEntity.noContent().build();
     }
 
     /* BELOW IS FOR AUTHENTICATED TRAINERS */
@@ -55,17 +50,13 @@ public class MembershipController {
     public ResponseEntity<Objects> subscribeMembership(String email,
                                                        @RequestParam long membershipID) {
         memberShipService.subscribe(membershipID, email);
-        return ResponseEntity
-                .created(uriBuilder.buildWithId(membershipID))
-                .build();
+        return ResponseEntity.created(uriBuilder.buildWithId(membershipID)).build();
     }
 
     @DeleteMapping("staff/subscription")
     public ResponseEntity<Objects> unsubscribeMembership(String email) {
         memberShipService.unsubscribe(email);
-        return ResponseEntity
-                .noContent()
-                .build();
+        return ResponseEntity.noContent().build();
     }
 
     /* BELOW IS FOR AUTHENTICATED ADMIN */
@@ -73,25 +64,19 @@ public class MembershipController {
     @PostMapping("admin/subscription")
     public ResponseEntity<MembershipDto> createMembership(@Valid @RequestBody MembershipDto membershipDto) {
         MembershipDto dto = memberShipService.createMembership(membershipDto);
-        return ResponseEntity
-                .created(uriBuilder.buildWithId(dto.getId()))
-                .body(dto);
+        return ResponseEntity.created(uriBuilder.buildWithId(dto.getId())).body(dto);
     }
 
     @PutMapping("admin/subscription")
     public ResponseEntity<MembershipDto> updateMembership(@RequestParam long membershipID,
                                                           @Valid @RequestBody MembershipDto membershipDto) {
         MembershipDto dto = memberShipService.updateMembership(membershipID, membershipDto);
-        return ResponseEntity
-                .created(uriBuilder.buildWithId(dto.getId()))
-                .body(dto);
+        return ResponseEntity.created(uriBuilder.buildWithId(dto.getId())).body(dto);
     }
 
     @DeleteMapping("admin/subscription")
     public ResponseEntity<Objects> deleteMembership(@RequestParam long membershipID) {
         memberShipService.deleteMembership(membershipID);
-        return ResponseEntity
-                .noContent()
-                .build();
+        return ResponseEntity.noContent().build();
     }
 }

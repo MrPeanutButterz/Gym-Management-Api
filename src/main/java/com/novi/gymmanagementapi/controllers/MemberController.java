@@ -3,8 +3,8 @@ package com.novi.gymmanagementapi.controllers;
 import com.novi.gymmanagementapi.dto.FullMemberDto;
 import com.novi.gymmanagementapi.dto.PartialMemberDto;
 import com.novi.gymmanagementapi.dto.UserDto;
-import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.MemberService;
+import com.novi.gymmanagementapi.utilties.UriBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,7 +58,7 @@ public class MemberController {
 
     @PutMapping("admin/members")
     public ResponseEntity<PartialMemberDto> updateMemberAccount(String email,
-                                                             @RequestBody FullMemberDto dto) {
+                                                                @RequestBody FullMemberDto dto) {
         return ResponseEntity.ok().body(memberService.updateMember(email, dto));
     }
 
