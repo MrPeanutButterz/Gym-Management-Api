@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.FullMemberDto;
+import com.novi.gymmanagementapi.dto.PartialMemberDto;
 import com.novi.gymmanagementapi.dto.PartialTrainerDto;
 import com.novi.gymmanagementapi.dto.UserDto;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
@@ -42,11 +43,11 @@ public class MemberService {
         }
     }
 
-    public FullMemberDto getMemberAccount(String email) {
+    public PartialMemberDto getMemberAccount(String email) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
-            FullMemberDto dto = asDTO(member);
+            PartialMemberDto dto = asDTO(member);
             if (member.getTrainer() != null) {
                 PartialTrainerDto tmDto = new PartialTrainerDto();
                 tmDto.setEmail(member.getTrainer().getEmail());
@@ -63,7 +64,7 @@ public class MemberService {
         }
     }
 
-    public FullMemberDto updateMember(String email, FullMemberDto dto) {
+    public PartialMemberDto updateMember(String email, FullMemberDto dto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
@@ -93,7 +94,7 @@ public class MemberService {
         // todo this function is not working yet
         if (!memberRepository.existsById(username)) throw new UsernameNotFoundException(username);
         Member member = memberRepository.findById(username).get();
-        FullMemberDto fullMemberDto = asDTO(member);
+        //FullMemberDto fullMemberDto = asDTO(member);
         //return memberDto.getAuthorities();
         return null;
     }
@@ -118,14 +119,15 @@ public class MemberService {
         }
     }
 
-    public FullMemberDto asDTO(Member model) {
-        FullMemberDto dto = new FullMemberDto();
+    public PartialMemberDto asDTO(Member model) {
+        PartialMemberDto dto = new PartialMemberDto();
         dto.setEmail(model.getEmail());
-        dto.setPassword("********************************");
         dto.setFirstname(model.getFirstname());
         dto.setLastname(model.getLastname());
         dto.setDateOfBirth(model.getDateOfBirth());
         dto.setMembership(model.getMembership());
+        dto.setMembership(model.getMembership());
+        dto.setGoals(model.getGoals());
         return dto;
     }
 

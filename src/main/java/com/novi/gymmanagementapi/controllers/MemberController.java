@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.controllers;
 
 import com.novi.gymmanagementapi.dto.FullMemberDto;
+import com.novi.gymmanagementapi.dto.PartialMemberDto;
 import com.novi.gymmanagementapi.dto.UserDto;
 import com.novi.gymmanagementapi.utilties.UriBuilder;
 import com.novi.gymmanagementapi.services.MemberService;
@@ -32,13 +33,13 @@ public class MemberController {
     /* BELOW IS FOR AUTHENTICATED MEMBER */
 
     @GetMapping("members")
-    public ResponseEntity<FullMemberDto> getMemberAccountDetails(Principal principal) {
+    public ResponseEntity<PartialMemberDto> getMemberAccountDetails(Principal principal) {
         return ResponseEntity.ok().body(memberService.getMemberAccount(principal.getName()));
     }
 
     @PutMapping("members")
-    public ResponseEntity<FullMemberDto> updateMemberAccount(Principal principal,
-                                                             @RequestBody FullMemberDto dto) {
+    public ResponseEntity<PartialMemberDto> updateMemberAccount(Principal principal,
+                                                                @RequestBody FullMemberDto dto) {
         return ResponseEntity.ok().body(memberService.updateMember(principal.getName(), dto));
     }
 
@@ -51,12 +52,12 @@ public class MemberController {
     /* BELOW IS FOR AUTHENTICATED ADMIN */
 
     @GetMapping("admin/members")
-    public ResponseEntity<FullMemberDto> getMemberAccountDetails(@RequestParam String email) {
+    public ResponseEntity<PartialMemberDto> getMemberAccountDetails(@RequestParam String email) {
         return ResponseEntity.ok().body(memberService.getMemberAccount(email));
     }
 
     @PutMapping("admin/members")
-    public ResponseEntity<FullMemberDto> updateMemberAccount(String email,
+    public ResponseEntity<PartialMemberDto> updateMemberAccount(String email,
                                                              @RequestBody FullMemberDto dto) {
         return ResponseEntity.ok().body(memberService.updateMember(email, dto));
     }
