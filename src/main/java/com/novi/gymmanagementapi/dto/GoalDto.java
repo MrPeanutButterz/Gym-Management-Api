@@ -1,8 +1,9 @@
 package com.novi.gymmanagementapi.dto;
 
-import java.sql.Time;
+import com.novi.gymmanagementapi.models.Evaluation;
+
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
 public class GoalDto {
 
@@ -13,6 +14,7 @@ public class GoalDto {
     private int targetCalorieIntake;
     private LocalDate startDate;
     private LocalDate endDate;
+    private List<Evaluation> evaluations;
 
     public long getId() {
         return id;
@@ -68,5 +70,13 @@ public class GoalDto {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public List<Evaluation> getEvaluations() {
+        return evaluations;
+    }
+
+    public void setEvaluations(List<Evaluation> evaluations) {
+        this.evaluations = evaluations;
     }
 }

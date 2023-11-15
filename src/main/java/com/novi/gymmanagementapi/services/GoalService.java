@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public class GoalService {
 
-    // todo add index out of bounds to error message
+    // todo add resource not found to error message
 
     private final GoalRepository goalRepository;
     private final MemberRepository memberRepository;
@@ -95,6 +95,7 @@ public class GoalService {
         dto.setTargetCalorieIntake(model.getTargetCalorieIntake());
         dto.setStartDate(model.getStartDate());
         dto.setEndDate(model.getEndDate());
+        dto.setEvaluations(model.getEvaluations());
         return dto;
     }
 
@@ -107,6 +108,7 @@ public class GoalService {
         goal.setTargetCalorieIntake(dto.getTargetCalorieIntake());
         goal.setStartDate(dto.getStartDate());
         goal.setEndDate(dto.getEndDate());
+        goal.setEvaluations(dto.getEvaluations());
         return goal;
     }
 }

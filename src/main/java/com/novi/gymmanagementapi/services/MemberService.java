@@ -8,6 +8,7 @@ import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.models.Authority;
 import com.novi.gymmanagementapi.models.Member;
+import com.novi.gymmanagementapi.models.Trainer;
 import com.novi.gymmanagementapi.repositories.MemberRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -46,18 +47,7 @@ public class MemberService {
     public PartialMemberDto getMemberAccount(String email) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-            PartialMemberDto dto = asDTO(member);
-            if (member.getTrainer() != null) {
-                PartialTrainerDto tmDto = new PartialTrainerDto();
-                tmDto.setEmail(member.getTrainer().getEmail());
-                tmDto.setFirstname(member.getTrainer().getFirstname());
-                tmDto.setLastname(member.getTrainer().getLastname());
-                tmDto.setDateOfBirth(member.getTrainer().getDateOfBirth());
-                tmDto.setHourlyRate(member.getTrainer().getHourlyRate());
-                dto.setTrainer(tmDto);
-            }
-            return dto;
+            return asDTO(optionalMember.get());
 
         } else {
             throw new EmailNotFoundException(email);
@@ -126,8 +116,17 @@ public class MemberService {
         dto.setLastname(model.getLastname());
         dto.setDateOfBirth(model.getDateOfBirth());
         dto.setMembership(model.getMembership());
-        dto.setMembership(model.getMembership());
-        dto.setGoals(model.getGoals());
+        dto.setGoalIDs(model.getGoalIDs());
+        Trainer trainer = model.getTrainer();
+        if (trainer != null) {
+            PartialTrainerDto pt = new PartialTrainerDto();
+            pt.setEmail(trainer.getEmail());
+            pt.setFirstname(trainer.getFirstname());
+            pt.setLastname(trainer.getLastname());
+            pt.setDateOfBirth(trainer.getDateOfBirth());
+            pt.setHourlyRate(trainer.getHourlyRate());
+            dto.setTrainer(pt);
+        }
         return dto;
     }
 

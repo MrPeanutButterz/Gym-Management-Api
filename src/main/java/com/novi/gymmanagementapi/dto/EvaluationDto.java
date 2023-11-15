@@ -1,24 +1,21 @@
-package com.novi.gymmanagementapi.models;
-
-import jakarta.persistence.*;
+package com.novi.gymmanagementapi.dto;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-@Entity
-@Table(name = "evaluations")
-public class Evaluation {
+public class EvaluationDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private LocalDate date;
     private double currentBodyWeight;
     private int dailyCalIntake;
 
-    public long getId() { return id; }
+    public long getId() {
+        return id;
+    }
 
-    public void setId(long id) { this.id = id; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public LocalDate getDate() {
         return date;
