@@ -1,11 +1,11 @@
 package com.novi.gymmanagementapi.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "goals")
@@ -20,6 +20,18 @@ public class Goal {
     private int targetCalorieIntake;
     private LocalDate startDate;
     private LocalDate endDate;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "goal_id", referencedColumnName = "id")
+    private List<Workout> workouts;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "goal_id", referencedColumnName = "id")
+    private List<Evaluation> evaluations;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "goal_id", referencedColumnName = "id")
+    private List<Meal> meals;
 
     public long getId() {
         return id;
@@ -37,9 +49,7 @@ public class Goal {
         this.description = description;
     }
 
-    public double getCurrentBodyWeight() {
-        return currentBodyWeight;
-    }
+    public double getCurrentBodyWeight() { return currentBodyWeight; }
 
     public void setCurrentBodyWeight(double currentBodyWeight) {
         this.currentBodyWeight = currentBodyWeight;
@@ -75,5 +85,29 @@ public class Goal {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public List<Evaluation> getEvaluations() {
+        return Objects.requireNonNullElseGet(evaluations, ArrayList::new);
+    }
+
+    public void setEvaluations(List<Evaluation> evaluations) {
+        this.evaluations = evaluations;
+    }
+
+    public List<Workout> getWorkouts() {
+        return Objects.requireNonNullElseGet(workouts, ArrayList::new);
+    }
+
+    public void setWorkouts(List<Workout> workouts) {
+        this.workouts = workouts;
+    }
+
+    public List<Meal> getMeals() {
+        return Objects.requireNonNullElseGet(meals, ArrayList::new);
+    }
+
+    public void setMeals(List<Meal> meals) {
+        this.meals = meals;
     }
 }
