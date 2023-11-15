@@ -44,20 +44,19 @@ public class EvaluationService {
         }
     }
 
-    public List<EvaluationDto> getEvaluationsByID(String email, List<Long> evaluationIDs) {
+    public List<EvaluationDto> getEvaluationsByGoalID(String email, Long goalID) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
-
-            List<EvaluationDto> evaluationDtoList = new ArrayList<>();
-            for (Long id : evaluationIDs) {
-                Optional<Evaluation> optionalEvaluation = evaluationRepository.findById(id);
-                if (optionalEvaluation.isPresent()) {
-                    evaluationDtoList.add(asDTO(optionalEvaluation.get()));
-                } else {
-                    throw new RecordNotFoundException();
+            Optional<Goal> optionalGoal = goalRepository.findById(goalID);
+            if (optionalGoal.isPresent()) {
+                List<EvaluationDto> evaluationDtoList = new ArrayList<>();
+                for (Evaluation e : optionalGoal.get().getEvaluations()) {
+                    evaluationDtoList.add(asDTO(e));
                 }
+                return evaluationDtoList;
+            }  else {
+                throw new RecordNotFoundException();
             }
-            return evaluationDtoList;
         } else {
             throw new RecordNotFoundException();
         }

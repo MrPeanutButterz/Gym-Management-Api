@@ -35,8 +35,8 @@ public class EvaluationController {
     }
 
     @GetMapping("members/goals/evaluations")
-    public ResponseEntity<List<EvaluationDto>> getEvaluationByID(Principal principal, @RequestBody List<Long> evaluationIDs) {
-        return ResponseEntity.ok().body(evaluationService.getEvaluationsByID(principal.getName(), evaluationIDs));
+    public ResponseEntity<List<EvaluationDto>> getEvaluationByGoalID(Principal principal, @RequestParam Long goalID) {
+        return ResponseEntity.ok().body(evaluationService.getEvaluationsByGoalID(principal.getName(), goalID));
     }
 
     @PutMapping("members/goals/evaluations")
@@ -54,7 +54,7 @@ public class EvaluationController {
 
     /* BELOW IS FOR AUTHENTICATED TRAINERS
      * Trainer can create, update or delete evaluations for members
-     * todo has to be tested yet! */
+     * */
 
     @PostMapping("trainers/goals/evaluations")
     public ResponseEntity<EvaluationDto> createEvaluation(String email,
@@ -66,8 +66,8 @@ public class EvaluationController {
     }
 
     @GetMapping("trainers/goals/evaluations")
-    public ResponseEntity<List<EvaluationDto>> getEvaluationByID(String email, @RequestBody List<Long> evaluationIDs) {
-        return ResponseEntity.ok().body(evaluationService.getEvaluationsByID(email, evaluationIDs));
+    public ResponseEntity<List<EvaluationDto>> getEvaluationByID(String email, @RequestParam Long goalID) {
+        return ResponseEntity.ok().body(evaluationService.getEvaluationsByGoalID(email, goalID));
     }
 
     @PutMapping("trainers/goals/evaluations")

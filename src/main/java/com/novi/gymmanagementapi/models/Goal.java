@@ -87,9 +87,11 @@ public class Goal {
         return evaluations;
     }
 
-    public void setEvaluations(List<Evaluation> evaluations) {
-        this.evaluations = evaluations;
-    }
+    public void setEvaluations(List<Evaluation> evaluations) { this.evaluations = evaluations; }
+
+    public List<Meal> getMeals() { return meals; }
+
+    public void setMeals(List<Meal> meals) { this.meals = meals; }
 
     public List<Long> getEvaluationIDs() {
         // transforms a list of evaluations to a list of evaluation IDs
@@ -98,14 +100,6 @@ public class Goal {
             IDs.add(e.getId());
         }
         return IDs;
-    }
-
-    public List<Meal> getMeals() {
-        return meals;
-    }
-
-    public void setMeals(List<Meal> meals) {
-        this.meals = meals;
     }
 
     public List<Long> getMealIDs() {

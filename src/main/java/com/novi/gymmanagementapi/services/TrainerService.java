@@ -132,12 +132,14 @@ public class TrainerService {
             List<PartialMemberDto> partialMemberDtoList = new ArrayList<>();
             for (Member m : members) {
                 PartialMemberDto partialMemberDto = new PartialMemberDto();
-                partialMemberDto.setEmail(m.getEmail());
                 partialMemberDto.setFirstname(m.getFirstname());
+                partialMemberDto.setEmail(m.getEmail());
                 partialMemberDto.setLastname(m.getLastname());
                 partialMemberDto.setDateOfBirth(m.getDateOfBirth());
                 partialMemberDto.setMembership(m.getMembership());
+                partialMemberDto.setGoalIDs(m.getGoalIDs());
                 partialMemberDtoList.add(partialMemberDto);
+
             }
             return partialMemberDtoList;
 

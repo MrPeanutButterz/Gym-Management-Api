@@ -63,12 +63,17 @@ public class SecurityConfig {
                         .requestMatchers("/api/members/subscription").hasRole("MEMBER")
                         .requestMatchers("/api/members/personal-trainers").hasRole("MEMBER")
                         .requestMatchers("/api/members/goals/**").hasRole("MEMBER")
+                        .requestMatchers("/api/members/goals/evaluations/**").hasRole("MEMBER")
+                        .requestMatchers("/api/members/goals/meals/**").hasRole("MEMBER")
 
                         // TRAINER ENDPOINTS
                         .requestMatchers("/api/trainers/account").hasRole("TRAINER")
                         .requestMatchers("/api/trainers/subscription").hasRole("TRAINER")
                         .requestMatchers("/api/trainers/clients").hasRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals").hasAnyRole("TRAINER")
                         .requestMatchers("/api/trainers/goals/**").hasAnyRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals/evaluations/**").hasAnyRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals/meals/**").hasAnyRole("TRAINER")
 
                         // ADMIN ENDPOINTS
                         .requestMatchers("/api/admin/subscription").hasRole("ADMIN")
