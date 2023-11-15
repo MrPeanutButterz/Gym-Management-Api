@@ -3,6 +3,7 @@ package com.novi.gymmanagementapi.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,10 @@ public class Goal {
     @JoinColumn(name = "goal_id", referencedColumnName = "id")
     private List<Evaluation> evaluations;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "goal_id", referencedColumnName = "id")
+    private List<Meal> meals;
+
     public long getId() {
         return id;
     }
@@ -38,7 +43,9 @@ public class Goal {
         this.description = description;
     }
 
-    public double getCurrentBodyWeight() { return currentBodyWeight; }
+    public double getCurrentBodyWeight() {
+        return currentBodyWeight;
+    }
 
     public void setCurrentBodyWeight(double currentBodyWeight) {
         this.currentBodyWeight = currentBodyWeight;
@@ -82,5 +89,31 @@ public class Goal {
 
     public void setEvaluations(List<Evaluation> evaluations) {
         this.evaluations = evaluations;
+    }
+
+    public List<Long> getEvaluationIDs() {
+        // transforms a list of evaluations to a list of evaluation IDs
+        List<Long> IDs = new ArrayList<>();
+        for (Evaluation e : this.evaluations) {
+            IDs.add(e.getId());
+        }
+        return IDs;
+    }
+
+    public List<Meal> getMeals() {
+        return meals;
+    }
+
+    public void setMeals(List<Meal> meals) {
+        this.meals = meals;
+    }
+
+    public List<Long> getMealIDs() {
+        // transforms a list of workouts to a list of workout IDs
+        List<Long> IDs = new ArrayList<>();
+        for (Meal m : this.meals) {
+            IDs.add(m.getId());
+        }
+        return IDs;
     }
 }

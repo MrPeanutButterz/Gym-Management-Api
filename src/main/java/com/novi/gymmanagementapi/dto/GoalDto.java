@@ -14,7 +14,8 @@ public class GoalDto {
     private int targetCalorieIntake;
     private LocalDate startDate;
     private LocalDate endDate;
-    private List<Evaluation> evaluations;
+    private List<Long> evaluationIDs;
+    private List<Long> mealIDs;
 
     public long getId() {
         return id;
@@ -72,11 +73,19 @@ public class GoalDto {
         this.endDate = endDate;
     }
 
-    public List<Evaluation> getEvaluations() {
-        return evaluations;
+    public List<Long> getEvaluationIDs() {
+        return evaluationIDs;
     }
 
-    public void setEvaluations(List<Evaluation> evaluations) {
-        this.evaluations = evaluations;
+    public void setEvaluationIDs(List<Long> evaluationIDs) {
+        this.evaluationIDs = evaluationIDs;
+    }
+
+    public List<Long> getMealIDs() {
+        return mealIDs;
+    }
+
+    public void setMealIDs(List<Long> mealIDs) {
+        this.mealIDs = mealIDs;
     }
 }

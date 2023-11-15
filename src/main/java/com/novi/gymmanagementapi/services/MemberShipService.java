@@ -94,7 +94,7 @@ public class MemberShipService {
         }
     }
 
-    public MembershipDto asDTO(Membership model) {
+    private MembershipDto asDTO(Membership model) {
         MembershipDto dto = new MembershipDto();
         dto.setId(model.getId());
         dto.setName(model.getName());
@@ -103,7 +103,7 @@ public class MemberShipService {
         return dto;
     }
 
-    public Membership asMODEL(MembershipDto dto) {
+    private Membership asMODEL(MembershipDto dto) {
         Membership memberShip = new Membership();
         memberShip.setName(dto.getName());
         memberShip.setContractLengthInWeek(dto.getContractLengthInWeek());

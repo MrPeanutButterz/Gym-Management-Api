@@ -21,9 +21,9 @@ public class GoalController {
         this.goalService = goalService;
     }
 
-    /* BELOW IS FOR AUTHENTICATED MEMBER
-     * Members can create, update or delete goals
-     *  */
+    /* BELOW IS FOR AUTHENTICATED MEMBERS
+     * Member can create, update or delete goals
+     * */
 
     @PostMapping("members/goals")
     public ResponseEntity<GoalDto> createGoal(Principal principal, @Valid @RequestBody GoalDto goalDto) {

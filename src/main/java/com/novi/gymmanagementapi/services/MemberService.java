@@ -109,7 +109,7 @@ public class MemberService {
         }
     }
 
-    public PartialMemberDto asDTO(Member model) {
+    private PartialMemberDto asDTO(Member model) {
         PartialMemberDto dto = new PartialMemberDto();
         dto.setEmail(model.getEmail());
         dto.setFirstname(model.getFirstname());
@@ -130,7 +130,7 @@ public class MemberService {
         return dto;
     }
 
-    public Member asMODEL(FullMemberDto dto) {
+    private Member asMODEL(FullMemberDto dto) {
         Member model = new Member();
         model.setEmail(dto.getEmail());
         model.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));

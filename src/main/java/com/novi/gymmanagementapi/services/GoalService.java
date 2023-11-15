@@ -86,7 +86,7 @@ public class GoalService {
         }
     }
 
-    public GoalDto asDTO(Goal model) {
+    private GoalDto asDTO(Goal model) {
         GoalDto dto = new GoalDto();
         dto.setId(model.getId());
         dto.setCurrentBodyWeight(model.getCurrentBodyWeight());
@@ -95,11 +95,12 @@ public class GoalService {
         dto.setTargetCalorieIntake(model.getTargetCalorieIntake());
         dto.setStartDate(model.getStartDate());
         dto.setEndDate(model.getEndDate());
-        dto.setEvaluations(model.getEvaluations());
+        dto.setEvaluationIDs(model.getEvaluationIDs());
+        dto.setMealIDs(model.getMealIDs());
         return dto;
     }
 
-    public Goal asModel(GoalDto dto) {
+    private Goal asModel(GoalDto dto) {
         Goal goal = new Goal();
         goal.setId(dto.getId());
         goal.setDescription(dto.getDescription());
@@ -108,7 +109,6 @@ public class GoalService {
         goal.setTargetCalorieIntake(dto.getTargetCalorieIntake());
         goal.setStartDate(dto.getStartDate());
         goal.setEndDate(dto.getEndDate());
-        goal.setEvaluations(dto.getEvaluations());
         return goal;
     }
 }

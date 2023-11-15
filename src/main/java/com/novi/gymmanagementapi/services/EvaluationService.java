@@ -10,6 +10,7 @@ import com.novi.gymmanagementapi.repositories.GoalRepository;
 import com.novi.gymmanagementapi.repositories.MemberRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,25 @@ public class EvaluationService {
         }
     }
 
+    public List<EvaluationDto> getEvaluationsByID(String email, List<Long> evaluationIDs) {
+        Optional<Member> optionalMember = memberRepository.findById(email);
+        if (optionalMember.isPresent()) {
+
+            List<EvaluationDto> evaluationDtoList = new ArrayList<>();
+            for (Long id : evaluationIDs) {
+                Optional<Evaluation> optionalEvaluation = evaluationRepository.findById(id);
+                if (optionalEvaluation.isPresent()) {
+                    evaluationDtoList.add(asDTO(optionalEvaluation.get()));
+                } else {
+                    throw new RecordNotFoundException();
+                }
+            }
+            return evaluationDtoList;
+        } else {
+            throw new RecordNotFoundException();
+        }
+    }
+
     public EvaluationDto updateEvaluation(String email, Long evaluationID, EvaluationDto evaluationDto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         Optional<Evaluation> optionalEvaluation = evaluationRepository.findById(evaluationID);
@@ -68,6 +88,8 @@ public class EvaluationService {
             throw new RecordNotFoundException();
         }
     }
+
+    // todo add get all by ID
 
     private EvaluationDto asDTO(Evaluation model) {
         EvaluationDto dto = new EvaluationDto();
