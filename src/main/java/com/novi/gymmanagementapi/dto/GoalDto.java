@@ -14,6 +14,7 @@ public class GoalDto {
     private LocalDate endDate;
     private List<Long> evaluationIDs;
     private List<Long> mealIDs;
+    private List<Long> workoutIDS;
 
     public long getId() {
         return id;
@@ -81,5 +82,13 @@ public class GoalDto {
 
     public void setMealIDs(List<Long> mealIDs) {
         this.mealIDs = mealIDs;
+    }
+
+    public List<Long> getWorkoutIDS() {
+        return workoutIDS;
+    }
+
+    public void setWorkoutIDS(List<Long> workoutIDS) {
+        this.workoutIDS = workoutIDS;
     }
 }

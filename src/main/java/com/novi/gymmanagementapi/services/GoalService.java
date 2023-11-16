@@ -97,6 +97,7 @@ public class GoalService {
         dto.setEndDate(model.getEndDate());
         dto.setEvaluationIDs(model.getEvaluationIDs());
         dto.setMealIDs(model.getMealIDs());
+        dto.setWorkoutIDS(model.getWorkoutIDs());
         return dto;
     }
 

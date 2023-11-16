@@ -26,9 +26,9 @@ public class MealController {
      * */
 
     @PostMapping("members/goals/meals")
-    public ResponseEntity<MealDto> createEvaluation(Principal principal,
-                                                    @RequestParam Long goalID,
-                                                    @Valid @RequestBody MealDto mealDto) {
+    public ResponseEntity<MealDto> createMeal(Principal principal,
+                                              @RequestParam Long goalID,
+                                              @Valid @RequestBody MealDto mealDto) {
         return ResponseEntity
                 .created(uriBuilder.buildWithEmail(principal.getName()))
                 .body(mealService.createMeal(principal.getName(), goalID, mealDto));
@@ -40,14 +40,14 @@ public class MealController {
     }
 
     @PutMapping("members/goals/meals")
-    public ResponseEntity<MealDto> updateEvaluation(Principal principal,
-                                                    @RequestParam Long mealID,
-                                                    @Valid @RequestBody MealDto mealDto) {
+    public ResponseEntity<MealDto> updateMeal(Principal principal,
+                                              @RequestParam Long mealID,
+                                              @Valid @RequestBody MealDto mealDto) {
         return ResponseEntity.ok().body(mealService.updateMeal(principal.getName(), mealID, mealDto));
     }
 
     @DeleteMapping("members/goals/meals")
-    public ResponseEntity<Object> deleteEvaluation(Principal principal, @RequestParam Long mealID) {
+    public ResponseEntity<Object> deleteMeal(Principal principal, @RequestParam Long mealID) {
         mealService.deleteMeal(principal.getName(), mealID);
         return ResponseEntity.noContent().build();
     }
@@ -57,28 +57,28 @@ public class MealController {
      * */
 
     @PostMapping("trainers/goals/meals")
-    public ResponseEntity<MealDto> createEvaluation(String email,
-                                                    @RequestParam Long goalID,
-                                                    @Valid @RequestBody MealDto mealDto) {
+    public ResponseEntity<MealDto> createMeal(String email,
+                                              @RequestParam Long goalID,
+                                              @Valid @RequestBody MealDto mealDto) {
         return ResponseEntity
                 .created(uriBuilder.buildWithEmail(email))
                 .body(mealService.createMeal(email, goalID, mealDto));
     }
 
     @GetMapping("trainers/goals/meals")
-    public ResponseEntity<List<MealDto>> getEvaluationByID(String email, @RequestParam Long goalID) {
+    public ResponseEntity<List<MealDto>> getMealByID(String email, @RequestParam Long goalID) {
         return ResponseEntity.ok().body(mealService.getMealsByGoalID(email, goalID));
     }
 
     @PutMapping("trainers/goals/meals")
-    public ResponseEntity<MealDto> updateEvaluation(String email,
-                                                    @RequestParam Long mealID,
-                                                    @Valid @RequestBody MealDto mealDto) {
+    public ResponseEntity<MealDto> updateMeal(String email,
+                                              @RequestParam Long mealID,
+                                              @Valid @RequestBody MealDto mealDto) {
         return ResponseEntity.ok().body(mealService.updateMeal(email, mealID, mealDto));
     }
 
     @DeleteMapping("trainers/goals/meals")
-    public ResponseEntity<Object> deleteEvaluation(String email, @RequestParam Long mealID) {
+    public ResponseEntity<Object> deleteMeal(String email, @RequestParam Long mealID) {
         mealService.deleteMeal(email, mealID);
         return ResponseEntity.noContent().build();
     }
