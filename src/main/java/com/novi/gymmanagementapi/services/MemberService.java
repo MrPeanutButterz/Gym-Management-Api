@@ -1,9 +1,6 @@
 package com.novi.gymmanagementapi.services;
 
-import com.novi.gymmanagementapi.dto.FullMemberDto;
-import com.novi.gymmanagementapi.dto.PartialMemberDto;
-import com.novi.gymmanagementapi.dto.PartialTrainerDto;
-import com.novi.gymmanagementapi.dto.UserDto;
+import com.novi.gymmanagementapi.dto.*;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.models.Authority;
@@ -15,7 +12,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class MemberService {
@@ -26,15 +22,10 @@ public class MemberService {
         this.memberRepository = memberRepository;
     }
 
-    public UserDto createMember(FullMemberDto dto) {
+    public UserDto createMember(MemberDto dto) {
         Optional<Member> optionalMember = memberRepository.findById(dto.getEmail());
         if (optionalMember.isEmpty()) {
-            Member member = new Member();
-            member.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
-            member.setEmail(dto.getEmail());
-            member.setFirstname(dto.getFirstname());
-            member.setLastname(dto.getLastname());
-            member.setDateOfBirth(dto.getDateOfBirth());
+            Member member = asMODEL(dto);
             member = memberRepository.save(member);
             addAuthority(member.getEmail(), "ROLE_MEMBER");
             return asDTO(member);
@@ -44,7 +35,7 @@ public class MemberService {
         }
     }
 
-    public PartialMemberDto getMemberAccount(String email) {
+    public MemberResponseDto getMemberAccount(String email) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
             return asDTO(optionalMember.get());
@@ -54,7 +45,7 @@ public class MemberService {
         }
     }
 
-    public PartialMemberDto updateMember(String email, FullMemberDto dto) {
+    public MemberResponseDto updateMember(String email, MemberDto dto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
@@ -80,15 +71,6 @@ public class MemberService {
         }
     }
 
-    public Set<Authority> getAuthorities(String username) {
-        // todo this function is not working yet
-        if (!memberRepository.existsById(username)) throw new UsernameNotFoundException(username);
-        Member member = memberRepository.findById(username).get();
-        //FullMemberDto fullMemberDto = asDTO(member);
-        //return memberDto.getAuthorities();
-        return null;
-    }
-
     public void removeAuthority(String email, String authority) {
         if (!memberRepository.existsById(email)) throw new UsernameNotFoundException(email);
         Member member = memberRepository.findById(email).get();
@@ -109,28 +91,28 @@ public class MemberService {
         }
     }
 
-    private PartialMemberDto asDTO(Member model) {
-        PartialMemberDto dto = new PartialMemberDto();
+    private TrainerResponseDto modelToResponse(Trainer model) {
+        TrainerResponseDto dto = new TrainerResponseDto();
         dto.setEmail(model.getEmail());
         dto.setFirstname(model.getFirstname());
         dto.setLastname(model.getLastname());
         dto.setDateOfBirth(model.getDateOfBirth());
-        dto.setMembership(model.getMembership());
-        dto.setGoalIDs(model.getGoalIDs());
-        Trainer trainer = model.getTrainer();
-        if (trainer != null) {
-            PartialTrainerDto pt = new PartialTrainerDto();
-            pt.setEmail(trainer.getEmail());
-            pt.setFirstname(trainer.getFirstname());
-            pt.setLastname(trainer.getLastname());
-            pt.setDateOfBirth(trainer.getDateOfBirth());
-            pt.setHourlyRate(trainer.getHourlyRate());
-            dto.setTrainer(pt);
-        }
         return dto;
     }
 
-    private Member asMODEL(FullMemberDto dto) {
+    private MemberResponseDto asDTO(Member model) {
+        MemberResponseDto dto = new MemberResponseDto();
+        dto.setEmail(model.getEmail());
+        dto.setFirstname(model.getFirstname());
+        dto.setLastname(model.getLastname());
+        dto.setDateOfBirth(model.getDateOfBirth());
+        if (model.getMembership() != null) { dto.setMembership(model.getMembership()); }
+        if (model.getTrainer() != null) { dto.setTrainer(modelToResponse(model.getTrainer())); }
+        if (model.getGoals() != null) { dto.setGoalIDs(model.getGoalIDs()); }
+        return dto;
+    }
+
+    private Member asMODEL(MemberDto dto) {
         Member model = new Member();
         model.setEmail(dto.getEmail());
         model.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));

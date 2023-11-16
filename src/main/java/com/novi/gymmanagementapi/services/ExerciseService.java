@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.ExerciseDto;
+import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
 import com.novi.gymmanagementapi.models.Exercise;
 import com.novi.gymmanagementapi.models.Member;
@@ -21,7 +22,9 @@ public class ExerciseService {
     private final WorkoutRepository workoutRepository;
     private final ExerciseRepository exerciseRepository;
 
-    public ExerciseService(MemberRepository memberRepository, WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository) {
+    public ExerciseService(MemberRepository memberRepository,
+                           WorkoutRepository workoutRepository,
+                           ExerciseRepository exerciseRepository) {
         this.memberRepository = memberRepository;
         this.workoutRepository = workoutRepository;
         this.exerciseRepository = exerciseRepository;
@@ -29,17 +32,21 @@ public class ExerciseService {
 
     public ExerciseDto createExercise(String email, Long workoutID, ExerciseDto exerciseDto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Workout> optionalWorkout = workoutRepository.findById(workoutID);
-        if (optionalMember.isPresent() && optionalWorkout.isPresent()) {
-            Workout workout = optionalWorkout.get();
-            List<Exercise> exerciseList = workout.getExercises();
-            exerciseList.add(asMODEL(exerciseDto));
-            workout.setExercises(exerciseList);
-            workoutRepository.save(workout);
-            return exerciseDto;
+        if (optionalMember.isPresent()) {
+            Optional<Workout> optionalWorkout = workoutRepository.findById(workoutID);
+            if (optionalWorkout.isPresent()) {
+                Workout workout = optionalWorkout.get();
+                List<Exercise> exerciseList = workout.getExercises();
+                exerciseList.add(asMODEL(exerciseDto));
+                workout.setExercises(exerciseList);
+                workoutRepository.save(workout);
+                return exerciseDto;
 
+            } else {
+                throw new RecordNotFoundException(workoutID);
+            }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 
@@ -63,28 +70,37 @@ public class ExerciseService {
 
     public ExerciseDto updateExercise(String email, Long exerciseID, ExerciseDto exerciseDto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Exercise> optionalExercise = exerciseRepository.findById(exerciseID);
-        if (optionalMember.isPresent() && optionalExercise.isPresent()) {
-            Exercise exercise = optionalExercise.get();
-            exercise.setName(exerciseDto.getName());
-            exercise.setWeight(exerciseDto.getWeight());
-            exercise.setReps(exerciseDto.getReps());
-            exercise.setSets(exerciseDto.getSets());
-            exerciseRepository.save(exercise);
-            return asDTO(exercise);
+        if (optionalMember.isPresent()) {
+            Optional<Exercise> optionalExercise = exerciseRepository.findById(exerciseID);
+            if (optionalExercise.isPresent()) {
+                Exercise exercise = optionalExercise.get();
+                exercise.setName(exerciseDto.getName());
+                exercise.setWeight(exerciseDto.getWeight());
+                exercise.setReps(exerciseDto.getReps());
+                exercise.setSets(exerciseDto.getSets());
+                exerciseRepository.save(exercise);
+                return asDTO(exercise);
 
+            } else {
+                throw new RecordNotFoundException(exerciseID);
+            }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 
     public void deleteExercise(String email, Long exerciseID) {
         Optional<Member> optionalMember = memberRepository.findById(email);
+        if (optionalMember.isPresent()) {
         Optional<Exercise> optionalExercise = exerciseRepository.findById(exerciseID);
-        if (optionalMember.isPresent() && optionalExercise.isPresent()) {
-            exerciseRepository.delete(optionalExercise.get());
+            if (optionalExercise.isPresent()) {
+                exerciseRepository.delete(optionalExercise.get());
+
+            } else {
+                throw new RecordNotFoundException(exerciseID);
+            }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 

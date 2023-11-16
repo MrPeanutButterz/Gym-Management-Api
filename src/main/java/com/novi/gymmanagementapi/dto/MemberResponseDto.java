@@ -4,10 +4,10 @@ import com.novi.gymmanagementapi.models.Membership;
 
 import java.util.List;
 
-public class PartialMemberDto extends UserDto {
+public class MemberResponseDto extends UserDto {
 
     private Membership membership;
-    private PartialTrainerDto trainer;
+    private TrainerResponseDto trainer;
     private List<Long> goalIDs;
 
     public Membership getMembership() {
@@ -18,11 +18,11 @@ public class PartialMemberDto extends UserDto {
         this.membership = membership;
     }
 
-    public PartialTrainerDto getTrainer() {
+    public TrainerResponseDto getTrainer() {
         return trainer;
     }
 
-    public void setTrainer(PartialTrainerDto trainer) {
+    public void setTrainer(TrainerResponseDto trainer) {
         this.trainer = trainer;
     }
 

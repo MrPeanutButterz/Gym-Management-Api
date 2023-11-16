@@ -1,6 +1,6 @@
 package com.novi.gymmanagementapi.dto;
 
-public class FullMemberDto extends PartialMemberDto {
+public class MemberDto extends MemberResponseDto {
 
     private String password;
     private boolean enabled;

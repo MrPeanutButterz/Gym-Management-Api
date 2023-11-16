@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.MembershipDto;
+import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
 import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.models.Membership;
@@ -66,23 +67,25 @@ public class MemberShipService {
     }
 
     public MembershipDto subscribe(long membershipID, String email) {
-        Optional<Membership> optionalMembership = memberShipRepository.findById(membershipID);
         Optional<Member> optionalMember = memberRepository.findById(email);
-        if (optionalMembership.isPresent() && optionalMember.isPresent()) {
-            Membership membership = optionalMembership.get();
-            Member member = optionalMember.get();
-            member.setMembership(membership);
-            memberRepository.save(member);
-            return asDTO(membership);
+        if (optionalMember.isPresent()) {
+            Optional<Membership> optionalMembership = memberShipRepository.findById(membershipID);
+            if (optionalMembership.isPresent()) {
+                Membership membership = optionalMembership.get();
+                Member member = optionalMember.get();
+                member.setMembership(membership);
+                memberRepository.save(member);
+                return asDTO(membership);
 
+            } else {
+                throw new RecordNotFoundException(membershipID);
+            }
         } else {
-            throw new RecordNotFoundException(membershipID);
+            throw new EmailNotFoundException(email);
         }
     }
 
     public void unsubscribe(String email) {
-
-        // todo make this function with expiration date
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
@@ -90,7 +93,7 @@ public class MemberShipService {
             memberRepository.save(member);
 
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 

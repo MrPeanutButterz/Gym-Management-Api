@@ -6,6 +6,6 @@ public class EmailNotFoundException extends RuntimeException {
         super();
     }
     public EmailNotFoundException(String email) {
-        super("Cannot find user with email " + email);
+        super("Unable to find user with email " + email);
     }
 }

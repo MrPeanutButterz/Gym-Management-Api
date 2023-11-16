@@ -13,11 +13,6 @@ public class ExceptionController {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(AlreadyBoundException.class)
-    public ResponseEntity<Object> exception(AlreadyBoundException e) {
-        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_MODIFIED);
-    }
-
     @ExceptionHandler(EmailNotFoundException.class)
     public ResponseEntity<Object> exception(EmailNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
