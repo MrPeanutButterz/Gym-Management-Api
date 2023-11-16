@@ -1,15 +1,13 @@
 package com.novi.gymmanagementapi.dto;
 
-import com.novi.gymmanagementapi.models.User;
-
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UserDto {
 
     private String email;
     private String firstname;
     private String lastname;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
 
     public String getEmail() {
         return email;
@@ -35,11 +33,11 @@ public class UserDto {
         this.lastname = lastname;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 }

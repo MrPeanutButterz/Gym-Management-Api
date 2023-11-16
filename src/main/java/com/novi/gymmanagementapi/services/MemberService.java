@@ -1,12 +1,14 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.FullMemberDto;
-import com.novi.gymmanagementapi.dto.PartTrainerDto;
+import com.novi.gymmanagementapi.dto.PartialMemberDto;
+import com.novi.gymmanagementapi.dto.PartialTrainerDto;
 import com.novi.gymmanagementapi.dto.UserDto;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.models.Authority;
 import com.novi.gymmanagementapi.models.Member;
+import com.novi.gymmanagementapi.models.Trainer;
 import com.novi.gymmanagementapi.repositories.MemberRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -42,28 +44,17 @@ public class MemberService {
         }
     }
 
-    public FullMemberDto getMemberAccount(String email) {
+    public PartialMemberDto getMemberAccount(String email) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-            FullMemberDto dto = asDTO(member);
-            if (member.getTrainer() != null) {
-                PartTrainerDto tmDto = new PartTrainerDto();
-                tmDto.setEmail(member.getTrainer().getEmail());
-                tmDto.setFirstname(member.getTrainer().getFirstname());
-                tmDto.setLastname(member.getTrainer().getLastname());
-                tmDto.setDateOfBirth(member.getTrainer().getDateOfBirth());
-                tmDto.setHourlyRate(member.getTrainer().getHourlyRate());
-                dto.setTrainer(tmDto);
-            }
-            return dto;
+            return asDTO(optionalMember.get());
 
         } else {
             throw new EmailNotFoundException(email);
         }
     }
 
-    public FullMemberDto updateMember(String email, FullMemberDto dto) {
+    public PartialMemberDto updateMember(String email, FullMemberDto dto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
@@ -93,7 +84,7 @@ public class MemberService {
         // todo this function is not working yet
         if (!memberRepository.existsById(username)) throw new UsernameNotFoundException(username);
         Member member = memberRepository.findById(username).get();
-        FullMemberDto fullMemberDto = asDTO(member);
+        //FullMemberDto fullMemberDto = asDTO(member);
         //return memberDto.getAuthorities();
         return null;
     }
@@ -118,18 +109,28 @@ public class MemberService {
         }
     }
 
-    public FullMemberDto asDTO(Member model) {
-        FullMemberDto dto = new FullMemberDto();
+    private PartialMemberDto asDTO(Member model) {
+        PartialMemberDto dto = new PartialMemberDto();
         dto.setEmail(model.getEmail());
-        dto.setPassword("********************************");
         dto.setFirstname(model.getFirstname());
         dto.setLastname(model.getLastname());
         dto.setDateOfBirth(model.getDateOfBirth());
         dto.setMembership(model.getMembership());
+        dto.setGoalIDs(model.getGoalIDs());
+        Trainer trainer = model.getTrainer();
+        if (trainer != null) {
+            PartialTrainerDto pt = new PartialTrainerDto();
+            pt.setEmail(trainer.getEmail());
+            pt.setFirstname(trainer.getFirstname());
+            pt.setLastname(trainer.getLastname());
+            pt.setDateOfBirth(trainer.getDateOfBirth());
+            pt.setHourlyRate(trainer.getHourlyRate());
+            dto.setTrainer(pt);
+        }
         return dto;
     }
 
-    public Member asMODEL(FullMemberDto dto) {
+    private Member asMODEL(FullMemberDto dto) {
         Member model = new Member();
         model.setEmail(dto.getEmail());
         model.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));

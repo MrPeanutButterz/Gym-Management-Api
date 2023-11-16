@@ -39,7 +39,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder) throws Exception {
+    public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder) {
         var auth = new DaoAuthenticationProvider();
         auth.setPasswordEncoder(passwordEncoder);
         auth.setUserDetailsService(myCustomMemberDetailsService);
@@ -53,28 +53,37 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests((auth) -> auth
 
-                        // MEMBERSHIPS CONTROLLER
-                        .requestMatchers(HttpMethod.GET,"/api/subscription").permitAll()
-                        .requestMatchers("/api/subscription").hasRole("MEMBER")
-                        .requestMatchers("/api/staff/subscription").hasRole("TRAINER")
-                        .requestMatchers("/api/admin/subscription").hasRole("ADMIN")
-
-                        // MEMBERS CONTROLLER
-                        .requestMatchers(HttpMethod.POST,"/api/members").permitAll()
-                        .requestMatchers("/api/members").hasRole("MEMBER")
-                        .requestMatchers("/api/admin/members").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/members/**").hasRole("ADMIN")
-
-                        // TRAINERS CONTROLLER
-                        .requestMatchers("/api/personalTrainers").hasRole("MEMBER")
-                        .requestMatchers("/api/trainers").hasRole("TRAINER")
-                        .requestMatchers("/api/trainers/clients").hasRole("TRAINER")
-                        .requestMatchers("/api/admin/trainers").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/trainers/**").hasRole("ADMIN")
-
-                        // AUTHENTICATION CONTROLLER
-                        .requestMatchers("/api/principal").authenticated()
+                        // OPEN ENDPOINTS
                         .requestMatchers("api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/account").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/memberships").permitAll()
+
+                        // MEMBER ENDPOINTS
+                        .requestMatchers("/api/members/account").hasRole("MEMBER")
+                        .requestMatchers("/api/members/subscription").hasRole("MEMBER")
+                        .requestMatchers("/api/members/personal-trainers").hasRole("MEMBER")
+                        .requestMatchers("/api/members/goals/**").hasRole("MEMBER")
+                        .requestMatchers("/api/members/goals/evaluations/**").hasRole("MEMBER")
+                        .requestMatchers("/api/members/goals/meals/**").hasRole("MEMBER")
+                        .requestMatchers("/api/members/goals/workouts/**").hasRole("MEMBER")
+                        .requestMatchers("/api/members/goals/workouts/exercise/**").hasRole("MEMBER")
+
+                        // TRAINER ENDPOINTS
+                        .requestMatchers("/api/trainers/account").hasRole("TRAINER")
+                        .requestMatchers("/api/trainers/subscription").hasRole("TRAINER")
+                        .requestMatchers("/api/trainers/clients").hasRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals").hasAnyRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals/**").hasAnyRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals/evaluations/**").hasAnyRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals/meals/**").hasAnyRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals/workouts/**").hasAnyRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals/workouts/exercise/**").hasAnyRole("TRAINER")
+
+                        // ADMIN ENDPOINTS
+                        .requestMatchers("/api/admin/subscription").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/manage-members/**").hasRole("ADMIN")
+                        .requestMatchers("/api/admin/manage-trainers/**").hasRole("ADMIN")
+
                         .anyRequest().denyAll())
 
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

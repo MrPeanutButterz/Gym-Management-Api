@@ -1,10 +1,9 @@
 package com.novi.gymmanagementapi.dto;
 
-public class FullTrainerDto extends UserDto {
+public class FullTrainerDto extends PartialTrainerDto {
 
     private String password;
-    private boolean enabled = true;
-    private double hourlyRate;
+    private boolean enabled;
 
     public String getPassword() { return password; }
 
@@ -16,13 +15,5 @@ public class FullTrainerDto extends UserDto {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public double getHourlyRate() {
-        return hourlyRate;
-    }
-
-    public void setHourlyRate(double hourlyRate) {
-        this.hourlyRate = hourlyRate;
     }
 }

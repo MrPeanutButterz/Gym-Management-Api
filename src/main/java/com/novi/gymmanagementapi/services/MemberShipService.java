@@ -65,7 +65,7 @@ public class MemberShipService {
         }
     }
 
-    public void subscribe(long membershipID, String email) {
+    public MembershipDto subscribe(long membershipID, String email) {
         Optional<Membership> optionalMembership = memberShipRepository.findById(membershipID);
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMembership.isPresent() && optionalMember.isPresent()) {
@@ -73,6 +73,7 @@ public class MemberShipService {
             Member member = optionalMember.get();
             member.setMembership(membership);
             memberRepository.save(member);
+            return asDTO(membership);
 
         } else {
             throw new RecordNotFoundException(membershipID);
@@ -93,7 +94,7 @@ public class MemberShipService {
         }
     }
 
-    public MembershipDto asDTO(Membership model) {
+    private MembershipDto asDTO(Membership model) {
         MembershipDto dto = new MembershipDto();
         dto.setId(model.getId());
         dto.setName(model.getName());
@@ -102,7 +103,7 @@ public class MemberShipService {
         return dto;
     }
 
-    public Membership asMODEL(MembershipDto dto) {
+    private Membership asMODEL(MembershipDto dto) {
         Membership memberShip = new Membership();
         memberShip.setName(dto.getName());
         memberShip.setContractLengthInWeek(dto.getContractLengthInWeek());

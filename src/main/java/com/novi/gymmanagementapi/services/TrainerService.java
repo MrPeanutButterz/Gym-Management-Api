@@ -1,8 +1,8 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.FullTrainerDto;
-import com.novi.gymmanagementapi.dto.PartMemberDto;
-import com.novi.gymmanagementapi.dto.PartTrainerDto;
+import com.novi.gymmanagementapi.dto.PartialMemberDto;
+import com.novi.gymmanagementapi.dto.PartialTrainerDto;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.models.Authority;
@@ -30,11 +30,11 @@ public class TrainerService {
         this.memberRepository = memberRepository;
     }
 
-    public List<PartTrainerDto> getTrainers() {
+    public List<PartialTrainerDto> getTrainers() {
         List<Trainer> trainerList = new ArrayList<>(trainerRepository.findAll());
-        List<PartTrainerDto> trainerDtoList = new ArrayList<>();
+        List<PartialTrainerDto> trainerDtoList = new ArrayList<>();
         for (Trainer trainer : trainerList) {
-            PartTrainerDto dto = new PartTrainerDto();
+            PartialTrainerDto dto = new PartialTrainerDto();
             dto.setEmail(trainer.getEmail());
             dto.setFirstname(trainer.getFirstname());
             dto.setLastname(trainer.getLastname());
@@ -70,7 +70,7 @@ public class TrainerService {
         }
     }
 
-    public FullTrainerDto getTrainerAccount(String email) {
+    public PartialTrainerDto getTrainerAccount(String email) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             return asDTO(optionalTrainer.get());
@@ -80,7 +80,7 @@ public class TrainerService {
         }
     }
 
-    public FullTrainerDto createTrainerAccount(FullTrainerDto dto) {
+    public PartialTrainerDto createTrainerAccount(FullTrainerDto dto) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(dto.getEmail());
         if (optionalTrainer.isEmpty()) {
             Trainer trainer = asMODEL(dto);
@@ -94,11 +94,11 @@ public class TrainerService {
         }
     }
 
-    public FullTrainerDto updateTrainer(String email, FullTrainerDto fullTrainerDto) {
+    public PartialTrainerDto updateTrainer(String email, FullTrainerDto fullTrainerDto) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             Trainer trainer = optionalTrainer.get();
-            trainer.setPassword(fullTrainerDto.getPassword());
+            trainer.setPassword(new BCryptPasswordEncoder().encode(fullTrainerDto.getPassword()));
             trainer.setFirstname(fullTrainerDto.getFirstname());
             trainer.setLastname(fullTrainerDto.getLastname());
             trainer.setDateOfBirth(fullTrainerDto.getDateOfBirth());
@@ -111,7 +111,7 @@ public class TrainerService {
         }
     }
 
-    public void deleteTrainerAccount(String email) {
+    public void dismissTrainerAccount(String email) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             Trainer trainer = optionalTrainer.get();
@@ -125,21 +125,23 @@ public class TrainerService {
         }
     }
 
-    public List<PartMemberDto> getClients(String email) {
+    public List<PartialMemberDto> getClients(String email) {
         Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
         if (optionalTrainer.isPresent()) {
             List<Member> members = memberRepository.findAllByTrainerIs(optionalTrainer.get());
-            List<PartMemberDto> partMemberDtoList = new ArrayList<>();
+            List<PartialMemberDto> partialMemberDtoList = new ArrayList<>();
             for (Member m : members) {
-                PartMemberDto partMemberDto = new PartMemberDto();
-                partMemberDto.setEmail(m.getEmail());
-                partMemberDto.setFirstname(m.getFirstname());
-                partMemberDto.setLastname(m.getLastname());
-                partMemberDto.setDateOfBirth(m.getDateOfBirth());
-                partMemberDto.setMembership(m.getMembership());
-                partMemberDtoList.add(partMemberDto);
+                PartialMemberDto partialMemberDto = new PartialMemberDto();
+                partialMemberDto.setFirstname(m.getFirstname());
+                partialMemberDto.setEmail(m.getEmail());
+                partialMemberDto.setLastname(m.getLastname());
+                partialMemberDto.setDateOfBirth(m.getDateOfBirth());
+                partialMemberDto.setMembership(m.getMembership());
+                partialMemberDto.setGoalIDs(m.getGoalIDs());
+                partialMemberDtoList.add(partialMemberDto);
+
             }
-            return partMemberDtoList;
+            return partialMemberDtoList;
 
         } else {
             throw new UsernameNotFoundException(email);
@@ -177,22 +179,20 @@ public class TrainerService {
         }
     }
 
-    private FullTrainerDto asDTO(Trainer model) {
-        FullTrainerDto dto = new FullTrainerDto();
+    private PartialTrainerDto asDTO(Trainer model) {
+        PartialTrainerDto dto = new PartialTrainerDto();
         dto.setEmail(model.getEmail());
-        dto.setPassword("********************************");
         dto.setFirstname(model.getFirstname());
         dto.setLastname(model.getLastname());
         dto.setDateOfBirth(model.getDateOfBirth());
         dto.setHourlyRate(model.getHourlyRate());
-        dto.setEnabled(model.isEnabled());
         return dto;
     }
 
     private Trainer asMODEL(FullTrainerDto dto) {
         Trainer model = new Trainer();
         model.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
-        model.setEmail(dto.getEmail());
+        model.setEmail(dto.getEmail().toLowerCase());
         model.setFirstname(dto.getFirstname());
         model.setLastname(dto.getLastname());
         model.setDateOfBirth(dto.getDateOfBirth());
