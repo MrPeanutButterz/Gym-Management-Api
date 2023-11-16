@@ -1,7 +1,6 @@
 package com.novi.gymmanagementapi.models;
 
 import jakarta.persistence.*;
-import org.hibernate.jdbc.Work;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

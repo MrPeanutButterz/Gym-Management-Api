@@ -72,9 +72,13 @@ public class GoalDto {
         this.endDate = endDate;
     }
 
-    public List<Long> getEvaluationIDs() { return evaluationIDs; }
+    public List<Long> getEvaluationIDs() {
+        return evaluationIDs;
+    }
 
-    public List<Long> getMealIDs() { return mealIDs; }
+    public List<Long> getMealIDs() {
+        return mealIDs;
+    }
 
     public void setEvaluationIDs(List<Long> evaluationIDs) {
         this.evaluationIDs = evaluationIDs;

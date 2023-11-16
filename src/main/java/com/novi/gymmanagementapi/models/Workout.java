@@ -1,11 +1,10 @@
 package com.novi.gymmanagementapi.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "workouts")
@@ -16,6 +15,10 @@ public class Workout {
     private Long id;
     private String name;
     private LocalDate date;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "workout_id", referencedColumnName = "id")
+    private List<Exercise> exercises;
 
     public Long getId() {
         return id;
@@ -39,5 +42,22 @@ public class Workout {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public List<Exercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    public List<Long> getExerciseIDs() {
+        // transforms a list of workouts to a list of workout IDs
+        List<Long> IDs = new ArrayList<>();
+        for (Exercise e : this.exercises) {
+            IDs.add(e.getId());
+        }
+        return IDs;
     }
 }

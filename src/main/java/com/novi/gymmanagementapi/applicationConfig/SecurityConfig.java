@@ -66,6 +66,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/members/goals/evaluations/**").hasRole("MEMBER")
                         .requestMatchers("/api/members/goals/meals/**").hasRole("MEMBER")
                         .requestMatchers("/api/members/goals/workouts/**").hasRole("MEMBER")
+                        .requestMatchers("/api/members/goals/workouts/exercise/**").hasRole("MEMBER")
 
                         // TRAINER ENDPOINTS
                         .requestMatchers("/api/trainers/account").hasRole("TRAINER")
@@ -76,6 +77,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/trainers/goals/evaluations/**").hasAnyRole("TRAINER")
                         .requestMatchers("/api/trainers/goals/meals/**").hasAnyRole("TRAINER")
                         .requestMatchers("/api/trainers/goals/workouts/**").hasAnyRole("TRAINER")
+                        .requestMatchers("/api/trainers/goals/workouts/exercise/**").hasAnyRole("TRAINER")
 
                         // ADMIN ENDPOINTS
                         .requestMatchers("/api/admin/subscription").hasRole("ADMIN")

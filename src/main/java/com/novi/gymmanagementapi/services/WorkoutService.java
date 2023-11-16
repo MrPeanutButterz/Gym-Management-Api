@@ -53,7 +53,7 @@ public class WorkoutService {
                     workoutDtoList.add(asDTO(w));
                 }
                 return workoutDtoList;
-            }  else {
+            } else {
                 throw new RecordNotFoundException();
             }
         } else {
@@ -99,6 +99,7 @@ public class WorkoutService {
         dto.setId(model.getId());
         dto.setName(model.getName());
         dto.setDate(model.getDate());
+        dto.setExerciseIDs(model.getExerciseIDs());
         return dto;
     }
 }
