@@ -6,5 +6,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 @Transactional
 public interface ProfilePictureRepository extends JpaRepository<ProfilePicture, Long> {
-    ProfilePicture findProfilePictureById(Long id);
 }

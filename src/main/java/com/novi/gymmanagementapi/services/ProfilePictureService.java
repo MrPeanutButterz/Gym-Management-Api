@@ -1,11 +1,11 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
+import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
 import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.models.ProfilePicture;
 import com.novi.gymmanagementapi.repositories.MemberRepository;
 import com.novi.gymmanagementapi.repositories.ProfilePictureRepository;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,7 +23,6 @@ public class ProfilePictureService {
         this.profilePictureRepository = doc;
         this.memberRepository = memberRepository;
     }
-
 
     public ProfilePicture uploadProfilePicture(String email, MultipartFile file) throws IOException {
         String name = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
@@ -44,9 +43,19 @@ public class ProfilePictureService {
     public ProfilePicture downloadProfilePicture(String email) {
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
-            ProfilePicture document = profilePictureRepository.findProfilePictureById(optionalMember.get().getProfilePicture().getId());
-            return document;
+            Member member = optionalMember.get();
+            if (member.getProfilePicture() != null) {
+                Long id = member.getProfilePicture().getId();
+                Optional<ProfilePicture> profilePicture = profilePictureRepository.findById(id);
+                if (profilePicture.isPresent()) {
+                    return profilePicture.get();
 
+                } else {
+                    throw new RecordNotFoundException();
+                }
+            } else {
+                throw new RecordNotFoundException();
+            }
         } else {
             throw new EmailNotFoundException(email);
         }
