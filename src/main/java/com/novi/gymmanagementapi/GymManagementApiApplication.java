@@ -30,8 +30,7 @@ public class GymManagementApiApplication {
     //De applicatie en database zijn onafhankelijk van elkaar waardoor het mogelijk is om eventueel naar een ander database systeem te wisselen (zoals MySQL, PostgreSQL, SQLite).
     //Communicatie met de database vindt plaats door middel van repositories. De database kan in de vorm van CRUD operaties of complexere, samengestelde, queries bevraagd worden.
     //De database is relationeel en bevat minimaal een 1 one-to-one relatie en 1 one-to-many relatie.
-    //todo •  De applicatie maakt het mogelijk om bestanden (zoals muziek, PDF’s of afbeeldingen) te uploaden en te downloaden. (huiswerk les van 1 november)
-    //todo • alle endpoints testen op url, body, headers.
+    //De applicatie maakt het mogelijk om bestanden (zoals muziek, PDF’s of afbeeldingen) te uploaden en te downloaden. (huiswerk les van 1 november)
     //todo • De application context van de applicatie wordt getest met Spring Boot test, WebMvc en JUnit.
     //todo • Het systeem wordt geleverd met een valide set aan data en unit-tests worden voorzien van eigen test data.
     //==================================================================================================================
@@ -41,7 +40,7 @@ public class GymManagementApiApplication {
     //Een lijst van benodigdheden om de applicatie te kunnen runnen (zoals applicaties, runtime environments of andere benodigdheden.
     //Een stappenplan met installatie instructies.
     //Een lijst met (test)gebruikers en user-rollen.
-    //todo • Een Postman collectie, die gebruikt kan worden om jouw applicatie te testen.
+    //Een Postman collectie, die gebruikt kan worden om jouw applicatie te testen.
     //todo • Een lijst van REST-endpoints, inclusief voorbeelden van de JSON-requests. Deze voorbeelden moeten uitgeschreven zijn zoals in Postman, zodat je ze gemakkelijk kunt selecteren, kopiëren en plakken. Hierin leg je ook uit hoe de endpoints beveiligd zijn.
 
 }

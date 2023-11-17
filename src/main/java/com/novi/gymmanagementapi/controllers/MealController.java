@@ -57,7 +57,7 @@ public class MealController {
      * */
 
     @PostMapping("trainers/goals/meals")
-    public ResponseEntity<MealDto> createMeal(String email,
+    public ResponseEntity<MealDto> createMeal(@RequestParam String email,
                                               @RequestParam Long goalID,
                                               @Valid @RequestBody MealDto mealDto) {
         return ResponseEntity
@@ -71,14 +71,14 @@ public class MealController {
     }
 
     @PutMapping("trainers/goals/meals")
-    public ResponseEntity<MealDto> updateMeal(String email,
+    public ResponseEntity<MealDto> updateMeal(@RequestParam String email,
                                               @RequestParam Long mealID,
                                               @Valid @RequestBody MealDto mealDto) {
         return ResponseEntity.ok().body(mealService.updateMeal(email, mealID, mealDto));
     }
 
     @DeleteMapping("trainers/goals/meals")
-    public ResponseEntity<Object> deleteMeal(String email, @RequestParam Long mealID) {
+    public ResponseEntity<Object> deleteMeal(@RequestParam String email, @RequestParam Long mealID) {
         mealService.deleteMeal(email, mealID);
         return ResponseEntity.noContent().build();
     }

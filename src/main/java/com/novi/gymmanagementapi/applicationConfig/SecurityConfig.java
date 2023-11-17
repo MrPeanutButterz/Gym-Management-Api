@@ -72,7 +72,7 @@ public class SecurityConfig {
 
                         // TRAINER ENDPOINTS
                         .requestMatchers("/api/trainers/account").hasRole("TRAINER")
-                        .requestMatchers("/api/trainers/subscription").hasRole("TRAINER")
+                        .requestMatchers("/api/trainers/subscription/**").hasRole("TRAINER")
                         .requestMatchers("/api/trainers/clients").hasRole("TRAINER")
                         .requestMatchers("/api/trainers/goals").hasAnyRole("TRAINER")
                         .requestMatchers("/api/trainers/goals/**").hasAnyRole("TRAINER")

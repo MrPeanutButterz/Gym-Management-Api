@@ -51,12 +51,12 @@ public class MembershipController {
      * */
 
     @PutMapping("trainers/subscription")
-    public ResponseEntity<MembershipDto> subscribeMembership(String email, @RequestParam long membershipID) {
+    public ResponseEntity<MembershipDto> subscribeMembership(@RequestParam String email, @RequestParam long membershipID) {
         return ResponseEntity.ok().body(memberShipService.subscribe(membershipID, email));
     }
 
     @DeleteMapping("trainers/subscription")
-    public ResponseEntity<Objects> unsubscribeMembership(String email) {
+    public ResponseEntity<Objects> unsubscribeMembership(@RequestParam String email) {
         memberShipService.unsubscribe(email);
         return ResponseEntity.noContent().build();
     }

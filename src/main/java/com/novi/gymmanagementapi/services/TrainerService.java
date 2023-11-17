@@ -143,6 +143,7 @@ public class TrainerService {
                 memberResponseDto.setDateOfBirth(m.getDateOfBirth());
                 memberResponseDto.setMembership(m.getMembership());
                 memberResponseDto.setGoalIDs(m.getGoalIDs());
+                memberResponseDto.setTrainer(modelToResponse(m.getTrainer()));
                 memberResponseDtoList.add(memberResponseDto);
 
             }
@@ -171,6 +172,15 @@ public class TrainerService {
         } else {
             throw new EmailNotFoundException(email);
         }
+    }
+
+    private TrainerResponseDto modelToResponse(Trainer model) {
+        TrainerResponseDto dto = new TrainerResponseDto();
+        dto.setEmail(model.getEmail());
+        dto.setFirstname(model.getFirstname());
+        dto.setLastname(model.getLastname());
+        dto.setDateOfBirth(model.getDateOfBirth());
+        return dto;
     }
 
     private TrainerResponseDto asDTO(Trainer model) {
