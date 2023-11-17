@@ -57,6 +57,8 @@ public class SecurityConfig {
                         .requestMatchers("api/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/account").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/memberships").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/profile-picture").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/profile-picture").authenticated()
 
                         // MEMBER ENDPOINTS
                         .requestMatchers("/api/members/account").hasRole("MEMBER")
