@@ -146,7 +146,6 @@ class TrainerServiceTest {
     }
 
     @Test
-    @Disabled
     @DisplayName("Should update a trainer")
     void updateTrainer() {
         trainerDtoOne.setEmail(trainerOne.getEmail());
