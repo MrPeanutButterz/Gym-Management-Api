@@ -1,7 +1,7 @@
 package com.novi.gymmanagementapi.services;
 
-import com.novi.gymmanagementapi.dto.TrainerDto;
 import com.novi.gymmanagementapi.dto.MemberResponseDto;
+import com.novi.gymmanagementapi.dto.TrainerDto;
 import com.novi.gymmanagementapi.dto.TrainerResponseDto;
 import com.novi.gymmanagementapi.exceptions.EmailAlreadyTakenException;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class TrainerService {

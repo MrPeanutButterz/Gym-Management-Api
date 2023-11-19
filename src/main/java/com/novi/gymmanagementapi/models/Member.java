@@ -17,6 +17,9 @@ public class Member extends User {
     @JoinColumn(name = "member_email", referencedColumnName = "email")
     private List<Goal> goals;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private ProfilePicture profilePicture;
+
     public Membership getMembership() {
         return membership;
     }
@@ -25,13 +28,29 @@ public class Member extends User {
         this.membership = membership;
     }
 
-    public Trainer getTrainer() { return trainer; }
+    public Trainer getTrainer() {
+        return trainer;
+    }
 
-    public void setTrainer(Trainer trainer) { this.trainer = trainer; }
+    public void setTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
 
-    public List<Goal> getGoals() { return goals; }
+    public ProfilePicture getProfilePicture() {
+        return profilePicture;
+    }
 
-    public void setGoals(List<Goal> goals) { this.goals = goals; }
+    public void setProfilePicture(ProfilePicture profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public List<Goal> getGoals() {
+        return goals;
+    }
+
+    public void setGoals(List<Goal> goals) {
+        this.goals = goals;
+    }
 
     public List<Long> getGoalIDs() {
         // transforms a list of workouts to a list of workout IDs

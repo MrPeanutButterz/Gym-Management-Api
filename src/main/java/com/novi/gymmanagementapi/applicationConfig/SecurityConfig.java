@@ -57,8 +57,6 @@ public class SecurityConfig {
                         .requestMatchers("api/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/account").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/memberships").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/profile-picture").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/profile-picture").authenticated()
 
                         // MEMBER ENDPOINTS
                         .requestMatchers("/api/members/account").hasRole("MEMBER")
@@ -69,6 +67,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/members/goals/meals/**").hasRole("MEMBER")
                         .requestMatchers("/api/members/goals/workouts/**").hasRole("MEMBER")
                         .requestMatchers("/api/members/goals/workouts/exercise/**").hasRole("MEMBER")
+                        .requestMatchers("/api/profile-picture").hasRole("MEMBER")
 
                         // TRAINER ENDPOINTS
                         .requestMatchers("/api/trainers/account").hasRole("TRAINER")

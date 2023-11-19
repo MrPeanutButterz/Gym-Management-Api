@@ -34,8 +34,7 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private ProfilePicture profilePicture;
+
 
     public String getEmail() {
         return email;
@@ -101,7 +100,4 @@ public class User {
         this.authorities.remove(authority);
     }
 
-    public ProfilePicture getProfilePicture() {return profilePicture; }
-
-    public void setProfilePicture(ProfilePicture profilePicture) { this.profilePicture = profilePicture; }
 }
