@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.MembershipDto;
+import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
 import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.models.Membership;
@@ -13,24 +14,24 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MemberShipService {
+public class MembershipService {
 
-    private final MembershipRepository memberShipRepository;
+    private final MembershipRepository membershipRepository;
     private final MemberRepository memberRepository;
 
-    public MemberShipService(MembershipRepository memberShipRepository,
+    public MembershipService(MembershipRepository membershipRepository,
                              MemberRepository memberRepository) {
-        this.memberShipRepository = memberShipRepository;
+        this.membershipRepository = membershipRepository;
         this.memberRepository = memberRepository;
     }
 
     public MembershipDto createMembership(MembershipDto membershipDto) {
-        Membership membership = memberShipRepository.save(asMODEL(membershipDto));
+        Membership membership = membershipRepository.save(asMODEL(membershipDto));
         return asDTO(membership);
     }
 
     public List<MembershipDto> getMemberships() {
-        List<Membership> membershipList = new ArrayList<>(memberShipRepository.findAll());
+        List<Membership> membershipList = new ArrayList<>(membershipRepository.findAll());
         List<MembershipDto> membershipDtoList = new ArrayList<>();
         for (Membership membership : membershipList) {
             MembershipDto membershipDto = asDTO(membership);
@@ -41,13 +42,13 @@ public class MemberShipService {
     }
 
     public MembershipDto updateMembership(long membershipID, MembershipDto membershipDto) {
-        Optional<Membership> optionalMembership = memberShipRepository.findById(membershipID);
+        Optional<Membership> optionalMembership = membershipRepository.findById(membershipID);
         if (optionalMembership.isPresent()) {
             Membership membership = optionalMembership.get();
             membership.setName(membershipDto.getName());
             membership.setPricePerMonth(membershipDto.getPricePerMonth());
             membership.setContractLengthInWeek(membershipDto.getContractLengthInWeek());
-            memberShipRepository.save(membership);
+            membershipRepository.save(membership);
             return asDTO(membership);
 
         } else {
@@ -56,9 +57,9 @@ public class MemberShipService {
     }
 
     public void deleteMembership(long membershipID) {
-        Optional<Membership> optionalMembership = memberShipRepository.findById(membershipID);
+        Optional<Membership> optionalMembership = membershipRepository.findById(membershipID);
         if (optionalMembership.isPresent()) {
-            memberShipRepository.deleteById(membershipID);
+            membershipRepository.deleteById(membershipID);
 
         } else {
             throw new RecordNotFoundException(membershipID);
@@ -66,23 +67,25 @@ public class MemberShipService {
     }
 
     public MembershipDto subscribe(long membershipID, String email) {
-        Optional<Membership> optionalMembership = memberShipRepository.findById(membershipID);
         Optional<Member> optionalMember = memberRepository.findById(email);
-        if (optionalMembership.isPresent() && optionalMember.isPresent()) {
-            Membership membership = optionalMembership.get();
-            Member member = optionalMember.get();
-            member.setMembership(membership);
-            memberRepository.save(member);
-            return asDTO(membership);
+        if (optionalMember.isPresent()) {
+            Optional<Membership> optionalMembership = membershipRepository.findById(membershipID);
+            if (optionalMembership.isPresent()) {
+                Membership membership = optionalMembership.get();
+                Member member = optionalMember.get();
+                member.setMembership(membership);
+                memberRepository.save(member);
+                return asDTO(membership);
 
+            } else {
+                throw new RecordNotFoundException(membershipID);
+            }
         } else {
-            throw new RecordNotFoundException(membershipID);
+            throw new EmailNotFoundException(email);
         }
     }
 
     public void unsubscribe(String email) {
-
-        // todo make this function with expiration date
         Optional<Member> optionalMember = memberRepository.findById(email);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
@@ -90,7 +93,7 @@ public class MemberShipService {
             memberRepository.save(member);
 
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 

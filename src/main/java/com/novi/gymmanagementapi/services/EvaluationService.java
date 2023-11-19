@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.EvaluationDto;
+import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
 import com.novi.gymmanagementapi.models.Evaluation;
 import com.novi.gymmanagementapi.models.Goal;
@@ -21,7 +22,9 @@ public class EvaluationService {
     private final EvaluationRepository evaluationRepository;
     private final GoalRepository goalRepository;
 
-    public EvaluationService(MemberRepository memberRepository, EvaluationRepository evaluationRepository, GoalRepository goalRepository) {
+    public EvaluationService(MemberRepository memberRepository,
+                             EvaluationRepository evaluationRepository,
+                             GoalRepository goalRepository) {
         this.memberRepository = memberRepository;
         this.evaluationRepository = evaluationRepository;
         this.goalRepository = goalRepository;
@@ -30,17 +33,21 @@ public class EvaluationService {
 
     public EvaluationDto createEvaluation(String email, Long goalID, EvaluationDto evaluationDto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Goal> optionalGoal = goalRepository.findById(goalID);
-        if (optionalMember.isPresent() && optionalGoal.isPresent()) {
-            Goal goal = optionalGoal.get();
-            List<Evaluation> evaluationList = goal.getEvaluations();
-            evaluationList.add(asMODEL(evaluationDto));
-            goal.setEvaluations(evaluationList);
-            goalRepository.save(goal);
-            return evaluationDto;
+        if (optionalMember.isPresent()) {
+            Optional<Goal> optionalGoal = goalRepository.findById(goalID);
+            if (optionalGoal.isPresent()) {
+                Goal goal = optionalGoal.get();
+                List<Evaluation> evaluationList = goal.getEvaluations();
+                evaluationList.add(asMODEL(evaluationDto));
+                goal.setEvaluations(evaluationList);
+                goalRepository.save(goal);
+                return evaluationDto;
 
+            } else {
+                throw new RecordNotFoundException(goalID);
+            }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 
@@ -54,41 +61,48 @@ public class EvaluationService {
                     evaluationDtoList.add(asDTO(e));
                 }
                 return evaluationDtoList;
-            }  else {
-                throw new RecordNotFoundException();
+
+            } else {
+                throw new RecordNotFoundException(goalID);
             }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 
     public EvaluationDto updateEvaluation(String email, Long evaluationID, EvaluationDto evaluationDto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Evaluation> optionalEvaluation = evaluationRepository.findById(evaluationID);
-        if (optionalMember.isPresent() && optionalEvaluation.isPresent()) {
-            Evaluation evaluation = optionalEvaluation.get();
-            evaluation.setDate(evaluationDto.getDate());
-            evaluation.setCurrentBodyWeight(evaluationDto.getCurrentBodyWeight());
-            evaluation.setDailyCalIntake(evaluationDto.getDailyCalIntake());
-            evaluationRepository.save(evaluation);
-            return asDTO(evaluation);
-
+        if (optionalMember.isPresent()) {
+            Optional<Evaluation> optionalEvaluation = evaluationRepository.findById(evaluationID);
+            if (optionalEvaluation.isPresent()) {
+                Evaluation evaluation = optionalEvaluation.get();
+                evaluation.setDate(evaluationDto.getDate());
+                evaluation.setCurrentBodyWeight(evaluationDto.getCurrentBodyWeight());
+                evaluation.setDailyCalIntake(evaluationDto.getDailyCalIntake());
+                evaluationRepository.save(evaluation);
+                return asDTO(evaluation);
+            } else {
+                throw new RecordNotFoundException(evaluationID);
+            }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 
     public void deleteEvaluation(String email, Long evaluationID) {
         Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Evaluation> optionalEvaluation = evaluationRepository.findById(evaluationID);
-        if (optionalMember.isPresent() && optionalEvaluation.isPresent()) {
-            evaluationRepository.delete(optionalEvaluation.get());
+        if (optionalMember.isPresent()) {
+            Optional<Evaluation> optionalEvaluation = evaluationRepository.findById(evaluationID);
+            if (optionalEvaluation.isPresent()) {
+                evaluationRepository.delete(optionalEvaluation.get());
+
+            } else {
+                throw new RecordNotFoundException(evaluationID);
+            }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
-
-    // todo add get all by ID
 
     private EvaluationDto asDTO(Evaluation model) {
         EvaluationDto dto = new EvaluationDto();

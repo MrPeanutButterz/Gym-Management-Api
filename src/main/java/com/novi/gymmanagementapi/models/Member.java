@@ -25,21 +25,13 @@ public class Member extends User {
         this.membership = membership;
     }
 
-    public Trainer getTrainer() {
-        return trainer;
-    }
+    public Trainer getTrainer() { return trainer; }
 
-    public void setTrainer(Trainer trainer) {
-        this.trainer = trainer;
-    }
+    public void setTrainer(Trainer trainer) { this.trainer = trainer; }
 
-    public List<Goal> getGoals() {
-        return goals;
-    }
+    public List<Goal> getGoals() { return goals; }
 
-    public void setGoals(List<Goal> goals) {
-        this.goals = goals;
-    }
+    public void setGoals(List<Goal> goals) { this.goals = goals; }
 
     public List<Long> getGoalIDs() {
         // transforms a list of workouts to a list of workout IDs

@@ -1,7 +1,7 @@
 package com.novi.gymmanagementapi.controllers;
 
 import com.novi.gymmanagementapi.dto.MembershipDto;
-import com.novi.gymmanagementapi.services.MemberShipService;
+import com.novi.gymmanagementapi.services.MembershipService;
 import com.novi.gymmanagementapi.utilties.UriBuilder;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +16,9 @@ import java.util.Objects;
 public class MembershipController {
 
     UriBuilder uriBuilder = new UriBuilder();
-    private final MemberShipService memberShipService;
+    private final MembershipService memberShipService;
 
-    public MembershipController(MemberShipService memberShipService) {
+    public MembershipController(MembershipService memberShipService) {
         this.memberShipService = memberShipService;
     }
 
@@ -51,12 +51,12 @@ public class MembershipController {
      * */
 
     @PutMapping("trainers/subscription")
-    public ResponseEntity<MembershipDto> subscribeMembership(String email, @RequestParam long membershipID) {
+    public ResponseEntity<MembershipDto> subscribeMembership(@RequestParam String email, @RequestParam long membershipID) {
         return ResponseEntity.ok().body(memberShipService.subscribe(membershipID, email));
     }
 
     @DeleteMapping("trainers/subscription")
-    public ResponseEntity<Objects> unsubscribeMembership(String email) {
+    public ResponseEntity<Objects> unsubscribeMembership(@RequestParam String email) {
         memberShipService.unsubscribe(email);
         return ResponseEntity.noContent().build();
     }

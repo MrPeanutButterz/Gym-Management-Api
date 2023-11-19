@@ -53,8 +53,8 @@ public class GoalController {
 
     @PostMapping("trainers/goals")
     public ResponseEntity<GoalDto> createGoal(@RequestParam String email, @Valid @RequestBody GoalDto goalDto) {
-        GoalDto dto = goalService.createGoal(email, goalDto);
-        return ResponseEntity.created(uriBuilder.buildWithEmail(email)).body(dto);
+        goalService.createGoal(email, goalDto);
+        return ResponseEntity.created(uriBuilder.buildWithEmail(email)).build();
     }
 
     @GetMapping("trainers/goals")

@@ -2,6 +2,7 @@ package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.GoalDto;
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
+import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
 import com.novi.gymmanagementapi.models.Goal;
 import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.repositories.GoalRepository;
@@ -15,12 +16,11 @@ import java.util.Optional;
 @Service
 public class GoalService {
 
-    // todo add resource not found to error message
-
     private final GoalRepository goalRepository;
     private final MemberRepository memberRepository;
 
-    public GoalService(GoalRepository goalRepository, MemberRepository memberRepository) {
+    public GoalService(GoalRepository goalRepository,
+                       MemberRepository memberRepository) {
         this.goalRepository = goalRepository;
         this.memberRepository = memberRepository;
     }
@@ -58,18 +58,22 @@ public class GoalService {
 
     public GoalDto updateGoal(String email, Long goalID, GoalDto goalDto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Goal> optionalGoal = goalRepository.findById(goalID);
-        if (optionalMember.isPresent() && optionalGoal.isPresent()) {
-            Goal goal = optionalGoal.get();
-            goal.setDescription(goalDto.getDescription());
-            goal.setCurrentBodyWeight(goalDto.getCurrentBodyWeight());
-            goal.setTargetBodyWeight(goalDto.getTargetBodyWeight());
-            goal.setTargetCalorieIntake(goalDto.getTargetCalorieIntake());
-            goal.setStartDate(goalDto.getStartDate());
-            goal.setEndDate(goalDto.getEndDate());
-            goalRepository.save(goal);
-            return asDTO(goal);
+        if (optionalMember.isPresent()) {
+            Optional<Goal> optionalGoal = goalRepository.findById(goalID);
+            if (optionalGoal.isPresent()) {
+                Goal goal = optionalGoal.get();
+                goal.setDescription(goalDto.getDescription());
+                goal.setCurrentBodyWeight(goalDto.getCurrentBodyWeight());
+                goal.setTargetBodyWeight(goalDto.getTargetBodyWeight());
+                goal.setTargetCalorieIntake(goalDto.getTargetCalorieIntake());
+                goal.setStartDate(goalDto.getStartDate());
+                goal.setEndDate(goalDto.getEndDate());
+                goalRepository.save(goal);
+                return asDTO(goal);
 
+            } else {
+                throw new RecordNotFoundException(goalID);
+            }
         } else {
             throw new EmailNotFoundException(email);
         }
@@ -77,10 +81,14 @@ public class GoalService {
 
     public void deleteGoal(String email, Long goalID) {
         Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Goal> optionalGoal = goalRepository.findById(goalID);
-        if (optionalMember.isPresent() && optionalGoal.isPresent()) {
-            goalRepository.delete(optionalGoal.get());
+        if (optionalMember.isPresent()) {
+            Optional<Goal> optionalGoal = goalRepository.findById(goalID);
+            if (optionalGoal.isPresent()) {
+                goalRepository.delete(optionalGoal.get());
 
+            } else {
+                throw new RecordNotFoundException(goalID);
+            }
         } else {
             throw new EmailNotFoundException(email);
         }

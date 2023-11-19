@@ -1,6 +1,7 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.MealDto;
+import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
 import com.novi.gymmanagementapi.models.Goal;
 import com.novi.gymmanagementapi.models.Meal;
@@ -21,7 +22,9 @@ public class MealService {
     private final MemberRepository memberRepository;
     private final GoalRepository goalRepository;
 
-    public MealService(MealRepository mealRepository, MemberRepository memberRepository, GoalRepository goalRepository) {
+    public MealService(MealRepository mealRepository,
+                       MemberRepository memberRepository,
+                       GoalRepository goalRepository) {
         this.mealRepository = mealRepository;
         this.memberRepository = memberRepository;
         this.goalRepository = goalRepository;
@@ -30,17 +33,20 @@ public class MealService {
 
     public MealDto createMeal(String email, Long goalID, MealDto mealDto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Goal> optionalGoal = goalRepository.findById(goalID);
-        if (optionalMember.isPresent() && optionalGoal.isPresent()) {
-            Goal goal = optionalGoal.get();
-            List<Meal> mealList = goal.getMeals();
-            mealList.add(asMODEL(mealDto));
-            goal.setMeals(mealList);
-            goalRepository.save(goal);
-            return mealDto;
-
+        if (optionalMember.isPresent()) {
+            Optional<Goal> optionalGoal = goalRepository.findById(goalID);
+            if (optionalGoal.isPresent()) {
+                Goal goal = optionalGoal.get();
+                List<Meal> mealList = goal.getMeals();
+                mealList.add(asMODEL(mealDto));
+                goal.setMeals(mealList);
+                goalRepository.save(goal);
+                return mealDto;
+            } else {
+                throw new RecordNotFoundException(goalID);
+            }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 
@@ -55,37 +61,47 @@ public class MealService {
                     mealDtoList.add(asDTO(m));
                 }
                 return mealDtoList;
-            }  else {
-                throw new RecordNotFoundException();
+
+            } else {
+                throw new RecordNotFoundException(goalID);
             }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 
     public MealDto updateMeal(String email, Long mealID, MealDto mealDto) {
         Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Meal> optionalMeal = mealRepository.findById(mealID);
-        if (optionalMember.isPresent() && optionalMeal.isPresent()) {
-            Meal meal = optionalMeal.get();
-            meal.setDate(mealDto.getDate());
-            meal.setCalories(mealDto.getCalories());
-            meal.setName(mealDto.getName());
-            mealRepository.save(meal);
-            return asDTO(meal);
+        if (optionalMember.isPresent()) {
+            Optional<Meal> optionalMeal = mealRepository.findById(mealID);
+            if (optionalMeal.isPresent()) {
+                Meal meal = optionalMeal.get();
+                meal.setDate(mealDto.getDate());
+                meal.setCalories(mealDto.getCalories());
+                meal.setName(mealDto.getName());
+                mealRepository.save(meal);
+                return asDTO(meal);
 
+            } else {
+                throw new RecordNotFoundException(mealID);
+            }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 
     public void deleteMeal(String email, Long mealID) {
         Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Meal> optionalMeal = mealRepository.findById(mealID);
-        if (optionalMember.isPresent() && optionalMeal.isPresent()) {
-            mealRepository.delete(optionalMeal.get());
+        if (optionalMember.isPresent()) {
+            Optional<Meal> optionalMeal = mealRepository.findById(mealID);
+            if (optionalMeal.isPresent()) {
+                mealRepository.delete(optionalMeal.get());
+
+            } else {
+                throw new RecordNotFoundException(mealID);
+            }
         } else {
-            throw new RecordNotFoundException();
+            throw new EmailNotFoundException(email);
         }
     }
 
