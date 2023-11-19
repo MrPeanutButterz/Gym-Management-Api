@@ -1,15 +1,14 @@
 package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.dto.MembershipDto;
-import com.novi.gymmanagementapi.models.Authority;
 import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.models.Membership;
 import com.novi.gymmanagementapi.repositories.MemberRepository;
 import com.novi.gymmanagementapi.repositories.MembershipRepository;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -18,14 +17,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc(addFilters = false)
@@ -37,27 +33,32 @@ class MembershipServiceTest {
     MemberRepository memberRepository;
     @InjectMocks
     private MembershipService membershipService;
-    @Captor
-    private ArgumentCaptor<Membership> membershipArgumentCaptor;
 
-    Membership membershipOne = new Membership();
-    Membership membershipTwo = new Membership();
-    MembershipDto membershipDtoOne = new MembershipDto();
+    Membership testMembershipOne = new Membership();
+    Membership testMembershipTwo = new Membership();
+    MembershipDto testMembershipDtoOne = new MembershipDto();
+    MembershipDto testMembershipDtoTwo = new MembershipDto();
     Member memberOne = new Member();
 
     @BeforeEach
     void setUp() {
-        membershipOne.setName("MembershipOne");
-        membershipOne.setPricePerMonth(50);
-        membershipOne.setContractLengthInWeek(52);
+        testMembershipOne.setName("MembershipOne");
+        testMembershipOne.setPricePerMonth(50);
+        testMembershipOne.setContractLengthInWeek(100);
 
-        membershipDtoOne.setName("MembershipDtoOne");
-        membershipDtoOne.setPricePerMonth(50);
-        membershipDtoOne.setContractLengthInWeek(52);
+        testMembershipDtoOne.setName("MembershipDtoOne");
+        testMembershipDtoOne.setPricePerMonth(51);
+        testMembershipDtoOne.setContractLengthInWeek(101);
 
-        membershipTwo.setName("MembershipTwo");
-        membershipTwo.setPricePerMonth(55);
-        membershipTwo.setContractLengthInWeek(104);
+        testMembershipTwo.setId(1L);
+        testMembershipTwo.setName("MembershipTwo");
+        testMembershipTwo.setPricePerMonth(52);
+        testMembershipTwo.setContractLengthInWeek(102);
+
+        testMembershipDtoTwo.setId(1L);
+        testMembershipDtoTwo.setName("MembershipTwo");
+        testMembershipDtoTwo.setPricePerMonth(52);
+        testMembershipDtoTwo.setContractLengthInWeek(102);
 
         memberOne.setEmail("test@mail.com");
         memberOne.setFirstname("Jack");
@@ -70,24 +71,34 @@ class MembershipServiceTest {
     @Test
     @DisplayName("Should create a new membership")
     void shouldCreateMembership() {
-        given(membershipRepository.findById(0L)).willReturn(Optional.of(membershipOne));
 
-        Membership membership = new Membership();
-        given(membershipRepository.save(membership)).willReturn(membershipOne);
+        MembershipDto inputMembershipDto = new MembershipDto();
+        inputMembershipDto.setName("MembershipOne");
+        inputMembershipDto.setPricePerMonth(50);
+        inputMembershipDto.setContractLengthInWeek(100);
 
-        membershipRepository.save(membershipOne);
+        Membership savedMembership = new Membership();
+        savedMembership.setId(2L);
+        savedMembership.setName(inputMembershipDto.getName());
+        savedMembership.setPricePerMonth(inputMembershipDto.getPricePerMonth());
+        savedMembership.setContractLengthInWeek(inputMembershipDto.getContractLengthInWeek());
+        when(membershipRepository.save(any())).thenReturn(savedMembership);
 
-        verify(membershipRepository, times(1)).save(membershipArgumentCaptor.capture());
+        MembershipDto createdMembershipDto = membershipService.createMembership(inputMembershipDto);
 
-        Membership captured = membershipArgumentCaptor.getValue();
+        verify(membershipRepository, times(1)).save(any());
 
-        assertEquals(membershipOne.getName(), captured.getName());
+        assertNotNull(createdMembershipDto);
+        assertEquals(savedMembership.getId(), createdMembershipDto.getId());
+        assertEquals(savedMembership.getName(), createdMembershipDto.getName());
+        assertEquals(savedMembership.getPricePerMonth(), createdMembershipDto.getPricePerMonth());
+        assertEquals(savedMembership.getContractLengthInWeek(), createdMembershipDto.getContractLengthInWeek());
     }
 
     @Test
     @DisplayName("Should get all memberships")
     void getAllMemberships() {
-        given(membershipRepository.findAll()).willReturn(List.of(membershipOne, membershipTwo));
+        given(membershipRepository.findAll()).willReturn(List.of(testMembershipOne, testMembershipTwo));
 
         List<Membership> membershipList = membershipRepository.findAll();
         List<MembershipDto> membershipDtoList = membershipService.getMemberships();
@@ -102,44 +113,46 @@ class MembershipServiceTest {
     }
 
     @Test
+    @DisplayName("Should update a memberships")
     void updateMembership() {
-        given(membershipRepository.findById(anyLong())).willReturn(Optional.ofNullable(membershipOne));
+        given(membershipRepository.findById(anyLong())).willReturn(Optional.of(testMembershipOne));
 
-        Optional<Membership> optionalMembership = membershipRepository.findById(1L);
+        MembershipDto membershipDto = membershipService.updateMembership(1L, testMembershipDtoOne);
 
-        assertEquals(optionalMembership.get().getId(), 0);
-        assertEquals(optionalMembership.get().getName(), membershipOne.getName());
-        assertEquals(optionalMembership.get().getPricePerMonth(), membershipOne.getPricePerMonth());
-        assertEquals(optionalMembership.get().getContractLengthInWeek(), membershipOne.getContractLengthInWeek());
+        assertEquals(membershipDto.getId(), testMembershipDtoOne.getId());
+        assertEquals(membershipDto.getName(), testMembershipDtoOne.getName());
+        assertEquals(membershipDto.getPricePerMonth(), testMembershipDtoOne.getPricePerMonth());
+        assertEquals(membershipDto.getContractLengthInWeek(), testMembershipDtoOne.getContractLengthInWeek());
     }
 
     @Test
     @DisplayName("Should delete a membership")
     void deleteMembership() {
-        given(membershipRepository.findById(anyLong())).willReturn(Optional.ofNullable(membershipOne));
+        given(membershipRepository.findById(anyLong())).willReturn(Optional.ofNullable(testMembershipOne));
 
         membershipService.deleteMembership(0L);
 
         verify(membershipRepository, times(1)).deleteById(0L);
+        // todo voeg de exception nog toe
     }
 
     @Test
     @DisplayName("Should subscribe a member")
     void subscribe() {
-        given(membershipRepository.findById(1L)).willReturn(Optional.of(membershipOne));
+        given(membershipRepository.findById(1L)).willReturn(Optional.of(testMembershipOne));
         given(memberRepository.findById(memberOne.getEmail())).willReturn(Optional.ofNullable(memberOne));
 
         membershipService.subscribe(1L, memberOne.getEmail());
 
-        assertEquals(memberOne.getMembership().getName(), membershipOne.getName());
-        assertEquals(memberOne.getMembership().getPricePerMonth(), membershipOne.getPricePerMonth());
-        assertEquals(memberOne.getMembership().getContractLengthInWeek(), membershipOne.getContractLengthInWeek());
+        assertEquals(memberOne.getMembership().getName(), testMembershipOne.getName());
+        assertEquals(memberOne.getMembership().getPricePerMonth(), testMembershipOne.getPricePerMonth());
+        assertEquals(memberOne.getMembership().getContractLengthInWeek(), testMembershipOne.getContractLengthInWeek());
     }
 
     @Test
     @DisplayName("Should unsubscribe a member")
     void unsubscribe() {
-        given(membershipRepository.findById(1L)).willReturn(Optional.of(membershipOne));
+        given(membershipRepository.findById(1L)).willReturn(Optional.of(testMembershipOne));
         given(memberRepository.findById(memberOne.getEmail())).willReturn(Optional.ofNullable(memberOne));
 
         membershipService.subscribe(1L, memberOne.getEmail());
