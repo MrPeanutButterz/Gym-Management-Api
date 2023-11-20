@@ -55,35 +55,7 @@ public class SecurityConfig {
 
                         // OPEN ENDPOINTS
                         .requestMatchers("api/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/account").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/memberships").permitAll()
-
-                        // MEMBER ENDPOINTS
-                        .requestMatchers("/api/members/account").hasRole("MEMBER")
-                        .requestMatchers("/api/members/subscription").hasRole("MEMBER")
-                        .requestMatchers("/api/members/personal-trainers").hasRole("MEMBER")
-                        .requestMatchers("/api/members/goals/**").hasRole("MEMBER")
-                        .requestMatchers("/api/members/goals/evaluations/**").hasRole("MEMBER")
-                        .requestMatchers("/api/members/goals/meals/**").hasRole("MEMBER")
-                        .requestMatchers("/api/members/goals/workouts/**").hasRole("MEMBER")
-                        .requestMatchers("/api/members/goals/workouts/exercise/**").hasRole("MEMBER")
-                        .requestMatchers("/api/profile-picture").hasRole("MEMBER")
-
-                        // TRAINER ENDPOINTS
-                        .requestMatchers("/api/trainers/account").hasRole("TRAINER")
-                        .requestMatchers("/api/trainers/subscription/**").hasRole("TRAINER")
-                        .requestMatchers("/api/trainers/clients").hasRole("TRAINER")
-                        .requestMatchers("/api/trainers/goals").hasAnyRole("TRAINER")
-                        .requestMatchers("/api/trainers/goals/**").hasAnyRole("TRAINER")
-                        .requestMatchers("/api/trainers/goals/evaluations/**").hasAnyRole("TRAINER")
-                        .requestMatchers("/api/trainers/goals/meals/**").hasAnyRole("TRAINER")
-                        .requestMatchers("/api/trainers/goals/workouts/**").hasAnyRole("TRAINER")
-                        .requestMatchers("/api/trainers/goals/workouts/exercise/**").hasAnyRole("TRAINER")
-
-                        // ADMIN ENDPOINTS
-                        .requestMatchers("/api/admin/subscription").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/manage-members/**").hasRole("ADMIN")
-                        .requestMatchers("/api/admin/manage-trainers/**").hasRole("ADMIN")
+                        .requestMatchers("/api/accounts").permitAll()
 
                         .anyRequest().denyAll())
 

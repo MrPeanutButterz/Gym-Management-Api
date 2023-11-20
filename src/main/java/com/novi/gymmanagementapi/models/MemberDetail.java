@@ -17,9 +17,9 @@ public class MemberDetail {
     private LocalDate contractEndDate;
     @ManyToOne(fetch = FetchType.EAGER)
     private Membership membership;
-/*    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "member_email", referencedColumnName = "email")
-    private List<Goal> goals;*/
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
+    private List<Goal> goals;
 
     public Long getId() {
         return id;
@@ -61,11 +61,11 @@ public class MemberDetail {
         this.membership = membership;
     }
 
-/*    public List<Goal> getGoals() {
+    public List<Goal> getGoals() {
         return goals;
     }
 
     public void setGoals(List<Goal> goals) {
         this.goals = goals;
-    }*/
+    }
 }

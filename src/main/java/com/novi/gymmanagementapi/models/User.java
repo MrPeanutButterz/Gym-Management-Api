@@ -2,7 +2,9 @@ package com.novi.gymmanagementapi.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,11 +15,13 @@ public class User {
 
     @Id
     @Email
+    @NotBlank
     @Column(nullable = false, unique = true)
     private String email;
     @NotNull
+    @Size(min = 6)
     private String password;
-    @Column(nullable = false)
+    @NotNull
     private boolean enabled = true;
     @OneToMany(
             targetEntity = Authority.class,
@@ -28,9 +32,9 @@ public class User {
     private Set<Authority> authorities = new HashSet<>();
     @OneToOne
     private ContractInformation contractInformation;
-    @OneToOne(mappedBy = "id")
+    @OneToOne
     private MemberDetail memberDetail;
-    @OneToOne(mappedBy = "id")
+    @OneToOne
     private TrainerDetail trainerDetail;
 
 

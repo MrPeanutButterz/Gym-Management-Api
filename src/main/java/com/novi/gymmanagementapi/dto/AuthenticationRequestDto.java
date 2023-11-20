@@ -1,17 +1,16 @@
 package com.novi.gymmanagementapi.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class AuthenticationRequestDto {
 
+    @NotNull
+    @Email
     private String email;
+    @Size(min = 5, max = 30)
     private String password;
-
-    public AuthenticationRequestDto() {
-    }
-
-    public AuthenticationRequestDto(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 
     public String getEmail() {
         return email;
@@ -24,6 +23,7 @@ public class AuthenticationRequestDto {
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
