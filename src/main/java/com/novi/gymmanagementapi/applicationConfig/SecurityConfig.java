@@ -55,7 +55,8 @@ public class SecurityConfig {
 
                         // OPEN ENDPOINTS
                         .requestMatchers("api/login").permitAll()
-                        .requestMatchers("/api/accounts").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/accounts").permitAll()
+                        .requestMatchers("/api/accounts").hasAnyRole("MEMBER", "TRAINER", "ADMIN")
 
                         .anyRequest().denyAll())
 

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,10 +20,15 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     @NotNull
-    @Size(min = 6)
+    @Size(min = 6, max = 120)
     private String password;
     @NotNull
     private boolean enabled = true;
+    private String firstname;
+    private String lastname;
+    private LocalDate dateOfBirth;
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private ProfilePicture profilePicture;
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "email",
@@ -30,8 +36,6 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
-    @OneToOne
-    private ContractInformation contractInformation;
     @OneToOne
     private MemberDetail memberDetail;
     @OneToOne
@@ -62,6 +66,38 @@ public class User {
         this.enabled = enabled;
     }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public ProfilePicture getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(ProfilePicture profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
     public Set<Authority> getAuthorities() {
         return authorities;
     }
@@ -76,14 +112,6 @@ public class User {
 
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
-    }
-
-    public ContractInformation getContractInformation() {
-        return contractInformation;
-    }
-
-    public void setContractInformation(ContractInformation contractInformation) {
-        this.contractInformation = contractInformation;
     }
 
     public MemberDetail getMemberDetail() {
