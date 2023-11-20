@@ -2,9 +2,8 @@ package com.novi.gymmanagementapi.services;
 
 import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
 import com.novi.gymmanagementapi.exceptions.RecordNotFoundException;
-import com.novi.gymmanagementapi.models.Member;
 import com.novi.gymmanagementapi.models.ProfilePicture;
-import com.novi.gymmanagementapi.repositories.MemberRepository;
+import com.novi.gymmanagementapi.repositories.UserRepository;
 import com.novi.gymmanagementapi.repositories.ProfilePictureRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -17,31 +16,31 @@ import java.util.Optional;
 @Service
 public class ProfilePictureService {
     private final ProfilePictureRepository profilePictureRepository;
-    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
 
-    public ProfilePictureService(ProfilePictureRepository doc, MemberRepository memberRepository) {
+    public ProfilePictureService(ProfilePictureRepository doc, UserRepository userRepository) {
         this.profilePictureRepository = doc;
-        this.memberRepository = memberRepository;
+        this.userRepository = userRepository;
     }
 
     public ProfilePicture uploadProfilePicture(String email, MultipartFile file) throws IOException {
-        String name = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+/*        String name = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         ProfilePicture profilePicture = new ProfilePicture();
         profilePicture.setFileName(name);
         profilePicture.setDocFile(file.getBytes());
 
-        Optional<Member> optionalMember = memberRepository.findById(email);
+        Optional<Member> optionalMember = userRepository.findById(email);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
             member.setProfilePicture(profilePicture);
-            memberRepository.save(member);
+            userRepository.save(member);
         }
-        return profilePicture;
-
+        return profilePicture;*/
+        return null;
     }
 
     public ProfilePicture downloadProfilePicture(String email) {
-        Optional<Member> optionalMember = memberRepository.findById(email);
+/*        Optional<Member> optionalMember = userRepository.findById(email);
         if (optionalMember.isPresent()) {
             Member member = optionalMember.get();
             if (member.getProfilePicture() != null) {
@@ -58,6 +57,7 @@ public class ProfilePictureService {
             }
         } else {
             throw new EmailNotFoundException(email);
-        }
+        }*/
+        return null;
     }
 }

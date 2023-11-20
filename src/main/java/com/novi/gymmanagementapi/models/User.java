@@ -3,26 +3,18 @@ package com.novi.gymmanagementapi.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@MappedSuperclass
+@Entity
+@Table(name = "users")
 public class User {
 
     @Id
     @Email
     @Column(nullable = false, unique = true)
     private String email;
-    @NotNull
-    private String firstname;
-    @NotNull
-    private String lastname;
-    @Past
-    @NotNull
-    private LocalDate dateOfBirth;
     @NotNull
     private String password;
     @Column(nullable = false)
@@ -34,6 +26,12 @@ public class User {
             orphanRemoval = true,
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
+    @OneToOne
+    private ContractInformation contractInformation;
+    @OneToOne(mappedBy = "id")
+    private MemberDetail memberDetail;
+    @OneToOne(mappedBy = "id")
+    private TrainerDetail trainerDetail;
 
 
     public String getEmail() {
@@ -42,30 +40,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
     }
 
     public String getPassword() {
@@ -100,4 +74,27 @@ public class User {
         this.authorities.remove(authority);
     }
 
+    public ContractInformation getContractInformation() {
+        return contractInformation;
+    }
+
+    public void setContractInformation(ContractInformation contractInformation) {
+        this.contractInformation = contractInformation;
+    }
+
+    public MemberDetail getMemberDetail() {
+        return memberDetail;
+    }
+
+    public void setMemberDetail(MemberDetail memberDetail) {
+        this.memberDetail = memberDetail;
+    }
+
+    public TrainerDetail getTrainerDetail() {
+        return trainerDetail;
+    }
+
+    public void setTrainerDetail(TrainerDetail trainerDetail) {
+        this.trainerDetail = trainerDetail;
+    }
 }

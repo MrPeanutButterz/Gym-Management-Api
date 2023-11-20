@@ -1,13 +1,8 @@
 package com.novi.gymmanagementapi.services;
 
-import com.novi.gymmanagementapi.exceptions.EmailNotFoundException;
-import com.novi.gymmanagementapi.models.Admin;
 import com.novi.gymmanagementapi.models.Authority;
-import com.novi.gymmanagementapi.models.Member;
-import com.novi.gymmanagementapi.models.Trainer;
-import com.novi.gymmanagementapi.repositories.AdminRepository;
-import com.novi.gymmanagementapi.repositories.MemberRepository;
-import com.novi.gymmanagementapi.repositories.TrainerRepository;
+import com.novi.gymmanagementapi.models.User;
+import com.novi.gymmanagementapi.repositories.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,42 +14,23 @@ import java.util.*;
 @Service
 public class MyCustomMemberDetailsService implements UserDetailsService {
 
-    private final MemberRepository memberRepository;
-    private final TrainerRepository trainerRepository;
-    private final AdminRepository adminRepository;
+    private final UserRepository userRepository;
 
-    public MyCustomMemberDetailsService(MemberRepository memberRepository,
-                                        TrainerRepository trainerRepository,
-                                        AdminRepository adminRepository) {
-        this.memberRepository = memberRepository;
-        this.trainerRepository = trainerRepository;
-        this.adminRepository = adminRepository;
+    public MyCustomMemberDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) {
 
-        Optional<Member> optionalMember = memberRepository.findById(email);
-        Optional<Trainer> optionalTrainer = trainerRepository.findById(email);
-        Optional<Admin> optionalAdmin = adminRepository.findById(email);
+        Optional<User> optionalUser = userRepository.findById(email);
 
         String password = null;
         Set<Authority> authorities = new HashSet<>();
 
-        if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-            password = member.getPassword();
-            authorities = member.getAuthorities();
-
-        } else if (optionalTrainer.isPresent()) {
-            Trainer trainer = optionalTrainer.get();
-            password = trainer.getPassword();
-            authorities = trainer.getAuthorities();
-
-        } else if (optionalAdmin.isPresent()) {
-            Admin admin = optionalAdmin.get();
-            password = admin.getPassword();
-            authorities = admin.getAuthorities();
+        if (optionalUser.isPresent()) {
+            password = optionalUser.get().getPassword();
+            authorities = optionalUser.get().getAuthorities();
         }
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -62,11 +38,6 @@ public class MyCustomMemberDetailsService implements UserDetailsService {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
         }
 
-        if (authorities.size() > 0) {
-            return new org.springframework.security.core.userdetails.User(email, password, grantedAuthorities);
-
-        } else {
-            throw new EmailNotFoundException();
-        }
+        return new org.springframework.security.core.userdetails.User(email, password, grantedAuthorities);
     }
 }
