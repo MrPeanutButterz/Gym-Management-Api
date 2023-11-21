@@ -27,7 +27,7 @@ public class AccountController {
     }
 
     /* OPEN ENDPOINTS
-     * A prospect can create an account
+     * Anyone can create an account
      * */
 
     @PostMapping
@@ -47,11 +47,17 @@ public class AccountController {
         }
     }
 
+    /* MEMBER ENDPOINTS
+     * Members can get, update or delete there account
+     * */
+
     @GetMapping
     public ResponseEntity<UserDto> getUserAccount(Principal principal) {
         System.out.println(principal);
         return ResponseEntity.ok().body(userService.getUserAccount(principal.getName()));
     }
 
+    // todo update account
+    // todo delete account
 
 }
