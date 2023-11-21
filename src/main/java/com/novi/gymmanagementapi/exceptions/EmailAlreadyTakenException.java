@@ -7,6 +7,7 @@ public class EmailAlreadyTakenException extends RuntimeException {
         super();
     }
 
-    public EmailAlreadyTakenException(String email) {super("Email address " + email + " already in use");
+    public EmailAlreadyTakenException(String email) {
+        super("Email address " + email + " already in use");
     }
 }

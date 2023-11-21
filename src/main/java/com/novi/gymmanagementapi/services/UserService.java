@@ -23,8 +23,8 @@ public class UserService {
     }
 
     public void createUserAccount(AuthenticationRequestDto newUser) {
-        Optional<User> optionalUser = userRepository.findById(newUser.getEmail());
-        if (optionalUser.isEmpty()) {
+        Optional<User> ou = userRepository.findById(newUser.getEmail());
+        if (ou.isEmpty()) {
             User user = new User();
             user.setEmail(newUser.getEmail());
             user.setPassword(new BCryptPasswordEncoder().encode(newUser.getPassword()));
@@ -41,6 +41,21 @@ public class UserService {
         Optional<User> ou = userRepository.findById(email);
         if (ou.isPresent()) {
             return toDTO(ou.get());
+
+        } else {
+            throw new EmailNotFoundException(email);
+        }
+    }
+
+    public void updateUserAccount(String email, UserDto u) {
+        Optional<User> ou = userRepository.findById(email);
+        if (ou.isPresent()) {
+            User user = ou.get();
+            user.setEmail(email);
+            user.setFirstname(u.getFirstname().toLowerCase());
+            user.setLastname(u.getLastname().toLowerCase());
+            user.setDateOfBirth(u.getDateOfBirth());
+            userRepository.save(user);
 
         } else {
             throw new EmailNotFoundException(email);
@@ -76,7 +91,7 @@ public class UserService {
         dto.setEmail(model.getEmail());
         dto.setFirstname(model.getFirstname());
         dto.setLastname(model.getLastname());
-        dto.setDob(model.getDateOfBirth());
+        dto.setDateOfBirth(model.getDateOfBirth());
         return dto;
     }
 }

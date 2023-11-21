@@ -1,10 +1,7 @@
 package com.novi.gymmanagementapi.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -24,8 +21,11 @@ public class User {
     private String password;
     @NotNull
     private boolean enabled = true;
+    @Size(min = 2, max = 30)
     private String firstname;
+    @Size(min = 2, max = 30)
     private String lastname;
+    @Past
     private LocalDate dateOfBirth;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private ProfilePicture profilePicture;
